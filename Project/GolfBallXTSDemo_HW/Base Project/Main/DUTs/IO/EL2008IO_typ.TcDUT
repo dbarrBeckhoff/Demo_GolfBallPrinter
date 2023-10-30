@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="EL2008IO_typ" Id="{9c611e32-5366-0f50-34dd-2ab9b34151b3}">
+    <Declaration><![CDATA[TYPE EL2008IO_typ:
+STRUCT
+	Output AT %Q*: ARRAY[1..8] OF BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

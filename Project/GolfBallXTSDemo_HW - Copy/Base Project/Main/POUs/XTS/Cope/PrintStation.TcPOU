@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="PrintStation" Id="{af37668e-bf92-0c4b-10be-9a89eaacc2a8}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK PrintStation EXTENDS MultiStation
+VAR_INPUT
+	StationEnable: ARRAY[0..GVL.PRINT_NUM_STATIONS - 1] OF BOOL;
+END_VAR
+VAR_OUTPUT
+	MoversInPosition: BOOL;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Methods" Id="{932d410e-fce3-0267-2e8d-d5af7357858b}" />
+    <Folder Name="Properties" Id="{6c126d4c-4a9b-0de2-06e7-ed27335d9ce3}" />
+    <Method Name="Cyclic" Id="{a16d672c-6e58-0f87-0490-601abb6d509d}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD Cyclic : BOOL
+VAR
+	i : USINT;
+	Init: BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Initializations
+IF NOT Init THEN
+;
+END_IF
+
+// Detect New Movers
+IF PositionTrigger.MoverPassedPosition THEN
+	FOR i := GVL.PRINT_NUM_STATIONS - 1 TO 0 BY -1 DO
+		IF StationEnable[i] AND NOT Station[i].TrackedMoverCount < 0 THEN
+			PositionTrigger.CurrentMover.MoveToStation(Station[i]);
+			EXIT;
+		END_IF
+	END_FOR
+END_IF
+
+// Determine if all movers are in position
+MoversInPosition	:= TRUE;
+FOR i := 0 TO GVL.PRINT_NUM_STATIONS - 1 DO
+	IF (Station[i].TrackedMoverCount <> 1) THEN	MoversInPosition := FALSE; EXIT;
+	ELSIF Station[i].TrackedMoverCount = 1 THEN
+		IF Station[i].CurrentMover.CurrentMoveType = MOVETYPE_NONE THEN MoversInPosition := FALSE; EXIT; END_IF
+	END_IF
+END_FOR
+
+// Call Cyclics
+PositionTrigger.Cyclic();
+FOR i := 0 TO GVL.PRINT_NUM_STATIONS - 1 DO
+	IF StationEnable[i] THEN
+		Station[i].Cyclic();
+	END_IF
+END_FOR
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="PrintStation">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="PrintStation.Cyclic">
+      <LineId Id="61" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="76" Count="1" />
+      <LineId Id="81" Count="0" />
+      <LineId Id="78" Count="2" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="82" Count="0" />
+      <LineId Id="84" Count="2" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="88" Count="2" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="29" Count="1" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="28" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

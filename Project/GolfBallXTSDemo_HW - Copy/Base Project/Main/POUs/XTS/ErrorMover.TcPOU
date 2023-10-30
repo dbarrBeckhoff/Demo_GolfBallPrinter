@@ -1,0 +1,591 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="ErrorMover" Id="{bd3df610-8473-440e-a9dc-a09f811846e0}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'hide_all_locals'}
+FUNCTION_BLOCK ErrorMover EXTENDS Mover IMPLEMENTS iMover]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Methods" Id="{95344208-9410-4fde-9b34-506fa304a287}" />
+    <Folder Name="Properties" Id="{6fd2fbdb-965d-489f-acb7-82704f375aa0}" />
+    <Property Name="CurrentDestinationPosition" Id="{2b4b67cc-3100-4b95-930e-6d7f88a409da}" FolderPath="Properties\">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY CurrentDestinationPosition : LREAL]]></Declaration>
+      <Get Name="Get" Id="{4ab8604e-f7e5-4051-87ad-121e3916f22d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[
+
+ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The CurrentDestinationPosition Get method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="CurrentMoveType" Id="{654cf008-4e25-44e0-a02e-14f98c95c229}" FolderPath="Properties\">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY CurrentMoveType : MoverCommandType_enum]]></Declaration>
+      <Get Name="Get" Id="{ff80f46a-8539-4feb-9642-1a61fe0c4d1f}">
+        <Declaration><![CDATA[VAR
+	MoverCurrentMoveType: MoverCommandType_enum;
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[
+
+ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The CurrentMoveType Get method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="CurrentObjective" Id="{7897b829-22ce-468b-bc00-104f4387a246}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY CurrentObjective : String]]></Declaration>
+      <Get Name="Get" Id="{43ffd29e-7106-4bdc-961e-f77ce36447cf}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[
+
+ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The CurrentObjective Get method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="CurrentTrack" Id="{9bc4654e-1097-0e57-303b-26deb5d985c1}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY CurrentTrack : POINTER TO track]]></Declaration>
+      <Get Name="Get" Id="{00e132d6-ae6d-07ef-39af-0aace549cb59}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[
+
+ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The CurrentTrack Get method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Cyclic" Id="{764e6bb0-4d0d-42b1-82a2-beacd8ec9b5d}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD Cyclic : iMover
+VAR_IN_OUT
+	GroupReference		: AXES_GROUP_REF;
+END_VAR
+
+VAR
+	newCallTime: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// If this method was called within the last second, do not write to ADS
+newCallTime		:= ULINT_TO_LREAL(F_GetSystemTime())/1E7;
+
+IF ( newCallTime - lastCallCyclic ) > 1 THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The Cyclic method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);
+	lastCallCyclic	:= newCallTime;
+END_IF
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Disable" Id="{a35f8faa-093e-4292-a444-f58b6f5f6d4f}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD Disable : iMover
+VAR_INPUT
+END_VAR
+VAR
+	newCallTime		: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// If this method was called within the last second, do not write to ADS
+newCallTime		:= ULINT_TO_LREAL(F_GetSystemTime())/1E7;
+
+IF ( newCallTime - lastCallDisable ) > 1 THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The Disable method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);
+	lastCallDisable	:= newCallTime;
+END_IF
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Enable" Id="{d4744d94-4a3b-451e-bbfc-59a59ee494e3}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD Enable : iMover
+VAR_INPUT
+END_VAR
+VAR
+	newCallTime: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// If this method was called within the last second, do not write to ADS
+newCallTime		:= ULINT_TO_LREAL(F_GetSystemTime())/1E7;
+
+IF ( newCallTime - lastCallEnable ) > 1 THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The Enable method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);
+	lastCallEnable	:= newCallTime;
+END_IF
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GroupStop" Id="{4e389025-4e76-4cce-ac5c-8a82b786913e}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD GroupStop : iMover
+VAR_INPUT
+END_VAR
+VAR
+	newCallTime: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// If this method was called within the last second, do not write to ADS
+newCallTime		:= ULINT_TO_LREAL(F_GetSystemTime())/1E7;
+
+IF ( newCallTime - lastCallGroupStop ) > 1 THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The GroupStop method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);
+END_IF
+
+lastCallGroupStop	:= newCallTime;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Halt" Id="{8cf1fd35-c92c-43a7-89e5-e709149394be}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD Halt : iMover
+VAR_INPUT
+END_VAR
+VAR
+	newCallTime: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// If this method was called within the last second, do not write to ADS
+newCallTime		:= ULINT_TO_LREAL(F_GetSystemTime())/1E7;
+
+IF ( newCallTime - lastCallHalt ) > 1 THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, ' The Halt method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);
+END_IF
+
+lastCallHalt	:= newCallTime;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="IsSyncedToMover" Id="{6b623c29-8901-4623-afb3-f30839740c89}" FolderPath="Properties\">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY IsSyncedToMover : BOOL]]></Declaration>
+      <Get Name="Get" Id="{11e533df-3e35-43ba-a245-0cb48a9f5be4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[
+
+ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The IsSyncedToMover Get method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="MasterMover" Id="{6243eebd-fe41-4008-9c02-b6d5bac54829}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY MasterMover : Reference To Mover]]></Declaration>
+      <Get Name="Get" Id="{763be082-226a-441a-8e70-1d4aacb4d1ea}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[
+
+ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The MasterMover Get method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="MoveToMultiStation" Id="{09d9ee59-8c45-0f46-0ef9-6c67164988f7}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD MoveToMultiStation : iMover
+VAR_INPUT
+	DestinationStation	: REFERENCE TO MultiStation;	
+END_VAR
+VAR
+	newCallTime: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// If this method was called within the last second, do not write to ADS
+newCallTime		:= ULINT_TO_LREAL(F_GetSystemTime())/1E7;
+
+IF ( newCallTime - lastCallMovePos ) > 1 THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The MoveToStation method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);
+	lastCallMovePos		:= newCallTime;
+END_IF
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="MoveToPosition" Id="{06584b48-b7d7-45ec-b670-d5553ed7efde}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD PUBLIC MoveToPosition : iMover
+VAR_INPUT
+	DestinationPosition		: LREAL;	// position on track for a shuttle to move towards
+END_VAR
+VAR
+	newCallTime				: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// If this method was called within the last second, do not write to ADS
+newCallTime		:= ULINT_TO_LREAL(F_GetSystemTime())/1E7;
+
+IF ( newCallTime - lastCallMovePos ) > 1 THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The MoveToPosition method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);
+	lastCallMovePos		:= newCallTime;
+END_IF
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="MoveToStation" Id="{f7d51585-b63e-4a40-86ce-600a20ecf081}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD MoveToStation : iMover
+VAR_INPUT
+	DestinationStation	: REFERENCE TO Station;	
+END_VAR
+VAR
+	newCallTime: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// If this method was called within the last second, do not write to ADS
+newCallTime		:= ULINT_TO_LREAL(F_GetSystemTime())/1E7;
+
+IF ( newCallTime - lastCallMovePos ) > 1 THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The MoveToStation method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);
+	lastCallMovePos		:= newCallTime;
+END_IF
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="MoveVelocity" Id="{6f39fd6e-0630-4b12-9284-3c4d7e063735}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD MoveVelocity : iMover
+VAR_INPUT
+	DesiredVelocity : LREAL;		//The velocity to be commanded [mm/s]
+END_VAR
+
+VAR
+	negativeCommand: BOOL;
+	newCallTime: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// If this method was called within the last second, do not write to ADS
+newCallTime		:= ULINT_TO_LREAL(F_GetSystemTime())/1E7;
+
+IF ( newCallTime - lastCallMoveVel ) > 1 THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The MoveVelocity method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);
+	lastCallMoveVel		:= newCallTime;
+END_IF
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Payload" Id="{24ebdcd3-9649-41f7-9f65-e4f7f86ef316}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY Payload : USINT]]></Declaration>
+      <Get Name="Get" Id="{28f7f04b-9925-4df5-91ef-030257222faa}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[
+
+ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The Payload Get method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{0f0e05f2-3b7b-4da0-bed5-5c8e12c1a732}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[
+
+ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The Payload Set method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="ReissueCommand" Id="{2b2633c0-7db7-4352-ae48-063856e2b0db}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD ReissueCommand : iMover
+VAR_INPUT
+END_VAR
+
+VAR
+	newCallTime: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// If this method was called within the last second, do not write to ADS
+newCallTime		:= ULINT_TO_LREAL(F_GetSystemTime())/1E7;
+
+IF ( newCallTime - lastCallReissue ) > 1 THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The ReissueCommand method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);
+	lastCallReissue		:= newCallTime;
+END_IF
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetAcceleration" Id="{90f501cd-2aae-43a2-a87f-fdbe1a4cb2d2}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD SetAcceleration : iMover
+VAR_INPUT
+	Acceleration	: LREAL;
+END_VAR
+
+VAR
+	newCallTime: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// If this method was called within the last second, do not write to ADS
+newCallTime		:= ULINT_TO_LREAL(F_GetSystemTime())/1E7;
+
+IF ( newCallTime - lastCallSetAcc ) > 1 THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The SetAcceleration method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);
+	lastCallSetAcc		:= newCallTime;
+END_IF
+	]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetDeceleration" Id="{1da65927-f09e-4d2d-9427-dff6efde0728}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD SetDeceleration : iMover
+VAR_INPUT
+	Deceleration	: LREAL;
+END_VAR
+
+VAR
+	newCallTime: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// If this method was called within the last second, do not write to ADS
+newCallTime		:= ULINT_TO_LREAL(F_GetSystemTime())/1E7;
+
+IF ( newCallTime - lastCallSetDec ) > 1 THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The SetDeceleration method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);
+	lastCallSetDec		:= newCallTime;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetDirection" Id="{2ad42cfb-45f4-4a68-956c-6004efe4ef84}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD SetDirection : iMover
+VAR_INPUT
+	Direction		: Tc3_Mc3Definitions.MC_Direction;
+END_VAR
+
+VAR
+	newCallTime: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// If this method was called within the last second, do not write to ADS
+newCallTime		:= ULINT_TO_LREAL(F_GetSystemTime())/1E7;
+
+IF ( newCallTime - lastCallSetDir ) > 1 THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The SetDirection method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);
+	lastCallSetDir		:= newCallTime;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetJerk" Id="{8f7db2a4-6343-4dd3-aa2a-28dea1975f9e}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD SetJerk : iMover
+VAR_INPUT
+	Jerk		: LREAL;
+END_VAR
+
+VAR
+	newCallTime: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// If this method was called within the last second, do not write to ADS
+newCallTime		:= ULINT_TO_LREAL(F_GetSystemTime())/1E7;
+
+IF ( newCallTime - lastCallSetJerk ) > 1 THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The SetJerk method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);
+	lastCallSetJerk		:= newCallTime;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetVelocity" Id="{cdd1b3bc-a3c7-4bf5-8a9b-c45db8a075f7}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD SetVelocity : iMover
+VAR_INPUT
+	Velocity	: LREAL;
+END_VAR
+
+VAR
+	newCallTime: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// If this method was called in the last second, do not write to ADS
+newCallTime		:= ULINT_TO_LREAL(F_GetSystemTime())/1E7;
+
+IF ( newCallTime - lastCallSetVel ) > 1 THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The SetVelocity method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);
+	lastCallSetVel		:= newCallTime;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SyncToAxis" Id="{cfaf0d71-8323-03cc-05f8-4e7eec7d0bc9}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD SyncToAxis : iMover
+VAR_INPUT
+	
+	MasterAxis		: REFERENCE TO AXIS_REF;
+	MasterSyncPos	: LREAL;	// Master sync position (nonmodulo), where the input axis will be located when first synchronized
+	SlaveSyncPos	: LREAL;	// Mover sync position, where the mover will be located when first synchronized
+	SyncStrategy	: MC_SYNC_STRATEGY;	// Direction input
+	
+END_VAR
+VAR
+	newCallTime		: LREAL;
+END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+
+// If this method was called within the last second, do not write to ADS
+newCallTime		:= ULINT_TO_LREAL(F_GetSystemTime())/1E7;
+
+IF (newCallTime - lastCallSync) > 1 THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR,'The SyncToAxis method has been called on an invalid Mover reference returned by %s',THIS^.SourceInstancePath);
+	lastCallSync		:= newCallTime;
+END_IF
+
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SyncToMover" Id="{cd1d5b64-e134-455b-8660-842288b989a0}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD SyncToMover : iMover
+VAR_INPUT
+
+	MasterMover		: REFERENCE TO Mover;	// Synchronization master mover, whose position to follow. Further motion commands break the pairing
+	Gap				: LREAL;				// Gap distance to lead mover. Positive values indicate following, negative values indicate leading
+
+END_VAR
+
+VAR
+	newCallTime: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// IF this method was called within the last second, do not write to ADS
+newCallTime		:= ULINT_TO_LREAL(F_GetSystemTime())/1E7;
+
+IF ( newCallTime - lastCallSync ) > 1 THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'The SyncToMover method has been called on an invalid Mover reference returned by %s.',THIS^.SourceInstancePath);
+	lastCallSync	:= newCallTime;
+END_IF
+	]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="ErrorMover">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.CurrentDestinationPosition.Get">
+      <LineId Id="3" Count="1" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.CurrentMoveType.Get">
+      <LineId Id="3" Count="1" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.CurrentObjective.Get">
+      <LineId Id="3" Count="1" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.CurrentTrack.Get">
+      <LineId Id="5" Count="1" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.Cyclic">
+      <LineId Id="3" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.Disable">
+      <LineId Id="3" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.Enable">
+      <LineId Id="3" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.GroupStop">
+      <LineId Id="3" Count="7" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.Halt">
+      <LineId Id="3" Count="7" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.IsSyncedToMover.Get">
+      <LineId Id="3" Count="1" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.MasterMover.Get">
+      <LineId Id="3" Count="1" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.MoveToMultiStation">
+      <LineId Id="3" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.MoveToPosition">
+      <LineId Id="3" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.MoveToStation">
+      <LineId Id="3" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.MoveVelocity">
+      <LineId Id="3" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.Payload.Get">
+      <LineId Id="3" Count="1" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.Payload.Set">
+      <LineId Id="3" Count="1" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.ReissueCommand">
+      <LineId Id="3" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.SetAcceleration">
+      <LineId Id="3" Count="7" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.SetDeceleration">
+      <LineId Id="3" Count="6" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.SetDirection">
+      <LineId Id="3" Count="7" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.SetJerk">
+      <LineId Id="3" Count="6" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.SetVelocity">
+      <LineId Id="3" Count="6" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.SyncToAxis">
+      <LineId Id="19" Count="0" />
+      <LineId Id="127" Count="1" />
+      <LineId Id="143" Count="0" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="144" Count="0" />
+      <LineId Id="146" Count="0" />
+      <LineId Id="148" Count="0" />
+      <LineId Id="147" Count="0" />
+      <LineId Id="129" Count="1" />
+      <LineId Id="22" Count="0" />
+    </LineIds>
+    <LineIds Name="ErrorMover.SyncToMover">
+      <LineId Id="3" Count="7" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="OrientStation" Id="{37722a1a-8fe0-0ed5-3944-0550e379750d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK OrientStation
+VAR_INPUT
+	PrintStnADR	: UDINT;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	rIO		: REFERENCE IO_Orient_typ;
+	rStation : REFERENCE Station;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Cyclic" Id="{a820a9db-2ef7-0ad2-29be-a32b40c3d2e1}">
+      <Declaration><![CDATA[METHOD Cyclic : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Station access PrintStnADR;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="OrientStation">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="OrientStation.Cyclic">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
