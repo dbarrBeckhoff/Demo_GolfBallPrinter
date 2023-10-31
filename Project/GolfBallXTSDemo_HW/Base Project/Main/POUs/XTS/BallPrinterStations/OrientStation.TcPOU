@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="OrientStation" Id="{37722a1a-8fe0-0ed5-3944-0550e379750d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK OrientStation EXTENDS MachineStation
+VAR_INPUT
+//	StnADR	: UDINT;
+//	IOADR	: UDINT;
+	rIO			: REFERENCE TO Orient_IO_typ;
+	rStation	: REFERENCE TO Station;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*IF rStation = 0 OR rIO = 0 THEN		HOW DO I CHECK FOR THIS???
+	RETURN;
+END_IF	*)
+
+CASE State OF
+	STN_WAIT:
+		IF rStation.MoverInPosition THEN
+			State	:= STN_CHECKMOVER;
+		END_IF
+	
+	STN_CHECKMOVER:
+		IF NOT rStation.CurrentMover.Payload.Init THEN
+			rStation.CurrentMover.Payload.Init	:= TRUE;
+		END_IF
+
+		IF rIO.Inputs.BallPresent THEN
+			// DO NOTHING FOR NOW
+		ELSE
+			rIO.Outputs.BallClampOpen	:= TRUE;
+			State						:= STN_OPENBALLCLAMP;
+		END_IF
+	
+	STN_OPENBALLCLAMP:
+		IF rIO.Inputs.BallClampOpened THEN
+			rIO.Outputs.BallClampOpen	:= FALSE;
+			rIO.Outputs.LoadBall		:= TRUE;
+			State						:= STN_PROCESS;
+		END_IF
+	
+	STN_PROCESS:
+		IF rIO.Inputs.BallLoadComplete THEN
+			rIO.Outputs.LoadBall					:= FALSE;
+			rStation.CurrentMover.Payload.HasBall	:= TRUE;
+			rIO.Outputs.BallClampClose				:= TRUE;
+			State									:= STN_CLOSEBALLCLAMP;
+		END_IF
+		
+	STN_CLOSEBALLCLAMP:
+		IF rIO.Inputs.BallClampClosed THEN
+			rIO.Outputs.BallClampClose	:= FALSE;
+			State						:= STN_SEND;
+
+		END_IF
+	
+	STN_SEND:
+		rStation.CurrentMover.MoveToStation(Station[GVL.STN_BALLSEAT]);
+		State	:= STN_WAIT;
+	
+	STN_ERROR:
+
+END_CASE]]></ST>
+    </Implementation>
+    <Method Name="Cyclic" Id="{a820a9db-2ef7-0ad2-29be-a32b40c3d2e1}">
+      <Declaration><![CDATA[METHOD Cyclic : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="OrientStation">
+      <LineId Id="95" Count="2" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="43" Count="2" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="59" Count="1" />
+      <LineId Id="63" Count="1" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="71" Count="1" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="76" Count="5" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="83" Count="1" />
+      <LineId Id="90" Count="0" />
+      <LineId Id="92" Count="0" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="93" Count="1" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="34" Count="0" />
+    </LineIds>
+    <LineIds Name="OrientStation.Cyclic">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

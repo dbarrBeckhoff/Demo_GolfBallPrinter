@@ -3,8 +3,12 @@
   <DUT Name="IO_typ" Id="{ea205016-8f1b-0d1c-2b29-aead27e63e0a}">
     <Declaration><![CDATA[TYPE IO_typ:
 STRUCT
-	EL1008: EL1008IO_typ;
-	EL2008: EL2008IO_typ;
+	Orient: 	Orient_IO_typ;
+	BallSeat:	BallSeat_IO_typ;
+	Print:		Print_IO_typ;
+	Vision:		Vision_IO_typ;
+	Kickout:	Kickout_IO_typ;
+	TrayLoad:	TrayLoad_IO_typ;
 END_STRUCT
 END_TYPE
 ]]></Declaration>

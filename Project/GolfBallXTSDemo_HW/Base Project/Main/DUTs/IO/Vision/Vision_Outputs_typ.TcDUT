@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <DUT Name="EL1008IO_typ" Id="{48959ce0-bbda-01ca-110d-2b36ef8500a7}">
-    <Declaration><![CDATA[TYPE EL1008IO_typ:
+  <DUT Name="Vision_Outputs_typ" Id="{609b1b23-392a-01dd-3273-6bcf9e069b20}">
+    <Declaration><![CDATA[TYPE Vision_Outputs_typ:
 STRUCT
-	Input AT %I*: ARRAY[1..8] OF BOOL;
+	Inspect AT %Q*: BOOL;
 END_STRUCT
 END_TYPE
 ]]></Declaration>

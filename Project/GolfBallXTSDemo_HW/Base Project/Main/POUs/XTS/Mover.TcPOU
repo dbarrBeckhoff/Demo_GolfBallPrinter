@@ -55,7 +55,7 @@ VAR
 	internalGap						: LREAL;	// Gap distance to master mover during sync
 	
 	// Configurable Payload description	
-	internalPayload			: USINT;	// E.g. 0: No Product, 1: Product Loaded, 2: Product Reject. Can be modified for application
+	internalPayload			: Payload_typ;	// E.g. 0: No Product, 1: Product Loaded, 2: Product Reject. Can be modified for application
 	
 	// Track management
 	internalTrack			: POINTER TO Track;	// Internal current track
@@ -1448,7 +1448,7 @@ MoveVelocity		:= THIS^;
       </Implementation>
     </Method>
     <Property Name="Payload" Id="{5caf95a6-ad6c-448d-8947-8c8c07ab0a26}" FolderPath="Properties\">
-      <Declaration><![CDATA[PROPERTY Payload : USINT]]></Declaration>
+      <Declaration><![CDATA[PROPERTY Payload : Payload_typ]]></Declaration>
       <Get Name="Get" Id="{8a73f5fd-2b02-4094-9725-10c35f9f9334}">
         <Declaration><![CDATA[VAR
 END_VAR

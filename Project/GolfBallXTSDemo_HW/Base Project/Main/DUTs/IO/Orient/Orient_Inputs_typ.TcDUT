@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="Orient_Inputs_typ" Id="{48959ce0-bbda-01ca-110d-2b36ef8500a7}">
+    <Declaration><![CDATA[TYPE Orient_Inputs_typ:
+STRUCT
+	BallClampOpened AT %I*: BOOL;
+	BallClampClosed AT %I*: BOOL;
+	BallPresent AT %I*: BOOL;
+	BallLoadComplete AT %I*: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

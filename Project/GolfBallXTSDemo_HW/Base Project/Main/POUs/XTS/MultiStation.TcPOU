@@ -4,7 +4,7 @@
     <Declaration><![CDATA[FUNCTION_BLOCK MultiStation EXTENDS Objective;
 VAR_INPUT
 	PositionTrigger:	PositionTrigger;
-	Station: ARRAY[0..5] OF Station;
+	Station: ARRAY[0..GVL.MULTISTN_NUM_STN - 1] OF Station;
 END_VAR
 VAR_OUTPUT
 END_VAR
@@ -21,6 +21,38 @@ END_VAR
     </Implementation>
     <Folder Name="Methods" Id="{26448ae6-7421-0b31-2949-700660ed0451}" />
     <Folder Name="Properties" Id="{830dba99-a22e-029a-3290-dc45b9f77c2c}" />
+    <Property Name="AllMoversInPosition" Id="{1f754e83-88fa-0a8d-24cd-753cdf0d29cd}" FolderPath="Properties\">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'variable'}
+PROPERTY AllMoversInPosition : BOOL]]></Declaration>
+      <Get Name="Get" Id="{453286f5-9524-07a2-3f4f-b23cf223a48a}">
+        <Declaration><![CDATA[VAR
+
+    i          : ULINT;
+	TrackedMovers	: UINT;
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[// default to false
+AllMoversInPosition := TRUE;
+TrackedMovers		:= 0;
+
+FOR i := 0 TO SIZEOF(Station) / SIZEOF(Station[0]) - 1 DO
+	IF Station[i].TrackedMoverCount > 0 THEN
+		TrackedMovers	:= TrackedMovers + 1;
+		IF NOT Station[i].MoverInPosition THEN
+			AllMoversInPosition	:= FALSE;
+			EXIT;
+		END_IF
+	END_IF
+END_FOR
+
+IF TrackedMovers = 0 THEN
+	AllMoversInPosition	:= FALSE;
+END_IF
+
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Method Name="Cyclic" Id="{e1b380b8-f648-0a8a-3ba6-02e42127a4fc}" FolderPath="Methods\">
       <Declaration><![CDATA[METHOD Cyclic : BOOL
 VAR
@@ -34,7 +66,7 @@ END_VAR]]></Declaration>
 
 // Call Cyclics
 PositionTrigger.Cyclic();
-FOR i := 0 TO 1 DO
+FOR i := 0 TO GVL.MULTISTN_NUM_STN - 1 DO
 	Station[i].Cyclic();
 END_FOR]]></ST>
       </Implementation>
@@ -125,6 +157,21 @@ END_VAR]]></Declaration>
     </Method>
     <LineIds Name="MultiStation">
       <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="MultiStation.AllMoversInPosition.Get">
+      <LineId Id="3" Count="1" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="5" Count="1" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="37" Count="1" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="39" Count="2" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="50" Count="1" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="MultiStation.Cyclic">
       <LineId Id="35" Count="0" />

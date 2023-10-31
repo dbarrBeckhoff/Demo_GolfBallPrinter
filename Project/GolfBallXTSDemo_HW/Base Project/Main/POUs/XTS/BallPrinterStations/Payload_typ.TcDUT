@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="Payload_typ" Id="{6975ab12-1f57-0ad1-2fe1-ed81061287ec}">
+    <Declaration><![CDATA[TYPE Payload_typ :
+STRUCT
+	Init				: BOOL;
+	HasBall				: BOOL;
+	BallSeated			: BOOL;
+	PrintStepComplete	: ARRAY[0..3] OF BOOL;
+	PrintComplete		: BOOL;
+	VisionPass			: BOOL;
+	Reject				: BOOL;
+	PlayerNumber		: UINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

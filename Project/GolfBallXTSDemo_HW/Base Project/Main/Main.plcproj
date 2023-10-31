@@ -19,13 +19,61 @@
     <CombineIds>true</CombineIds>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DUTs\IO\EL1008IO_typ.TcDUT">
+    <Compile Include="DUTs\IO\BallSeat\BallSeat_Inputs_typ.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\IO\EL2008IO_typ.TcDUT">
+    <Compile Include="DUTs\IO\BallSeat\BallSeat_IO_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\BallSeat\BallSeat_Outputs_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\Kickout\Kickout_Inputs_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\Kickout\Kickout_IO_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\Kickout\Kickout_Outputs_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\Orient\Orient_Inputs_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\Orient\Orient_IO_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\Orient\Orient_Outputs_typ.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\IO\IO_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\Print\Print_Inputs_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\Print\Print_IO_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\Print\Print_Outputs_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\TrayLoad\TrayLoad_Inputs_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\TrayLoad\TrayLoad_IO_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\TrayLoad\TrayLoad_Outputs_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\Vision\Vision_Inputs_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\Vision\Vision_IO_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\Vision\Vision_Outputs_typ.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\MainCommands_typ.TcDUT">
@@ -71,13 +119,10 @@
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\XTS\Cope\MultiStation.TcPOU">
+    <Compile Include="POUs\XTS\BallPrinterStations\Payload_typ.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\XTS\Cope\OrientStation.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\XTS\Cope\PrintStation.TcPOU">
+    <Compile Include="POUs\XTS\BallPrinterStations\MachineStation.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\XTS\ErrorMover.TcPOU">
@@ -90,6 +135,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\XTS\MoverList.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\XTS\MultiStation.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\XTS\BallPrinterStations\OrientStation.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\XTS\BallPrinterStations\StnState_Enum.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\XTS\Objective.TcPOU">
@@ -125,11 +179,17 @@
   <ItemGroup>
     <Folder Include="DUTs" />
     <Folder Include="DUTs\IO" />
+    <Folder Include="DUTs\IO\Orient" />
+    <Folder Include="DUTs\IO\BallSeat" />
+    <Folder Include="DUTs\IO\Print" />
+    <Folder Include="DUTs\IO\Vision" />
+    <Folder Include="DUTs\IO\Kickout" />
+    <Folder Include="DUTs\IO\TrayLoad" />
     <Folder Include="GVLs" />
     <Folder Include="ITFs" />
     <Folder Include="POUs" />
     <Folder Include="POUs\XTS" />
-    <Folder Include="POUs\XTS\Cope" />
+    <Folder Include="POUs\XTS\BallPrinterStations" />
     <Folder Include="VISUs" />
   </ItemGroup>
   <ItemGroup>
