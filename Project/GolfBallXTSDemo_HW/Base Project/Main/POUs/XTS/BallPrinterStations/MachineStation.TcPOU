@@ -3,6 +3,7 @@
   <POU Name="MachineStation" Id="{a1e30f3d-6564-0f41-3e79-0f2f13fb327e}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK MachineStation
 VAR_INPUT
+	Enable	: BOOL;
 	Run		: BOOL;
 	Reset	: BOOL;
 END_VAR
@@ -12,6 +13,7 @@ VAR_OUTPUT
 	ErrorID	: DINT;
 END_VAR
 VAR
+	_Enable	: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="SimTimers_typ" Id="{a900b90b-40d8-00c1-38f6-51cafb515166}">
+    <Declaration><![CDATA[TYPE SimTimers_typ :
+STRUCT
+	// Orient
+	TON_Orient_OpenBallClamp	: TON;
+	TON_Orient_CloseBallClamp	: TON;
+	TON_Orient_LoadBall			: TON;
+
+	// Ball Seater
+	TON_BallSeat_OpenBallClamp		: TON;
+	TON_BallSeat_CloseBallClamp		: TON;
+	TON_BallSeat_ExtendBallSeater	: TON;
+	TON_BallSeat_RetractBallSeater	: TON;
+
+	// Printer
+	TON_Print_PrintComplete		: TON;
+
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

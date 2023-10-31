@@ -119,10 +119,19 @@
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\XTS\BallPrinterStations\BallSeatStation.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\XTS\BallPrinterStations\PrintStation.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\XTS\BallPrinterStations\Payload_typ.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\XTS\BallPrinterStations\MachineStation.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\XTS\BallPrinterStations\SimTimers_typ.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\XTS\ErrorMover.TcPOU">

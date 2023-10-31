@@ -5,8 +5,8 @@
 STRUCT
 	BallClampOpen AT %Q*: BOOL;
 	BallClampClose AT %Q*: BOOL;
-	ExtendBallSeater AT %Q: BOOL;
-	RetractBallSeater AT %Q: BOOL;
+	ExtendBallSeater AT %Q*: BOOL;
+	RetractBallSeater AT %Q*: BOOL;
 END_STRUCT
 END_TYPE
 ]]></Declaration>

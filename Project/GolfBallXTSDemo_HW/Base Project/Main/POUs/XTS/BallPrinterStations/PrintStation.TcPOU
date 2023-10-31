@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="PrintStation" Id="{bbe07669-1b09-0bc2-0cf7-35c98289024b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK PrintStation EXTENDS MachineStation
+VAR_INPUT
+	rIO				: REFERENCE TO Print_IO_typ;
+	rMultiStn		: REFERENCE TO MultiStation;
+	rVisionStation	: REFERENCE TO Station;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+Payload	: Payload_typ;
+	i: INT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*IF rStation = 0 OR rIO = 0 THEN		HOW DO I CHECK FOR THIS???
+	RETURN;
+END_IF	*)
+
+// Catch Incoming Shuttles and assign to station
+IF rMultiStn.PositionTrigger.MoverPassedPosition THEN
+	rMultiStn.PosTriggerPayload	:= rMultiStn.PositionTrigger.CurrentMover.Payload;
+	// TODO add check for Payload info to reject ball or another reason we wouldnt want to print
+	rMultiStn.PositionTrigger.CurrentMover.MoveToStation(rMultiStn.Station[0]);
+	rMultiStn.PositionTrigger.MuteCurrent();
+END_IF
+
+// Station Sequence
+IF Enable THEN
+	IF NOT _Enable THEN
+		;
+	END_IF
+
+	CASE State OF
+		STN_WAIT:
+			IF rMultiStn.AllMoversInPosition THEN
+				FOR i := 0 TO GVL.MULTISTN_NUM_STN - 1 DO
+					IF rMultiStn.Station[i].TrackedMoverCount > 0 THEN
+						rMultiStn.StationPayload[i]	:= rMultiStn.Station[i].CurrentMover.Payload;
+					END_IF
+				END_FOR
+				Payload				:= rMultiStn.CurrentMover.Payload;
+				rIO.Outputs.Print	:= TRUE;
+				State				:= STN_PROCESS;
+			END_IF
+
+		STN_PROCESS:
+			IF rIO.Inputs.PrintComplete THEN
+				rIO.Outputs.Print		:= FALSE;
+				FOR i := 0 TO GVL.MULTISTN_NUM_STN - 1 DO
+					IF rMultiStn.Station[i].TrackedMoverCount > 0 THEN
+						rMultiStn.StationPayload[i].PrintStepComplete[i]	:= TRUE;
+						IF i = 3 THEN
+							rMultiStn.StationPayload[i].PrintComplete		:= TRUE;
+						END_IF
+					END_IF
+				END_FOR
+			State						:= STN_SEND;
+			END_IF
+
+		STN_SEND:
+			// Write Payload Data
+			FOR i := 0 TO GVL.MULTISTN_NUM_STN - 1 DO
+				IF rMultiStn.Station[i].TrackedMoverCount > 0 THEN
+					rMultiStn.Station[i].CurrentMover.Payload	:= rMultiStn.StationPayload[i];
+				END_IF
+			END_FOR
+
+			// Send Mover
+			FOR i := 3 TO 0 BY -1 DO
+				IF rMultiStn.Station[i].TrackedMoverCount > 0 THEN
+					IF i = 3 THEN
+						rMultiStn.Station[i].CurrentMover.MoveToStation(rVisionStation);
+					ELSE
+						rMultiStn.Station[i].CurrentMover.MoveToStation(rMultiStn.Station[i+1]);
+					END_IF
+				END_IF
+				IF i = 0 THEN EXIT; END_IF
+			END_FOR
+			State		:= STN_WAIT;
+		
+		STN_ERROR:
+	
+	END_CASE
+
+ELSIF _Enable THEN
+	;
+END_IF
+
+//Save Previous Values
+_Enable	:= Enable;]]></ST>
+    </Implementation>
+    <Method Name="Cyclic" Id="{06adf546-a0d7-0c76-24f1-705bd756794d}">
+      <Declaration><![CDATA[METHOD Cyclic : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="PrintStation">
+      <LineId Id="95" Count="2" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="131" Count="0" />
+      <LineId Id="133" Count="0" />
+      <LineId Id="158" Count="0" />
+      <LineId Id="160" Count="0" />
+      <LineId Id="134" Count="2" />
+      <LineId Id="130" Count="0" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="108" Count="0" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="109" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="161" Count="1" />
+      <LineId Id="164" Count="2" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="143" Count="0" />
+      <LineId Id="197" Count="2" />
+      <LineId Id="196" Count="0" />
+      <LineId Id="203" Count="2" />
+      <LineId Id="209" Count="0" />
+      <LineId Id="206" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="194" Count="0" />
+      <LineId Id="189" Count="3" />
+      <LineId Id="188" Count="0" />
+      <LineId Id="195" Count="0" />
+      <LineId Id="193" Count="0" />
+      <LineId Id="174" Count="1" />
+      <LineId Id="177" Count="0" />
+      <LineId Id="179" Count="5" />
+      <LineId Id="173" Count="0" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="104" Count="0" />
+      <LineId Id="113" Count="2" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="105" Count="0" />
+    </LineIds>
+    <LineIds Name="PrintStation.Cyclic">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -4,7 +4,10 @@
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
 	// Machine Stations
-	OrientStation:	OrientStation;
+	OrientStation:		OrientStation;
+	BallSeatStation:	BallSeatStation;
+	PrintStation:		PrintStation;
+	SimTimers:			SimTimers_typ;
 
 	// ========= System Control / FSM Variables =========
 	
@@ -259,50 +262,52 @@ CASE MainState OF
 		Station implementations, Position Trigger logic, etc. In general, you can remove the example code
 		here down to the short line break that looks like this: // ============= *)
 	
-        // Orient Station Logic
-        IF Station[GVL.STN_ORIENT].MoverInPosition THEN
-            StationTimer[GVL.STN_ORIENT](IN := TRUE, PT := T#1000MS);
-            IF StationTimer[GVL.STN_ORIENT].Q THEN
-                Station[GVL.STN_ORIENT].CurrentMover.SetVelocity(mediumVelocity);
-                Station[GVL.STN_ORIENT].CurrentMover.MoveToStation(Station[GVL.STN_BALLSEAT]);
-				Station[GVL.STN_ORIENT].UnregisterCurrent();
-            END_IF
-        ELSE
-            StationTimer[GVL.STN_ORIENT](IN := FALSE);
-        END_IF
+//        // Orient Station Logic
+//        IF Station[GVL.STN_ORIENT].MoverInPosition THEN
+//            StationTimer[GVL.STN_ORIENT](IN := TRUE, PT := T#1000MS);
+//            IF StationTimer[GVL.STN_ORIENT].Q THEN
+//                Station[GVL.STN_ORIENT].CurrentMover.SetVelocity(mediumVelocity);
+//                Station[GVL.STN_ORIENT].CurrentMover.MoveToStation(Station[GVL.STN_BALLSEAT]);
+//				Station[GVL.STN_ORIENT].UnregisterCurrent();
+//            END_IF
+//        ELSE
+//            StationTimer[GVL.STN_ORIENT](IN := FALSE);
+//        END_IF
+			OrientStation.Run	:= TRUE;
 
-        // Ball Seat Station Logic
-        IF Station[GVL.STN_BALLSEAT].MoverInPosition THEN
-            StationTimer[GVL.STN_BALLSEAT](IN := TRUE, PT := T#500MS);
-            IF StationTimer[GVL.STN_BALLSEAT].Q THEN
-                Station[GVL.STN_BALLSEAT].CurrentMover.SetVelocity(mediumVelocity);
-//                Station[GVL.STN_BALLSEAT].CurrentMover.MoveToMultiStation(MultiStation[GVL.MULTISTN_PRINT]);
-//                Station[GVL.STN_BALLSEAT].CurrentMover.MoveToStation(Station[GVL.STN_PRINT]);
-                Station[GVL.STN_BALLSEAT].CurrentMover.MoveToStation(MultiStation[GVL.MULTISTN_PRINT].Station[0]);
-				i;
-            END_IF
-        ELSE
-            StationTimer[GVL.STN_BALLSEAT](IN := FALSE);
-        END_IF
+//        // Ball Seat Station Logic
+//        IF Station[GVL.STN_BALLSEAT].MoverInPosition THEN
+//            StationTimer[GVL.STN_BALLSEAT](IN := TRUE, PT := T#500MS);
+//            IF StationTimer[GVL.STN_BALLSEAT].Q THEN
+//                Station[GVL.STN_BALLSEAT].CurrentMover.SetVelocity(mediumVelocity);
+////                Station[GVL.STN_BALLSEAT].CurrentMover.MoveToMultiStation(MultiStation[GVL.MULTISTN_PRINT]);
+////                Station[GVL.STN_BALLSEAT].CurrentMover.MoveToStation(Station[GVL.STN_PRINT]);
+//                Station[GVL.STN_BALLSEAT].CurrentMover.MoveToStation(MultiStation[GVL.MULTISTN_PRINT].Station[0]);
+//				i;
+//            END_IF
+//        ELSE
+//            StationTimer[GVL.STN_BALLSEAT](IN := FALSE);
+//        END_IF
+			BallSeatStation.Run	:= TRUE;
 
-		// Print Station Logic
-		IF MultiStation[GVL.MULTISTN_PRINT].AllMoversInPosition THEN
-			MultiStationTimer[GVL.MULTISTN_PRINT](IN := TRUE, PT := T#1500MS);
-			IF MultiStationTimer[GVL.MULTISTN_PRINT].Q THEN
-				FOR i := 3 TO 0 BY -1 DO
-					IF MultiStation[GVL.MULTISTN_PRINT].Station[i].TrackedMoverCount > 0 THEN
-						IF i = 3 THEN
-							MultiStation[GVL.MULTISTN_PRINT].Station[i].CurrentMover.MoveToStation(Station[GVL.STN_VISION]);
-						ELSE
-							MultiStation[GVL.MULTISTN_PRINT].Station[i].CurrentMover.MoveToStation(MultiStation[GVL.MULTISTN_PRINT].Station[i+1]);
-						END_IF
-					END_IF
-					IF i = 0 THEN EXIT; END_IF
-				END_FOR
-			END_IF
-		ELSE
-			MultiStationTimer[GVL.MULTISTN_PRINT](IN := FALSE);
-		END_IF
+//		// Print Station Logic
+//		IF MultiStation[GVL.MULTISTN_PRINT].AllMoversInPosition THEN
+//			MultiStationTimer[GVL.MULTISTN_PRINT](IN := TRUE, PT := T#1500MS);
+//			IF MultiStationTimer[GVL.MULTISTN_PRINT].Q THEN
+//				FOR i := 3 TO 0 BY -1 DO
+//					IF MultiStation[GVL.MULTISTN_PRINT].Station[i].TrackedMoverCount > 0 THEN
+//						IF i = 3 THEN
+//							MultiStation[GVL.MULTISTN_PRINT].Station[i].CurrentMover.MoveToStation(Station[GVL.STN_VISION]);
+//						ELSE
+//							MultiStation[GVL.MULTISTN_PRINT].Station[i].CurrentMover.MoveToStation(MultiStation[GVL.MULTISTN_PRINT].Station[i+1]);
+//						END_IF
+//					END_IF
+//					IF i = 0 THEN EXIT; END_IF
+//				END_FOR
+//			END_IF
+//		ELSE
+//			MultiStationTimer[GVL.MULTISTN_PRINT](IN := FALSE);
+//		END_IF
 
         // Vision Station Logic	
         IF Station[GVL.STN_VISION].MoverInPosition THEN
@@ -476,6 +481,12 @@ CASE MainState OF
 
 END_CASE;
 
+// Station Actions
+ACT_Orient();
+ACT_BallSeat();
+ACT_Print();
+ACT_IOSim();
+
 // Initialize and update diagnostic features
 InitializeUtilityLibrary();
 
@@ -496,14 +507,77 @@ END_FOR
 ]]></ST>
     </Implementation>
     <Folder Name="Stations" Id="{f025fb0e-005b-0773-0290-1b0d76ec6369}" />
+    <Action Name="ACT_BallSeat" Id="{d30c79e2-8303-0990-143c-9c22e976d6a9}" FolderPath="Stations\">
+      <Implementation>
+        <ST><![CDATA[// INIT
+BallSeatStation.rStation		REF= Station[GVL.STN_BALLSEAT];
+BallSeatStation.rIO				REF= IO.BallSeat;
+BallSeatStation.rPrintStation	REF= MultiStation[GVL.MULTISTN_PRINT];
+
+// Inputs
+BallSeatStation.Enable	:= MainCommands.Enable;
+
+// FB CALLS
+BallSeatStation();]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_IOSim" Id="{6ed4ba4c-34e2-0ad2-01bd-6b8a12409293}" FolderPath="Stations\">
+      <Implementation>
+        <ST><![CDATA[// Orient
+SimTimers.TON_Orient_OpenBallClamp(IN := IO.Orient.Outputs.BallClampOpen AND NOT IO.Orient.Outputs.BallClampClose, PT := T#100MS);
+SimTimers.TON_Orient_CloseBallClamp(IN := IO.Orient.Outputs.BallClampClose AND NOT IO.Orient.Outputs.BallClampOpen, PT := T#100MS);
+SimTimers.TON_Orient_LoadBall(IN := IO.Orient.Outputs.LoadBall, PT := T#500MS);
+
+IF SimTimers.TON_Orient_CloseBallClamp.Q THEN		IO.Orient.Inputs.BallClampClosed	:= TRUE;	IO.Orient.Inputs.BallClampOpened	:= FALSE;	END_IF
+IF SimTimers.TON_Orient_OpenBallClamp.Q THEN		IO.Orient.Inputs.BallClampOpened	:= TRUE;	IO.Orient.Inputs.BallClampClosed	:= FALSE;	END_IF
+IO.Orient.Inputs.BallLoadComplete					:= SimTimers.TON_Orient_LoadBall.Q;
+
+// Ball Seater
+SimTimers.TON_BallSeat_OpenBallClamp(IN := IO.BallSeat.Outputs.BallClampOpen AND NOT IO.BallSeat.Outputs.BallClampClose, PT := T#100MS);
+SimTimers.TON_BallSeat_CloseBallClamp(IN := IO.BallSeat.Outputs.BallClampClose AND NOT IO.BallSeat.Outputs.BallClampOpen, PT := T#100MS);
+SimTimers.TON_BallSeat_ExtendBallSeater(IN := IO.BallSeat.Outputs.ExtendBallSeater AND NOT IO.BallSeat.Outputs.RetractBallSeater, PT := T#200MS);
+SimTimers.TON_BallSeat_RetractBallSeater(IN := IO.BallSeat.Outputs.RetractBallSeater AND NOT IO.BallSeat.Outputs.ExtendBallSeater, PT := T#200MS);
+
+IF SimTimers.TON_BallSeat_CloseBallClamp.Q THEN		IO.BallSeat.Inputs.BallClampClosed		:= TRUE;	IO.BallSeat.Inputs.BallClampOpened		:= FALSE;	END_IF
+IF SimTimers.TON_BallSeat_OpenBallClamp.Q THEN		IO.BallSeat.Inputs.BallClampOpened		:= TRUE;	IO.BallSeat.Inputs.BallClampClosed		:= FALSE;	END_IF
+IF SimTimers.TON_BallSeat_ExtendBallSeater.Q THEN	IO.BallSeat.Inputs.BallSeatExtended		:= TRUE;	IO.BallSeat.Inputs.BallSeatRetracted	:= FALSE;	END_IF
+IF SimTimers.TON_BallSeat_RetractBallSeater.Q THEN	IO.BallSeat.Inputs.BallSeatRetracted	:= TRUE;	IO.BallSeat.Inputs.BallSeatExtended		:= FALSE;	END_IF
+
+// Printer
+SimTimers.TON_Print_PrintComplete(IN := IO.Print.Outputs.Print, PT := T#1500MS);
+IO.Print.Inputs.PrintActive		:= SimTimers.TON_Print_PrintComplete.IN AND NOT SimTimers.TON_Print_PrintComplete.Q;
+IO.Print.Inputs.PrintComplete	:= SimTimers.TON_Print_PrintComplete.Q;
+
+]]></ST>
+      </Implementation>
+    </Action>
     <Action Name="ACT_Orient" Id="{32224cff-87eb-095f-1e16-1fc8acfca016}" FolderPath="Stations\">
       <Implementation>
         <ST><![CDATA[// INIT
-OrientStation.rStation	REF= Station[GVL.STN_ORIENT];
-OrientStation.rIO		REF= IO.Orient;
+OrientStation.rStation		REF= Station[GVL.STN_ORIENT];
+OrientStation.rIO			REF= IO.Orient;
+OrientStation.rBallSeatStn	REF= Station[GVL.STN_BALLSEAT];
+OrientStation.rKickoutStn	REF= Station[GVL.STN_KICKOUT];
+
+// Inputs
+OrientStation.Enable	:= MainCommands.Enable;
 
 // FB CALLS
 OrientStation();]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_Print" Id="{2203369a-7a83-048d-1341-ae755014cdc1}" FolderPath="Stations\">
+      <Implementation>
+        <ST><![CDATA[// INIT
+PrintStation.rMultiStn			REF= MultiStation[GVL.MULTISTN_PRINT];
+PrintStation.rIO				REF= IO.Print;
+PrintStation.rVisionStation		REF= Station[GVL.STN_VISION];
+
+// Inputs
+PrintStation.Enable	:= MainCommands.Enable;
+
+// FB CALLS
+PrintStation();]]></ST>
       </Implementation>
     </Action>
     <Action Name="InitializeUtilityLibrary" Id="{4ac3b602-bbee-0af7-24db-b9d89bbd3ae5}">
@@ -580,11 +654,14 @@ END_CASE
       <LineId Id="863" Count="4" />
       <LineId Id="870" Count="20" />
       <LineId Id="1554" Count="0" />
-      <LineId Id="891" Count="10" />
+      <LineId Id="891" Count="4" />
+      <LineId Id="1646" Count="0" />
+      <LineId Id="896" Count="5" />
       <LineId Id="1534" Count="0" />
       <LineId Id="1559" Count="0" />
       <LineId Id="1556" Count="0" />
       <LineId Id="906" Count="3" />
+      <LineId Id="1647" Count="0" />
       <LineId Id="1321" Count="0" />
       <LineId Id="1320" Count="0" />
       <LineId Id="1453" Count="1" />
@@ -641,17 +718,70 @@ END_CASE
       <LineId Id="1040" Count="0" />
       <LineId Id="1539" Count="7" />
       <LineId Id="1049" Count="26" />
-      <LineId Id="1077" Count="14" />
+      <LineId Id="1077" Count="0" />
+      <LineId Id="1642" Count="0" />
+      <LineId Id="1641" Count="0" />
+      <LineId Id="1643" Count="0" />
+      <LineId Id="1645" Count="0" />
+      <LineId Id="1650" Count="0" />
+      <LineId Id="1649" Count="0" />
+      <LineId Id="1078" Count="13" />
       <LineId Id="1159" Count="0" />
       <LineId Id="1418" Count="0" />
       <LineId Id="1299" Count="0" />
       <LineId Id="1096" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
+    <LineIds Name="MAIN.ACT_BallSeat">
+      <LineId Id="2" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.ACT_IOSim">
+      <LineId Id="1" Count="3" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="6" Count="3" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="17" Count="2" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="27" Count="1" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="24" Count="0" />
+    </LineIds>
     <LineIds Name="MAIN.ACT_Orient">
       <LineId Id="2" Count="0" />
       <LineId Id="4" Count="0" />
-      <LineId Id="8" Count="1" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="12" Count="1" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.ACT_Print">
+      <LineId Id="2" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
       <LineId Id="3" Count="0" />
       <LineId Id="5" Count="0" />
     </LineIds>

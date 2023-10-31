@@ -3,8 +3,8 @@
   <DUT Name="BallSeat_IO_typ" Id="{c93c3448-3f85-03a0-1da5-2260c635e3e1}">
     <Declaration><![CDATA[TYPE BallSeat_IO_typ:
 STRUCT
-	Inputs	: Orient_Inputs_typ;
-	Outputs	: Orient_Outputs_typ;
+	Inputs	: BallSeat_Inputs_typ;
+	Outputs	: BallSeat_Outputs_typ;
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>
