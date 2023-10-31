@@ -24,7 +24,7 @@ IF Enable THEN
 
 	CASE State OF
 		STN_WAIT:
-			IF rStation.MoverInPosition THEN
+			IF Run AND rStation.MoverInPosition THEN
 				Payload						:= rStation.CurrentMover.Payload;
 				rIO.Outputs.BallClampOpen	:= TRUE;
 				State						:= STN_OPENBALLCLAMP;
@@ -56,6 +56,7 @@ IF Enable THEN
 		STN_SEND:
 			rStation.CurrentMover.Payload	:= Payload;
 			rStation.CurrentMover.MoveToMultiStation(rPrintStation);
+			rStation.UnregisterCurrent();
 			State							:= STN_WAIT;
 		
 		STN_ERROR:
@@ -113,7 +114,9 @@ END_VAR
       <LineId Id="40" Count="0" />
       <LineId Id="32" Count="0" />
       <LineId Id="102" Count="0" />
-      <LineId Id="93" Count="1" />
+      <LineId Id="93" Count="0" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="94" Count="0" />
       <LineId Id="41" Count="0" />
       <LineId Id="33" Count="0" />
       <LineId Id="42" Count="0" />

@@ -25,7 +25,7 @@ IF Enable THEN
 
 	CASE State OF
 		STN_WAIT:
-			IF rStation.MoverInPosition THEN
+			IF Run AND rStation.MoverInPosition THEN
 				State	:= STN_CHECKMOVER;
 				Payload	:= rStation.CurrentMover.Payload;
 			END_IF
@@ -66,6 +66,7 @@ IF Enable THEN
 		STN_SEND:
 			rStation.CurrentMover.Payload	:= Payload;
 			rStation.CurrentMover.MoveToStation(rBallSeatStn);
+			rStation.UnregisterCurrent();
 			State							:= STN_WAIT;
 		
 		STN_ERROR:
@@ -128,7 +129,9 @@ END_VAR
       <LineId Id="40" Count="0" />
       <LineId Id="32" Count="0" />
       <LineId Id="102" Count="0" />
-      <LineId Id="93" Count="1" />
+      <LineId Id="93" Count="0" />
+      <LineId Id="119" Count="0" />
+      <LineId Id="94" Count="0" />
       <LineId Id="41" Count="0" />
       <LineId Id="33" Count="0" />
       <LineId Id="42" Count="0" />

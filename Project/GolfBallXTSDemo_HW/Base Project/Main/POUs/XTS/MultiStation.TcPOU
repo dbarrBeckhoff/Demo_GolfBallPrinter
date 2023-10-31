@@ -3,16 +3,13 @@
   <POU Name="MultiStation" Id="{df655378-d65d-08eb-0626-40053447c2ec}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK MultiStation EXTENDS Objective;
 VAR_INPUT
-	PositionTrigger:	PositionTrigger;
-	Station: ARRAY[0..GVL.MULTISTN_NUM_STN - 1] OF Station;
-
-	PosTriggerPayload	: Payload_typ;
-	StationPayload		: ARRAY[0..GVL.MULTISTN_NUM_STN - 1] OF Payload_typ;
+	PositionTrigger		: PositionTrigger;
+	Station				: ARRAY[0..GVL.MULTISTN_NUM_STN - 1] OF Station;
 END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
-	i: BOOL;
+	i: INT;
 
     {attribute 'hide'}
     internalPosition : LREAL;
@@ -138,7 +135,10 @@ END_VAR
       <Declaration><![CDATA[METHOD UnregisterAll : BOOL]]></Declaration>
       <Implementation>
         <ST><![CDATA[// Blow out the tracked mover array
-PositionTrigger.UnregisterAll();]]></ST>
+PositionTrigger.UnregisterAll();
+FOR i := 0 TO GVL.MULTISTN_NUM_STN - 1 DO
+	Station[i].UnregisterAll();
+END_FOR]]></ST>
       </Implementation>
     </Method>
     <Method Name="UnregisterCurrent" Id="{464efb4f-da02-0ff6-296e-d86da6fd448b}" FolderPath="Methods\">
@@ -206,6 +206,8 @@ END_VAR]]></Declaration>
     <LineIds Name="MultiStation.UnregisterAll">
       <LineId Id="3" Count="0" />
       <LineId Id="2" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="6" Count="1" />
     </LineIds>
     <LineIds Name="MultiStation.UnregisterCurrent">
       <LineId Id="5" Count="0" />

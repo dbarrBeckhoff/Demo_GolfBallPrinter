@@ -10,7 +10,8 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
-Payload	: Payload_typ;
+	PosTriggerPayload	: Payload_typ;
+	StationPayload		: ARRAY[0..GVL.MULTISTN_NUM_STN - 1] OF Payload_typ;
 	i: INT;
 END_VAR]]></Declaration>
     <Implementation>
@@ -20,7 +21,7 @@ END_IF	*)
 
 // Catch Incoming Shuttles and assign to station
 IF rMultiStn.PositionTrigger.MoverPassedPosition THEN
-	rMultiStn.PosTriggerPayload	:= rMultiStn.PositionTrigger.CurrentMover.Payload;
+	PosTriggerPayload	:= rMultiStn.PositionTrigger.CurrentMover.Payload;
 	// TODO add check for Payload info to reject ball or another reason we wouldnt want to print
 	rMultiStn.PositionTrigger.CurrentMover.MoveToStation(rMultiStn.Station[0]);
 	rMultiStn.PositionTrigger.MuteCurrent();
@@ -34,13 +35,12 @@ IF Enable THEN
 
 	CASE State OF
 		STN_WAIT:
-			IF rMultiStn.AllMoversInPosition THEN
+			IF Run AND rMultiStn.AllMoversInPosition THEN
 				FOR i := 0 TO GVL.MULTISTN_NUM_STN - 1 DO
 					IF rMultiStn.Station[i].TrackedMoverCount > 0 THEN
-						rMultiStn.StationPayload[i]	:= rMultiStn.Station[i].CurrentMover.Payload;
+						StationPayload[i]	:= rMultiStn.Station[i].CurrentMover.Payload;
 					END_IF
 				END_FOR
-				Payload				:= rMultiStn.CurrentMover.Payload;
 				rIO.Outputs.Print	:= TRUE;
 				State				:= STN_PROCESS;
 			END_IF
@@ -50,9 +50,9 @@ IF Enable THEN
 				rIO.Outputs.Print		:= FALSE;
 				FOR i := 0 TO GVL.MULTISTN_NUM_STN - 1 DO
 					IF rMultiStn.Station[i].TrackedMoverCount > 0 THEN
-						rMultiStn.StationPayload[i].PrintStepComplete[i]	:= TRUE;
+						StationPayload[i].PrintStepComplete[i]	:= TRUE;
 						IF i = 3 THEN
-							rMultiStn.StationPayload[i].PrintComplete		:= TRUE;
+							StationPayload[i].PrintComplete		:= TRUE;
 						END_IF
 					END_IF
 				END_FOR
@@ -60,28 +60,30 @@ IF Enable THEN
 			END_IF
 
 		STN_SEND:
+
 			// Write Payload Data
 			FOR i := 0 TO GVL.MULTISTN_NUM_STN - 1 DO
 				IF rMultiStn.Station[i].TrackedMoverCount > 0 THEN
-					rMultiStn.Station[i].CurrentMover.Payload	:= rMultiStn.StationPayload[i];
+					rMultiStn.Station[i].CurrentMover.Payload	:= StationPayload[i];
 				END_IF
 			END_FOR
 
 			// Send Mover
-			FOR i := 3 TO 0 BY -1 DO
+			FOR i := GVL.MULTISTN_NUM_STN - 1 TO 0 BY -1 DO
 				IF rMultiStn.Station[i].TrackedMoverCount > 0 THEN
 					IF i = 3 THEN
 						rMultiStn.Station[i].CurrentMover.MoveToStation(rVisionStation);
 					ELSE
 						rMultiStn.Station[i].CurrentMover.MoveToStation(rMultiStn.Station[i+1]);
 					END_IF
+					rMultiStn.Station[i].UnregisterCurrent();
 				END_IF
 				IF i = 0 THEN EXIT; END_IF
 			END_FOR
-			State		:= STN_WAIT;
-		
+			State	:= STN_WAIT;
+
 		STN_ERROR:
-	
+
 	END_CASE
 
 ELSIF _Enable THEN
@@ -120,7 +122,6 @@ END_VAR
       <LineId Id="43" Count="0" />
       <LineId Id="161" Count="1" />
       <LineId Id="164" Count="2" />
-      <LineId Id="101" Count="0" />
       <LineId Id="139" Count="0" />
       <LineId Id="138" Count="0" />
       <LineId Id="45" Count="0" />
@@ -136,6 +137,7 @@ END_VAR
       <LineId Id="206" Count="0" />
       <LineId Id="40" Count="0" />
       <LineId Id="32" Count="0" />
+      <LineId Id="211" Count="0" />
       <LineId Id="194" Count="0" />
       <LineId Id="189" Count="3" />
       <LineId Id="188" Count="0" />
@@ -143,7 +145,9 @@ END_VAR
       <LineId Id="193" Count="0" />
       <LineId Id="174" Count="1" />
       <LineId Id="177" Count="0" />
-      <LineId Id="179" Count="5" />
+      <LineId Id="179" Count="3" />
+      <LineId Id="214" Count="0" />
+      <LineId Id="183" Count="1" />
       <LineId Id="173" Count="0" />
       <LineId Id="94" Count="0" />
       <LineId Id="41" Count="0" />
