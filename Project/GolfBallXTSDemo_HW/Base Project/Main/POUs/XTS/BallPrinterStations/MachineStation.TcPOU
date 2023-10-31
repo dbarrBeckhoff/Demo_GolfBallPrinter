@@ -14,8 +14,7 @@ VAR_OUTPUT
 END_VAR
 VAR
 	_Enable	: BOOL;
-END_VAR
-]]></Declaration>
+END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
