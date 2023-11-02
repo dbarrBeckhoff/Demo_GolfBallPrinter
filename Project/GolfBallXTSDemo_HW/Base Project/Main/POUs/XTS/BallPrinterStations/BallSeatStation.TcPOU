@@ -14,9 +14,12 @@ VAR
 	Payload	: Payload_typ;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[(*IF rStation = 0 OR rIO = 0 THEN		HOW DO I CHECK FOR THIS???
+      <ST><![CDATA[IF NOT (__ISVALIDREF(rStation) AND __ISVALIDREF(rIO) AND __ISVALIDREF(rPrintStation)) THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'Invalid reference at %s.', InstancePath);	// how to make this work?
 	RETURN;
-END_IF	*)
+END_IF
+
+// WHATS THE DIFFERENCE BETWEEN PUTTING THIS HERE VS FB.Cyclic Method?
 
 IF Enable THEN
 	IF NOT _Enable THEN
@@ -55,8 +58,8 @@ IF Enable THEN
 			END_IF
 
 		STN_SEND:
-			IF Test = 4 THEN Payload.Reject	:= TRUE; END_IF	// TEMP - TO TEST PRINT STATION REJECT HANDLING
-			Test := Test + 1;	IF Test = 5 THEN Test := 0; END_IF
+			IF Test = 9 THEN Payload.Reject	:= TRUE; END_IF	// TEMP - TO TEST PRINT STATION REJECT HANDLING
+			Test := Test + 1;	IF Test = 10 THEN Test := 0; END_IF
 
 			rStation.CurrentMover.Payload	:= Payload;
 			rStation.CurrentMover.MoveToMultiStation(rPrintStation);
@@ -74,17 +77,11 @@ END_IF
 //Save Previous Values
 _Enable	:= Enable;]]></ST>
     </Implementation>
-    <Method Name="Cyclic" Id="{c549e30f-3984-0866-11d5-4c5ce5c07157}">
-      <Declaration><![CDATA[METHOD Cyclic : BOOL
-VAR_INPUT
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[]]></ST>
-      </Implementation>
-    </Method>
     <LineIds Name="BallSeatStation">
-      <LineId Id="95" Count="2" />
+      <LineId Id="165" Count="1" />
+      <LineId Id="96" Count="1" />
+      <LineId Id="164" Count="0" />
+      <LineId Id="163" Count="0" />
       <LineId Id="107" Count="0" />
       <LineId Id="106" Count="0" />
       <LineId Id="108" Count="0" />
@@ -132,9 +129,6 @@ END_VAR
       <LineId Id="113" Count="2" />
       <LineId Id="103" Count="0" />
       <LineId Id="105" Count="0" />
-    </LineIds>
-    <LineIds Name="BallSeatStation.Cyclic">
-      <LineId Id="9" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

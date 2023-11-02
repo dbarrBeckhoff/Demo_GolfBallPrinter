@@ -25450,7 +25450,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>55</Value>
+									<Value>2999</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -25852,7 +25852,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>145</Value>
+									<Value>80</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -26254,7 +26254,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>235</Value>
+									<Value>160</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -26656,7 +26656,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>325</Value>
+									<Value>240</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -27058,7 +27058,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>415</Value>
+									<Value>320</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -27460,7 +27460,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>505</Value>
+									<Value>400</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -27862,7 +27862,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>595</Value>
+									<Value>480</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -28264,7 +28264,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>685</Value>
+									<Value>560</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -28666,7 +28666,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>775</Value>
+									<Value>640</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -29068,7 +29068,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>865</Value>
+									<Value>720</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -63419,7 +63419,7 @@ and will return to Group State Standby when the situation permits.
 		</Motion>
 		<Plc>
 			<Project GUID="{DD3A0B29-8E7C-4E32-989D-B0222C998777}" Name="Main" PrjFilePath="..\..\GolfBallXTSDemo_HW\Base Project\Main\Main.plcproj" TmcFilePath="..\..\GolfBallXTSDemo_HW\Base Project\Main\Main.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="..\..\GolfBallXTSDemo_HW\Base Project\Main\Main.tmc" TmcHash="{FA91320F-242A-CE5C-3DEC-4D7EDDF37857}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="..\..\GolfBallXTSDemo_HW\Base Project\Main\Main.tmc" TmcHash="{D08402FC-CA7C-C764-F69B-DD93CC9A15CA}">
 					<Name>Main Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">

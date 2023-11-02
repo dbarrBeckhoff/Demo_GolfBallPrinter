@@ -486,19 +486,19 @@ BallSeatStation();]]></ST>
     <Action Name="ACT_IOSim" Id="{6ed4ba4c-34e2-0ad2-01bd-6b8a12409293}" FolderPath="Stations\">
       <Implementation>
         <ST><![CDATA[// Orient
-SimTimers.TON_Orient_OpenBallClamp(IN := IO.Orient.Outputs.BallClampOpen AND NOT IO.Orient.Outputs.BallClampClose, PT := T#100MS);
-SimTimers.TON_Orient_CloseBallClamp(IN := IO.Orient.Outputs.BallClampClose AND NOT IO.Orient.Outputs.BallClampOpen, PT := T#100MS);
-SimTimers.TON_Orient_LoadBall(IN := IO.Orient.Outputs.LoadBall, PT := T#500MS);
+SimTimers.TON_Orient_OpenBallClamp(IN := IO.Orient.Outputs.BallClampOpen AND NOT IO.Orient.Outputs.BallClampClose, PT := T#150MS);
+SimTimers.TON_Orient_CloseBallClamp(IN := IO.Orient.Outputs.BallClampClose AND NOT IO.Orient.Outputs.BallClampOpen, PT := T#150MS);
+SimTimers.TON_Orient_LoadBall(IN := IO.Orient.Outputs.LoadBall, PT := T#700MS);
 
 IF SimTimers.TON_Orient_CloseBallClamp.Q THEN		IO.Orient.Inputs.BallClampClosed	:= TRUE;	IO.Orient.Inputs.BallClampOpened	:= FALSE;	END_IF
 IF SimTimers.TON_Orient_OpenBallClamp.Q THEN		IO.Orient.Inputs.BallClampOpened	:= TRUE;	IO.Orient.Inputs.BallClampClosed	:= FALSE;	END_IF
 IO.Orient.Inputs.BallLoadComplete					:= SimTimers.TON_Orient_LoadBall.Q;
 
 // Ball Seater
-SimTimers.TON_BallSeat_OpenBallClamp(IN := IO.BallSeat.Outputs.BallClampOpen AND NOT IO.BallSeat.Outputs.BallClampClose, PT := T#100MS);
-SimTimers.TON_BallSeat_CloseBallClamp(IN := IO.BallSeat.Outputs.BallClampClose AND NOT IO.BallSeat.Outputs.BallClampOpen, PT := T#100MS);
-SimTimers.TON_BallSeat_ExtendBallSeater(IN := IO.BallSeat.Outputs.ExtendBallSeater AND NOT IO.BallSeat.Outputs.RetractBallSeater, PT := T#200MS);
-SimTimers.TON_BallSeat_RetractBallSeater(IN := IO.BallSeat.Outputs.RetractBallSeater AND NOT IO.BallSeat.Outputs.ExtendBallSeater, PT := T#200MS);
+SimTimers.TON_BallSeat_OpenBallClamp(IN := IO.BallSeat.Outputs.BallClampOpen AND NOT IO.BallSeat.Outputs.BallClampClose, PT := T#150MS);
+SimTimers.TON_BallSeat_CloseBallClamp(IN := IO.BallSeat.Outputs.BallClampClose AND NOT IO.BallSeat.Outputs.BallClampOpen, PT := T#150MS);
+SimTimers.TON_BallSeat_ExtendBallSeater(IN := IO.BallSeat.Outputs.ExtendBallSeater AND NOT IO.BallSeat.Outputs.RetractBallSeater, PT := T#150MS);
+SimTimers.TON_BallSeat_RetractBallSeater(IN := IO.BallSeat.Outputs.RetractBallSeater AND NOT IO.BallSeat.Outputs.ExtendBallSeater, PT := T#150MS);
 
 IF SimTimers.TON_BallSeat_CloseBallClamp.Q THEN		IO.BallSeat.Inputs.BallClampClosed		:= TRUE;	IO.BallSeat.Inputs.BallClampOpened		:= FALSE;	END_IF
 IF SimTimers.TON_BallSeat_OpenBallClamp.Q THEN		IO.BallSeat.Inputs.BallClampOpened		:= TRUE;	IO.BallSeat.Inputs.BallClampClosed		:= FALSE;	END_IF
@@ -506,7 +506,7 @@ IF SimTimers.TON_BallSeat_ExtendBallSeater.Q THEN	IO.BallSeat.Inputs.BallSeatExt
 IF SimTimers.TON_BallSeat_RetractBallSeater.Q THEN	IO.BallSeat.Inputs.BallSeatRetracted	:= TRUE;	IO.BallSeat.Inputs.BallSeatExtended		:= FALSE;	END_IF
 
 // Printer
-SimTimers.TON_Print_PrintComplete(IN := IO.Print.Outputs.Print, PT := T#1000MS);
+SimTimers.TON_Print_PrintComplete(IN := IO.Print.Outputs.Print, PT := T#1200MS);
 
 IO.Print.Inputs.PrintActive		:= SimTimers.TON_Print_PrintComplete.IN AND NOT SimTimers.TON_Print_PrintComplete.Q;
 IO.Print.Inputs.PrintComplete	:= SimTimers.TON_Print_PrintComplete.Q;

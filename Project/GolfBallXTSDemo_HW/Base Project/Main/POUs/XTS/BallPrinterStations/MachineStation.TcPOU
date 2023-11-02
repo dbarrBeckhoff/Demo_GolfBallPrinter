@@ -14,6 +14,10 @@ VAR_OUTPUT
 END_VAR
 VAR
 	_Enable	: BOOL;
+
+    {attribute 'instance-path'}
+    {attribute 'noinit'}
+    InstancePath 				: STRING; // Unique variable path of the instance
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>

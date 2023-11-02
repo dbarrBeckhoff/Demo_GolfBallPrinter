@@ -80,15 +80,6 @@ END_IF
 //Save Previous Values
 _Enable	:= Enable;]]></ST>
     </Implementation>
-    <Method Name="Cyclic" Id="{a820a9db-2ef7-0ad2-29be-a32b40c3d2e1}">
-      <Declaration><![CDATA[METHOD Cyclic : BOOL
-VAR_INPUT
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[]]></ST>
-      </Implementation>
-    </Method>
     <LineIds Name="OrientStation">
       <LineId Id="95" Count="2" />
       <LineId Id="107" Count="0" />
@@ -141,9 +132,6 @@ END_VAR
       <LineId Id="113" Count="2" />
       <LineId Id="103" Count="0" />
       <LineId Id="105" Count="0" />
-    </LineIds>
-    <LineIds Name="OrientStation.Cyclic">
-      <LineId Id="9" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

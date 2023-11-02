@@ -7,6 +7,8 @@ VAR_INPUT
 	rMultiStn		: REFERENCE TO MultiStation;
 	rVisionStation	: REFERENCE TO Station;
 	rKickoutStation	: REFERENCE TO Station;
+	NumIndex		: USINT;
+	NumColor		: USINT;
 END_VAR
 VAR_OUTPUT
 END_VAR
@@ -70,7 +72,7 @@ IF Enable THEN
 						END_IF
 					END_IF
 				END_FOR
-			State						:= STN_SEND;
+			State	:= STN_SEND;
 			END_IF
 
 		STN_SEND:
@@ -107,15 +109,6 @@ END_IF
 //Save Previous Values
 _Enable	:= Enable;]]></ST>
     </Implementation>
-    <Method Name="Cyclic" Id="{06adf546-a0d7-0c76-24f1-705bd756794d}">
-      <Declaration><![CDATA[METHOD Cyclic : BOOL
-VAR_INPUT
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[]]></ST>
-      </Implementation>
-    </Method>
     <LineIds Name="PrintStation">
       <LineId Id="95" Count="2" />
       <LineId Id="132" Count="0" />
@@ -183,9 +176,6 @@ END_VAR
       <LineId Id="113" Count="2" />
       <LineId Id="103" Count="0" />
       <LineId Id="105" Count="0" />
-    </LineIds>
-    <LineIds Name="PrintStation.Cyclic">
-      <LineId Id="9" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>
