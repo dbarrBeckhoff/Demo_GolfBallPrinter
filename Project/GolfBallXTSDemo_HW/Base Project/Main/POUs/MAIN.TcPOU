@@ -535,6 +535,7 @@ OrientStation();]]></ST>
 PrintStation.rMultiStn			REF= MultiStation[GVL.MULTISTN_PRINT];
 PrintStation.rIO				REF= IO.Print;
 PrintStation.rVisionStation		REF= Station[GVL.STN_VISION];
+PrintStation.rKickoutStation	REF= Station[GVL.STN_KICKOUT];
 
 // Inputs
 PrintStation.Enable	:= MainCommands.Enable;
@@ -724,6 +725,7 @@ END_CASE
       <LineId Id="4" Count="0" />
       <LineId Id="8" Count="0" />
       <LineId Id="12" Count="0" />
+      <LineId Id="19" Count="0" />
       <LineId Id="17" Count="1" />
       <LineId Id="16" Count="0" />
       <LineId Id="15" Count="0" />

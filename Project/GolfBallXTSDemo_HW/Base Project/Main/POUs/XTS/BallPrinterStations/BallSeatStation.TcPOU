@@ -10,6 +10,7 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
+	test:INT;
 	Payload	: Payload_typ;
 END_VAR]]></Declaration>
     <Implementation>
@@ -54,6 +55,9 @@ IF Enable THEN
 			END_IF
 
 		STN_SEND:
+			IF Test = 4 THEN Payload.Reject	:= TRUE; END_IF	// TEMP - TO TEST PRINT STATION REJECT HANDLING
+			Test := Test + 1;	IF Test = 5 THEN Test := 0; END_IF
+
 			rStation.CurrentMover.Payload	:= Payload;
 			rStation.CurrentMover.MoveToMultiStation(rPrintStation);
 			rStation.UnregisterCurrent();
@@ -113,6 +117,8 @@ END_VAR
       <LineId Id="88" Count="0" />
       <LineId Id="40" Count="0" />
       <LineId Id="32" Count="0" />
+      <LineId Id="148" Count="1" />
+      <LineId Id="151" Count="0" />
       <LineId Id="102" Count="0" />
       <LineId Id="93" Count="0" />
       <LineId Id="136" Count="0" />

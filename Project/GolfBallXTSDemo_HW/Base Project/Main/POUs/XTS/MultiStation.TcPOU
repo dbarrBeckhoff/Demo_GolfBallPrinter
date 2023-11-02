@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="MultiStation" Id="{df655378-d65d-08eb-0626-40053447c2ec}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK MultiStation EXTENDS Objective;
+    <Declaration><![CDATA[FUNCTION_BLOCK MultiStation(* EXTENDS Objective*);
 VAR_INPUT
 	PositionTrigger		: PositionTrigger;
 	Station				: ARRAY[0..GVL.MULTISTN_NUM_STN - 1] OF Station;
@@ -10,10 +10,15 @@ VAR_OUTPUT
 END_VAR
 VAR
 	i: INT;
-
+    internalTrackedMoverCount 	: USINT;
+	
     {attribute 'hide'}
     internalPosition : LREAL;
 	internalTrackId : DINT; 
+
+    {attribute 'instance-path'}
+    {attribute 'noinit'}
+    InstancePath 				: STRING; // Unique variable path of the instance
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -112,6 +117,22 @@ END_VAR]]></Declaration>
 PositionTrigger.RegisterMoverList(NewMoverList);]]></ST>
       </Implementation>
     </Method>
+    <Property Name="TrackedMoverCount" Id="{1c6e6292-bb97-0204-1595-e7c952d40ab8}" FolderPath="Properties\">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY TrackedMoverCount : USINT]]></Declaration>
+      <Get Name="Get" Id="{fb8e072e-16cb-0cd2-068d-3fceadfdc4f9}">
+        <Declaration><![CDATA[VAR
+    i : INT;
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[internalTrackedMoverCount	:= 0;
+FOR i := 0 TO GVL.MULTISTN_NUM_STN DO
+	internalTrackedMoverCount	:= internalTrackedMoverCount + Station[i].TrackedMoverCount;
+END_FOR
+TrackedMoverCount	:= internalTrackedMoverCount;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Property Name="TrackId" Id="{ca736e0d-be92-0876-1f98-2eb101c0025c}" FolderPath="Properties\">
       <Declaration><![CDATA[PROPERTY TrackId : DINT]]></Declaration>
       <Get Name="Get" Id="{6fa25f0d-0025-0852-0183-6627e2101c7c}">
@@ -196,6 +217,11 @@ END_VAR]]></Declaration>
     <LineIds Name="MultiStation.RegisterMoverList">
       <LineId Id="3" Count="3" />
       <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="MultiStation.TrackedMoverCount.Get">
+      <LineId Id="13" Count="2" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="16" Count="0" />
     </LineIds>
     <LineIds Name="MultiStation.TrackId.Get">
       <LineId Id="2" Count="0" />

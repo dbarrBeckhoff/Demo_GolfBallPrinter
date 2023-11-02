@@ -6,12 +6,14 @@ VAR_INPUT
 	rIO				: REFERENCE TO Print_IO_typ;
 	rMultiStn		: REFERENCE TO MultiStation;
 	rVisionStation	: REFERENCE TO Station;
+	rKickoutStation	: REFERENCE TO Station;
 END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
 	PosTriggerPayload	: Payload_typ;
 	StationPayload		: ARRAY[0..GVL.MULTISTN_NUM_STN - 1] OF Payload_typ;
+	MoverHalted			: BOOL;
 	i: INT;
 END_VAR]]></Declaration>
     <Implementation>
@@ -22,9 +24,21 @@ END_IF	*)
 // Catch Incoming Shuttles and assign to station
 IF rMultiStn.PositionTrigger.MoverPassedPosition THEN
 	PosTriggerPayload	:= rMultiStn.PositionTrigger.CurrentMover.Payload;
-	// TODO add check for Payload info to reject ball or another reason we wouldnt want to print
-	rMultiStn.PositionTrigger.CurrentMover.MoveToStation(rMultiStn.Station[0]);
-	rMultiStn.PositionTrigger.MuteCurrent();
+
+	IF PosTriggerPayload.Reject OR NOT(PosTriggerPayload.HasBall AND PosTriggerPayload.BallSeated) THEN
+		PosTriggerPayload.Reject	:= TRUE;
+		IF rMultiStn.TrackedMoverCount > 0 THEN
+			MoverHalted				:= TRUE;
+			rMultiStn.PositionTrigger.CurrentMover.Halt();
+		ELSE
+			rMultiStn.PositionTrigger.CurrentMover.MoveToStation(rKickoutStation);
+			rMultiStn.PositionTrigger.CurrentMover.Payload	:= PosTriggerPayload;
+			rMultiStn.PositionTrigger.MuteCurrent();
+		END_IF
+	ELSE
+		rMultiStn.PositionTrigger.CurrentMover.MoveToStation(rMultiStn.Station[0]);
+		rMultiStn.PositionTrigger.MuteCurrent();
+	END_IF
 END_IF
 
 // Station Sequence
@@ -108,8 +122,18 @@ END_VAR
       <LineId Id="131" Count="0" />
       <LineId Id="133" Count="0" />
       <LineId Id="158" Count="0" />
+      <LineId Id="227" Count="0" />
       <LineId Id="160" Count="0" />
-      <LineId Id="134" Count="2" />
+      <LineId Id="228" Count="0" />
+      <LineId Id="233" Count="0" />
+      <LineId Id="229" Count="1" />
+      <LineId Id="242" Count="1" />
+      <LineId Id="246" Count="0" />
+      <LineId Id="248" Count="1" />
+      <LineId Id="231" Count="0" />
+      <LineId Id="134" Count="1" />
+      <LineId Id="232" Count="0" />
+      <LineId Id="136" Count="0" />
       <LineId Id="130" Count="0" />
       <LineId Id="107" Count="0" />
       <LineId Id="106" Count="0" />
