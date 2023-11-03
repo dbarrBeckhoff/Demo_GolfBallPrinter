@@ -58,7 +58,7 @@ IF Enable THEN
 			END_IF
 
 		STN_SEND:
-			IF Test = 9 THEN Payload.Reject	:= TRUE; END_IF	// TEMP - TO TEST PRINT STATION REJECT HANDLING
+			//IF Test = 9 THEN Payload.Reject	:= TRUE; END_IF	// TEMP - TO TEST PRINT STATION REJECT HANDLING
 			Test := Test + 1;	IF Test = 10 THEN Test := 0; END_IF
 
 			rStation.CurrentMover.Payload	:= Payload;

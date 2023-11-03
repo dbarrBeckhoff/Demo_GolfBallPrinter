@@ -122,6 +122,9 @@
     <Compile Include="POUs\XTS\BallPrinterStations\BallSeatStation.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\XTS\BallPrinterStations\PrintConfig_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\XTS\BallPrinterStations\PrintStation.TcPOU">
       <SubType>Code</SubType>
     </Compile>
