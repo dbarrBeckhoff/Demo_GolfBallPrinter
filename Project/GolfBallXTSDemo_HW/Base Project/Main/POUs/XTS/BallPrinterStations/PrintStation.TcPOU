@@ -17,12 +17,13 @@ VAR
 	StationPayload		: ARRAY[0..GVL.MULTISTN_NUM_STN - 1] OF Payload_typ;
 	MoverHalted			: BOOL;
 	PrintConfig			: PrintConfig_typ;
-	i: INT;
+	i					: INT;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[(*IF rStation = 0 OR rIO = 0 THEN		HOW DO I CHECK FOR THIS???
+      <ST><![CDATA[IF NOT (__ISVALIDREF(rMultiStn) AND __ISVALIDREF(rIO) AND __ISVALIDREF(rVisionStation) AND __ISVALIDREF(rKickoutStation)) THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'Invalid reference at %s.', InstancePath);	// how to make this work?
 	RETURN;
-END_IF	*)
+END_IF
 
 // Station Sequence
 IF Enable THEN
@@ -32,8 +33,9 @@ IF Enable THEN
 
 	// Catch Incoming Shuttles and process them
 	IF rMultiStn.PositionTrigger.MoverPassedPosition THEN
-		PosTriggerPayload	:= rMultiStn.PositionTrigger.CurrentMover.Payload;
-		IF PosTriggerPayload.Reject OR NOT(PosTriggerPayload.HasBall AND PosTriggerPayload.BallSeated) THEN		// Mover payload not valid for printing
+(*		PosTriggerPayload	:= rMultiStn.PositionTrigger.CurrentMover.Payload;
+		// Mover payload not valid for printing
+		IF PosTriggerPayload.Reject OR NOT(PosTriggerPayload.HasBall AND PosTriggerPayload.BallSeated) THEN		
 			PosTriggerPayload.Reject	:= TRUE;
 			IF rMultiStn.TrackedMoverCount > 0 THEN
 				MoverHalted				:= TRUE;
@@ -42,8 +44,13 @@ IF Enable THEN
 				rMultiStn.PositionTrigger.CurrentMover.MoveToStation(rKickoutStation);
 				rMultiStn.PositionTrigger.CurrentMover.Payload	:= PosTriggerPayload;
 				rMultiStn.PositionTrigger.MuteCurrent();
+				MoverHalted				:= FALSE;
 			END_IF
-		ELSE		// mover ok to print
+		// mover ok to print
+		ELSE						*) // This doesn't work and it's not really necessary.  
+										// PositionTrigger would need to buffer events.  
+										// this only works when movers are going slow
+										// Peter eventually going to add event buffering to position trigger, not worth doing for demo
 			FOR i := GVL.MULTISTN_NUM_STN - 1 TO 0 BY -1 DO
 				IF PrintConfig.StationEnable[i] AND_THEN PrintConfig.ProcessIndex[i] = 0 THEN
 					IF rMultiStn.Station[i].TrackedMoverCount = 0 THEN
@@ -53,11 +60,8 @@ IF Enable THEN
 					END_IF
 				END_IF
 			END_FOR
-		END_IF
+		(*END_IF*)
 	END_IF
-
-	// Determine Statuses
-	//ACT_PrintStatuses();
 
 	// Printing Sequence State Machine
 	CASE State OF
@@ -217,18 +221,24 @@ END_IF]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="PrintStation">
-      <LineId Id="95" Count="2" />
+      <LineId Id="333" Count="2" />
+      <LineId Id="97" Count="0" />
       <LineId Id="130" Count="0" />
       <LineId Id="107" Count="0" />
       <LineId Id="106" Count="0" />
       <LineId Id="108" Count="0" />
       <LineId Id="111" Count="0" />
       <LineId Id="109" Count="0" />
-      <LineId Id="287" Count="24" />
+      <LineId Id="287" Count="3" />
+      <LineId Id="336" Count="0" />
+      <LineId Id="291" Count="8" />
+      <LineId Id="339" Count="0" />
+      <LineId Id="300" Count="0" />
+      <LineId Id="337" Count="0" />
+      <LineId Id="301" Count="0" />
+      <LineId Id="340" Count="2" />
+      <LineId Id="302" Count="9" />
       <LineId Id="286" Count="0" />
-      <LineId Id="314" Count="0" />
-      <LineId Id="313" Count="0" />
-      <LineId Id="312" Count="0" />
       <LineId Id="315" Count="0" />
       <LineId Id="54" Count="0" />
       <LineId Id="23" Count="0" />

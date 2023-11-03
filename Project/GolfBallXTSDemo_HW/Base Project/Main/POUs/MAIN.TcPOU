@@ -26,7 +26,7 @@ VAR
 
     Station         	: ARRAY[0..GVL.NUM_STATIONS - 1] OF Station;
 	MultiStation		: ARRAY[0..GVL.NUM_MULTISTATIONS - 1] OF MultiStation;
-    Zone            	: ARRAY[0..2] OF Zone;
+    Zone            	: ARRAY[0..0] OF Zone;
 
     // ========= Example Application Variables =========
 
@@ -181,13 +181,7 @@ CASE MainState OF
 		MultiStation[GVL.MULTISTN_TRAYLOAD].Station[3].Position			:= 379;
 
         Zone[0].StartPosition := 0;
-        Zone[0].EndPosition   := 1000;
-
-        Zone[1].StartPosition := 1000;
-        Zone[1].EndPosition   := 2000;
-
-        Zone[2].StartPosition := 2000;
-        Zone[2].EndPosition   := 3000;
+        Zone[0].EndPosition   := 3000;
 
 		// give all tracks their ID number
 		FOR i := 0 TO GVL.NUM_TRACKS DO
@@ -239,14 +233,12 @@ CASE MainState OF
 
             // Register all movers with all Zones, for recovery
             FOR i := 0 TO GVL.NUM_MOVERS - 1 DO
-                Zone[0].RegisterMover( Mover[i] );
-                Zone[1].RegisterMover( Mover[i] );
-                Zone[2].RegisterMover( Mover[i] );
+				FOR j := 0 TO GVL.NUM_ZONES - 1 DO
+					Zone[j].RegisterMover( Mover[i] );
+				END_FOR
             END_FOR
 			
-            Zone[0].CurrentMoverList.SetAllVelocity(800).MoveAllToStation(Station[0]);
-            Zone[1].CurrentMoverList.SetAllVelocity(600).MoveAllToStation(Station[0]);
-            Zone[2].CurrentMoverList.SetAllVelocity(400).MoveAllToStation(Station[0]);
+            Zone[0].CurrentMoverList.SetAllVelocity(1500).MoveAllToStation(Station[GVL.STN_ORIENT]);
 
             // ===== END =====
 
@@ -619,10 +611,11 @@ END_CASE
       <LineId Id="1396" Count="0" />
       <LineId Id="1405" Count="1" />
       <LineId Id="787" Count="2" />
-      <LineId Id="791" Count="2" />
-      <LineId Id="795" Count="2" />
-      <LineId Id="803" Count="53" />
-      <LineId Id="863" Count="4" />
+      <LineId Id="803" Count="50" />
+      <LineId Id="1786" Count="0" />
+      <LineId Id="854" Count="0" />
+      <LineId Id="1787" Count="0" />
+      <LineId Id="863" Count="2" />
       <LineId Id="870" Count="13" />
       <LineId Id="1653" Count="0" />
       <LineId Id="1652" Count="0" />

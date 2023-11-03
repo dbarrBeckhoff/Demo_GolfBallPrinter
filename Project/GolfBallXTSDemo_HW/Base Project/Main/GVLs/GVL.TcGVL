@@ -5,9 +5,11 @@
 VAR_GLOBAL CONSTANT
 
     NUM_MOVERS   		: USINT := 10;   	// This should be set to the exact number of movers on the system
+	NUM_ZONES			: USINT := 1;
     NUM_STATIONS 		: USINT := 5;   	// This should be set to a value equal to or greater than the number of stations needed
     NUM_MULTISTATIONS 	: USINT := 2;   	// This should be set to a value equal to or greater than the number of Multi stations needed
 	MULTISTN_NUM_STN	: USINT := 4;		// This should be set to a value equal to or greater than the max number of stations in a multi station
+
     TRACK_LENGTH 		: LREAL := 3000;	// This should be set to the exact length [mm] of the track system
 
 	STN_ORIENT		: USINT := 0;

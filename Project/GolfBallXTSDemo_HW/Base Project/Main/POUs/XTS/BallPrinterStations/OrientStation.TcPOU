@@ -14,9 +14,10 @@ VAR
 	Payload	: Payload_typ;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[(*IF rStation = 0 OR rIO = 0 THEN		HOW DO I CHECK FOR THIS???
+      <ST><![CDATA[IF NOT (__ISVALIDREF(rStation) AND __ISVALIDREF(rIO) AND __ISVALIDREF(rBallSeatStn) AND __ISVALIDREF(rKickoutStn)) THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'Invalid reference at %s.', InstancePath);	// how to make this work?
 	RETURN;
-END_IF	*)
+END_IF
 
 IF Enable THEN
 	IF NOT _Enable THEN
@@ -64,6 +65,9 @@ IF Enable THEN
 			END_IF
 
 		STN_SEND:
+			// temp
+			Payload.Reject	:= FALSE;
+
 			rStation.CurrentMover.Payload	:= Payload;
 			rStation.CurrentMover.MoveToStation(rBallSeatStn);
 			rStation.UnregisterCurrent();
@@ -81,7 +85,8 @@ END_IF
 _Enable	:= Enable;]]></ST>
     </Implementation>
     <LineIds Name="OrientStation">
-      <LineId Id="95" Count="2" />
+      <LineId Id="131" Count="2" />
+      <LineId Id="97" Count="0" />
       <LineId Id="107" Count="0" />
       <LineId Id="106" Count="0" />
       <LineId Id="108" Count="0" />
@@ -119,6 +124,9 @@ _Enable	:= Enable;]]></ST>
       <LineId Id="88" Count="0" />
       <LineId Id="40" Count="0" />
       <LineId Id="32" Count="0" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="135" Count="0" />
       <LineId Id="102" Count="0" />
       <LineId Id="93" Count="0" />
       <LineId Id="119" Count="0" />

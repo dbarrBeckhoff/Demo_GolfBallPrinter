@@ -58,8 +58,8 @@ IF Enable THEN
 			END_IF
 
 		STN_SEND:
-			//IF Test = 9 THEN Payload.Reject	:= TRUE; END_IF	// TEMP - TO TEST PRINT STATION REJECT HANDLING
-			Test := Test + 1;	IF Test = 10 THEN Test := 0; END_IF
+			(*IF Test = 4 THEN Payload.Reject	:= TRUE; END_IF	// TEMP - TO TEST PRINT STATION REJECT HANDLING
+			Test := SEL(Test >= 4, Test + 1, 0);	*)
 
 			rStation.CurrentMover.Payload	:= Payload;
 			rStation.CurrentMover.MoveToMultiStation(rPrintStation);
@@ -114,7 +114,8 @@ _Enable	:= Enable;]]></ST>
       <LineId Id="88" Count="0" />
       <LineId Id="40" Count="0" />
       <LineId Id="32" Count="0" />
-      <LineId Id="148" Count="1" />
+      <LineId Id="148" Count="0" />
+      <LineId Id="178" Count="0" />
       <LineId Id="151" Count="0" />
       <LineId Id="102" Count="0" />
       <LineId Id="93" Count="0" />

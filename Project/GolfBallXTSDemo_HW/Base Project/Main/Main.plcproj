@@ -122,19 +122,22 @@
     <Compile Include="POUs\XTS\BallPrinterStations\BallSeatStation.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\XTS\BallPrinterStations\PrintConfig_typ.TcDUT">
+    <Compile Include="POUs\XTS\BallPrinterStations\DUT\Payload_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\XTS\BallPrinterStations\DUT\PrintConfig_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\XTS\BallPrinterStations\DUT\SimTimers_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\XTS\BallPrinterStations\DUT\StnState_Enum.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\XTS\BallPrinterStations\PrintStation.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\XTS\BallPrinterStations\Payload_typ.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="POUs\XTS\BallPrinterStations\MachineStation.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\XTS\BallPrinterStations\SimTimers_typ.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\XTS\ErrorMover.TcPOU">
@@ -153,9 +156,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\XTS\BallPrinterStations\OrientStation.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\XTS\BallPrinterStations\StnState_Enum.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\XTS\Objective.TcPOU">
@@ -202,6 +202,7 @@
     <Folder Include="POUs" />
     <Folder Include="POUs\XTS" />
     <Folder Include="POUs\XTS\BallPrinterStations" />
+    <Folder Include="POUs\XTS\BallPrinterStations\DUT" />
     <Folder Include="VISUs" />
   </ItemGroup>
   <ItemGroup>
