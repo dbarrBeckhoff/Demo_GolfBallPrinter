@@ -536,8 +536,8 @@ PrintStation.rKickoutStation	REF= Station[GVL.STN_KICKOUT];
 
 // Inputs
 PrintStation.Enable		:= MainCommands.Enable;
-//PrintStation.NumColor	:= 2;
-//PrintStation.NumIndex	:= 2;
+PrintStation.NumColor	:= 2;
+PrintStation.NumIndex	:= 2;
 
 // FB CALLS
 PrintStation();]]></ST>
