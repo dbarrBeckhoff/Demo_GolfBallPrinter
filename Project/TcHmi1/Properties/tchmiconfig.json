@@ -55,14 +55,7 @@
   "userControls": [],
   "content": [
     {
-      "url": "Pages/MachineControl.content",
-      "preload": false,
-      "keepAlive": false,
-      "loadSync": false,
-      "preloadBindings": false
-    },
-    {
-      "url": "Pages/XTSDiagnostics.content",
+      "url": "Pages/Alarms.content",
       "preload": false,
       "keepAlive": false,
       "loadSync": false,
@@ -76,7 +69,7 @@
       "preloadBindings": false
     },
     {
-      "url": "Pages/Alarms.content",
+      "url": "Pages/MachineControl.content",
       "preload": false,
       "keepAlive": false,
       "loadSync": false,
@@ -84,6 +77,13 @@
     },
     {
       "url": "Pages/Settings.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Pages/XTSDiagnostics.content",
       "preload": false,
       "keepAlive": false,
       "loadSync": false,
