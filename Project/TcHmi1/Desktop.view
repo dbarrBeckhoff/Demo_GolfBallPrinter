@@ -1,0 +1,381 @@
+<div id="Desktop" data-tchmi-type="TcHmi.Controls.System.TcHmiView" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width-unit="%" data-tchmi-width="100" data-tchmi-height-unit="%" data-tchmi-height="100" data-tchmi-background-image-width-unit="%" data-tchmi-background-image-height-unit="%" data-tchmi-background-image-width="100" data-tchmi-background-image-height="100">
+  
+<div id="Header_Top" data-tchmi-type="TcHmi.Controls.BaseTemplate.TcHmiHeader" data-tchmi-height="80" data-tchmi-left="0" data-tchmi-top="0" data-tchmi-right="0">
+
+<script data-tchmi-target-attribute="data-tchmi-class-names" type="application/json">[
+"divider",
+"divider-top"
+]
+</script><script data-tchmi-target-attribute="data-tchmi-header-items" type="application/json">[
+                {
+                    "itemType": "Image",
+                    "priority": "2",
+                    "itemAlign": "Left",
+                    "prefWidth": 288.0,
+                    "prefWidthUnit": "px",
+                    "prefHeight": 95.0,
+                    "prefHeightUnit": "px",
+                    "minWidth": 128.0,
+                    "minWidthUnit": "px",
+                    "classList": [],
+                    "accessRights": [],
+                    "image": "Images/Beckhoff_Logo.svg",
+                    "altText": "Beckhoff",
+                    "targetRegion": "%ctrl%Region_Center%/ctrl%",
+                    "targetContent": "Pages/Machine Control.content"
+                },
+                {
+                    "itemType": "Text",
+                    "priority": "1",
+                    "itemAlign": "Left",
+                    "prefWidth": 288.0,
+                    "prefWidthUnit": "px",
+                    "prefHeight": 95.0,
+                    "prefHeightUnit": "px",
+                    "minWidth": 128.0,
+                    "minWidthUnit": "px",
+                    "classList": [],
+                    "accessRights": [],
+                    "text": "TcHmi1"
+                },
+                {
+                    "itemType": "EventLine",
+                    "priority": "5",
+                    "itemAlign": "Right",
+                    "prefWidth": 800.0,
+                    "prefWidthUnit": "px",
+                    "prefHeight": 48.0,
+                    "prefHeightUnit": "px",
+                    "minWidth": 288.0,
+                    "minWidthUnit": "px",
+                    "classList": [],
+                    "accessRights": [],
+                    "messageFormat": [
+                        {
+                            "name": "timeRaised"
+                        },
+                        {
+                            "text": " | "
+                        },
+                        {
+                            "name": "domain"
+                        },
+                        {
+                            "text": " | "
+                        },
+                        {
+                            "name": "text"
+                        }
+                    ],
+                    "filter": [
+                        {
+                            "path": "domain",
+                            "comparator": "==",
+                            "value": "TcHmiEventLogger"
+                        },
+                        {
+                            "logic": "OR"
+                        },
+                        {
+                            "path": "domain",
+                            "comparator": "==",
+                            "value": "TcHmiAlarm"
+                        }
+                    ],
+                    "targetRegion": "%ctrl%Region_Center%/ctrl%",
+                    "targetContent": "Pages/Alarms.content"
+                },
+                {
+                    "itemType": "AdsState",
+                    "priority": "3",
+                    "itemAlign": "Right",
+                    "prefWidth": 160.0,
+                    "prefWidthUnit": "px",
+                    "prefHeight": 48.0,
+                    "prefHeightUnit": "px",
+                    "minWidth": 48.0,
+                    "minWidthUnit": "px",
+                    "classList": [],
+                    "accessRights": [],
+                    "adsRuntime": "TcSysService",
+                    "iconWidth": 48,
+                    "iconWidthUnit": "px",
+                    "text": "TwinCAT",
+                    "textPosition": "Left",
+                    "serverInterval": 1000,
+                    "serverDomain": "ADS",
+                    "stateImages": {
+                        "Fallback": "Images/TwinCAT/twincat-fallback.svg",
+                        "Run": "Images/TwinCAT/twincat-run.svg",
+                        "Stop": "Images/TwinCAT/twincat-stop.svg",
+                        "Config": "Images/TwinCAT/twincat-config.svg",
+                        "Exception": "Images/TwinCAT/twincat-exeption.svg"
+                    }
+                },
+                {
+                    "itemType": "AdsState",
+                    "priority": "3",
+                    "itemAlign": "Right",
+                    "prefWidth": 160.0,
+                    "prefWidthUnit": "px",
+                    "prefHeight": 48.0,
+                    "prefHeightUnit": "px",
+                    "minWidth": 48.0,
+                    "minWidthUnit": "px",
+                    "classList": [],
+                    "accessRights": [],
+                    "adsRuntime": "PLC1",
+                    "iconWidth": 48,
+                    "iconWidthUnit": "px",
+                    "text": "PLC",
+                    "textPosition": "Left",
+                    "serverInterval": 1000,
+                    "serverDomain": "ADS",
+                    "stateImages": {
+                        "Fallback": "Images/PLC/plc-fallback.svg",
+                        "Run": "Images/PLC/plc-run.svg",
+                        "Stop": "Images/PLC/plc-stop.svg",
+                        "Config": "Images/PLC/plc-config.svg",
+                        "Exception": "Images/PLC/plc-exeption.svg"
+                    }
+                },
+                {
+                    "itemType": "UserManagement",
+                    "priority": "3",
+                    "itemAlign": "Right",
+                    "prefWidth": 288.0,
+                    "prefWidthUnit": "px",
+                    "prefHeight": 48.0,
+                    "prefHeightUnit": "px",
+                    "minWidth": 176.0,
+                    "minWidthUnit": "px",
+                    "classList": [],
+                    "accessRights": [],
+                    "allowLogout": true,
+                    "allowSwitchUser": false
+                },
+                {
+                    "itemType": "Time",
+                    "priority": "4",
+                    "itemAlign": "Right",
+                    "prefWidth": 128.0,
+                    "prefWidthUnit": "px",
+                    "prefHeight": 48.0,
+                    "prefHeightUnit": "px",
+                    "minWidth": 96.0,
+                    "minWidthUnit": "px",
+                    "classList": [],
+                    "accessRights": []
+                }
+            ]</script></div><div id="Navigation_Left" data-tchmi-type="TcHmi.Controls.BaseTemplate.TcHmiNavigation" data-tchmi-width="320" data-tchmi-left="0" data-tchmi-top="%ctrl%Header_Top::Height%/ctrl%" data-tchmi-bottom="0" data-tchmi-target-region="%ctrl%Region_Center%/ctrl%" data-tchmi-navigation-orientation="Vertical" data-tchmi-keep-lowest-level="true">
+
+<script data-tchmi-target-attribute="data-tchmi-class-names" type="application/json">[
+"divider",
+"divider-left"
+]
+</script><script data-tchmi-target-attribute="data-tchmi-navigation-structure" type="application/json">[
+{
+ "name": "%l%L_MachineControl%/l%",
+ "content": "Pages/MachineControl.content",
+ "icon_a": "%tr%TR_Icon_MachineControl_active%/tr%",
+ "icon_n": "%tr%TR_Icon_MachineControl_normal%/tr%",
+ "icon_p": "%tr%TR_Icon_MachineControl_pressed%/tr%"
+},
+{
+ "name": "%l%L_XTSDiagnostics%/l%",
+ "content": "Pages/XTSDiagnostics.content",
+ "icon_a": "%tr%TR_Icon_XTSDiagnostics_active%/tr%",
+ "icon_n": "%tr%TR_Icon_XTSDiagnostics_normal%/tr%",
+ "icon_p": "%tr%TR_Icon_XTSDiagnostics_pressed%/tr%"
+},
+{
+ "name": "%l%L_EtherCATDiagnostics%/l%",
+ "content": "Pages/EtherCATDiagnostics.content",
+ "icon_a": "%tr%TR_Icon_EtherCATDiagnostics_active%/tr%",
+ "icon_n": "%tr%TR_Icon_EtherCATDiagnostics_normal%/tr%",
+ "icon_p": "%tr%TR_Icon_EtherCATDiagnostics_pressed%/tr%"
+},
+{
+ "name": "%l%L_Alarms%/l%",
+ "content": "Pages/Alarms.content",
+ "icon_a": "%tr%TR_Icon_Alarms_active%/tr%",
+ "icon_n": "%tr%TR_Icon_Alarms_normal%/tr%",
+ "icon_p": "%tr%TR_Icon_Alarms_pressed%/tr%"
+},
+{
+ "name": "%l%L_Settings%/l%",
+ "content": "Pages/Settings.content",
+ "icon_a": "%tr%TR_Icon_Settings_active%/tr%",
+ "icon_n": "%tr%TR_Icon_Settings_normal%/tr%",
+ "icon_p": "%tr%TR_Icon_Settings_pressed%/tr%"
+}
+]</script></div><div id="TcHmiContainer_Right" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-width="320" data-tchmi-top="%ctrl%Header_Top::Height%/ctrl%" data-tchmi-bottom="0" data-tchmi-right="0">
+
+<script data-tchmi-target-attribute="data-tchmi-class-names" type="application/json">[
+"divider",
+"divider-right"
+]
+</script>
+<div id="XtsView_1" data-tchmi-type="TcHmi.XTS.Controls.XtsView" data-tchmi-displaydimensions="false" data-tchmi-displaystations="true" data-tchmi-height-unit="px" data-tchmi-invertdimensions="false" data-tchmi-layout="SystemView" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-lockpan="true" data-tchmi-lockzoom="true" data-tchmi-movertype="SystemView" data-tchmi-refreshrate="16" data-tchmi-selectionmode="Off" data-tchmi-showdriveerrors="true" data-tchmi-showdrivewarnings="true" data-tchmi-targetname="Local" data-tchmi-top="80" data-tchmi-top-unit="%" data-tchmi-viewrotation="0" data-tchmi-width-unit="px" data-tchmi-right="0" data-tchmi-bottom="0">
+<script data-tchmi-target-attribute="data-tchmi-toolarray" type="application/json">
+[]
+</script>
+<script data-tchmi-target-attribute="data-tchmi-infoimages" type="application/json">
+[]
+</script>
+<script data-tchmi-target-attribute="data-tchmi-parttransformation" type="application/json">
+[]
+</script>
+<script data-tchmi-target-attribute="data-tchmi-transformation" type="application/json">
+[]
+</script>
+<script data-tchmi-target-attribute="data-tchmi-custommoverlayout" type="application/json">
+{
+  "ImageSrcFrontSide": null,
+  "ImageWidthFrontSide": 70,
+  "ImageHeightFrontSide": 126,
+  "XOffsetFrontSide": 0,
+  "YOffsetFrontSide": 0,
+  "ImageSrcBackSide": "",
+  "ImageWidthBackSide": 70,
+  "ImageHeightBackSide": 80,
+  "XOffsetBackSide": 0,
+  "YOffsetBackSide": 0
+}
+</script>
+<script data-tchmi-target-attribute="data-tchmi-moverselection" type="application/json">
+[]
+</script>
+<script data-tchmi-target-attribute="data-tchmi-moduleselection" type="application/json">
+[]
+</script>
+<script data-tchmi-target-attribute="data-tchmi-moduleselectioncolor" type="application/json">
+{
+  "color": "Transparent"
+}
+</script>
+<script data-tchmi-target-attribute="data-tchmi-moverselectioncolor" type="application/json">
+{
+  "color": "Transparent"
+}
+</script>
+<script data-tchmi-target-attribute="data-tchmi-stationoptions" type="application/json">
+{
+  "DisplacementToFirst": 150,
+  "SpaceBetweenStackedStations": 25,
+  "Thickness": 8,
+  "Text": "None",
+  "TextInfoBarPlacement": "Left",
+  "TextDisplacement": 10,
+  "zIndex": 1000,
+  "TextOptions": {
+    "FontStyle": "Normal",
+    "FontWeight": "Normal",
+    "FontFamily": "",
+    "HorizontalAlignment": "Left",
+    "VerticalAlignment": "Bottom",
+    "FontSize": 20
+  }
+}
+</script>
+<script data-tchmi-target-attribute="data-tchmi-stationmarkeroptions" type="application/json">
+{
+  "MarkerType": "Diamond",
+  "Size": 20,
+  "Thickness": 8,
+  "Text": "None",
+  "TextDisplacement": 20,
+  "zIndex": 1100,
+  "TextOptions": {
+    "FontStyle": "Normal",
+    "FontWeight": "Normal",
+    "FontFamily": "",
+    "HorizontalAlignment": "Center",
+    "VerticalAlignment": "Bottom",
+    "FontSize": 20
+  }
+}
+</script>
+<script data-tchmi-target-attribute="data-tchmi-dimensionoptions" type="application/json">
+{
+  "Displacement": 100,
+  "InfoBarThickness": 8,
+  "MarkerThickness": 5,
+  "MarkerSize": 25,
+  "MarkerType": "Tick",
+  "TextPattern": 2,
+  "TextDisplacement": 10,
+  "zIndex": 1200,
+  "InfoBarColor": {
+    "color": "black"
+  },
+  "MarkerColor": {
+    "color": "black"
+  },
+  "TextOptions": {
+    "FontStyle": "Normal",
+    "FontWeight": "Normal",
+    "FontFamily": "",
+    "HorizontalAlignment": "Center",
+    "VerticalAlignment": "Bottom",
+    "FontSize": 20,
+    "Color": {
+      "color": "black"
+    }
+  }
+}
+</script>
+<script data-tchmi-target-attribute="data-tchmi-infobars" type="application/json">
+[]
+</script>
+
+
+<script data-tchmi-target-attribute="data-tchmi-padding" type="application/json">
+{
+  "left": 2,
+  "right": 2,
+  "top": 0,
+  "bottom": 2,
+  "leftUnit": "%",
+  "rightUnit": "%",
+  "topUnit": "px",
+  "bottomUnit": "%"
+}
+</script>
+</div>
+<div id="TcHmiToggleButton" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleButton" data-tchmi-height="10" data-tchmi-height-unit="%" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-text="Enable" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-state-symbol="%s%PLC1.MAIN.MainCommands.Enable%/s%" data-tchmi-toggle-state="Normal" data-tchmi-right="0" data-tchmi-creator-locked="True">
+</div>
+<div id="btnToggleStart" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleButton" data-tchmi-height="10" data-tchmi-height-unit="%" data-tchmi-left="-1" data-tchmi-left-unit="px" data-tchmi-text="Start" data-tchmi-top="10" data-tchmi-top-unit="%" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-right="1" data-tchmi-state-symbol="%s%PLC1.MAIN.MainCommands.Start%/s%" data-tchmi-creator-locked="True">
+</div>
+<div id="btnToggleStop" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleButton" data-tchmi-height="10" data-tchmi-height-unit="%" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-text="Stop" data-tchmi-top="20" data-tchmi-top-unit="%" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-right="0" data-tchmi-state-symbol="%s%PLC1.MAIN.MainCommands.Stop%/s%" data-tchmi-creator-locked="True">
+</div>
+<div id="TcHmiToggleButton_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleButton" data-tchmi-height="10" data-tchmi-height-unit="%" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-text="Disable" data-tchmi-top="30" data-tchmi-top-unit="%" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-right="0" data-tchmi-state-symbol="%s%PLC1.MAIN.MainCommands.Disable%/s%" data-tchmi-creator-locked="True">
+</div>
+</div><div id="Region_Center" data-tchmi-type="TcHmi.Controls.System.TcHmiRegion" data-tchmi-left="%ctrl%Navigation_Left::Width%/ctrl%" data-tchmi-top="%ctrl%Header_Top::Height%/ctrl%" data-tchmi-scrolling="Yes" data-tchmi-bottom="0" data-tchmi-right="%ctrl%TcHmiContainer_Right::Width%/ctrl%">
+
+<script data-tchmi-target-attribute="data-tchmi-class-names" type="application/json"></script></div><script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[ 
+                {   
+                    "event": "%ctrl%Desktop::RenderedWidth%/ctrl%", 
+                    "actions": [ 
+                        {  
+                            "objectType": "Function",
+                            "active": true,  
+                            "fn":  "TcHmiResponsiveBehaviour", 
+                            "fnParams": [ 
+                                {  
+                                    "objectType": "Symbol",  
+                                    "valueType":  "tchmi:general#/definitions/String",  
+                                    "symbolExpression":  "%i%MediaQueryList%/i%" 
+                                }, 
+                                {  
+                                    "objectType": "Symbol", 
+                                    "valueType": "tchmi:general#/definitions/String", 
+                                    "symbolExpression": "%i%AffectedControls%/i%" 
+                                } 
+                            ], 
+                            "asyncWait": true 
+                        } 
+                    ] 
+                } 
+            ]</script>
+</div>
