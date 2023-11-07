@@ -2,7 +2,46 @@
 
 <div id="XtsView" data-tchmi-type="TcHmi.XTS.Controls.XtsView" data-tchmi-displaydimensions="false" data-tchmi-displaystations="true" data-tchmi-height-unit="px" data-tchmi-invertdimensions="false" data-tchmi-layout="SystemView" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-lockpan="false" data-tchmi-lockzoom="false" data-tchmi-movertype="SystemView" data-tchmi-refreshrate="16" data-tchmi-selectionmode="Off" data-tchmi-showdriveerrors="true" data-tchmi-showdrivewarnings="true" data-tchmi-targetname="Local" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-viewrotation="0" data-tchmi-width-unit="px" data-tchmi-right="0" data-tchmi-bottom="0">
 <script data-tchmi-target-attribute="data-tchmi-toolarray" type="application/json">
-[]
+[
+  {
+    "ToolType": "Image",
+    "MoverSide": "Front",
+    "ImageSrc": "Images/Beckhoff_Logo.svg",
+    "ProcessingUnitIndex": 0,
+    "IdentificationMode": "All",
+    "IdentificationId": "",
+    "OffsetX": -4.0,
+    "OffsetY": -50.0,
+    "ImageWidth": 80.0,
+    "ImageHeight": 50.0,
+    "Rotation": 0.0,
+    "Visible": true,
+    "zIndex": 11000,
+    "TextType": "MoverPosition",
+    "CustomText": "",
+    "TextOptions": {
+      "Color": {
+        "color": "Transparent"
+      },
+      "FontStyle": "Normal",
+      "FontWeight": "Normal",
+      "FontFamily": {
+        "Color": {
+          "color": "black"
+        },
+        "FontFamily": "",
+        "FontSize": 20,
+        "FontStyle": "Normal",
+        "FontWeight": "Normal",
+        "HorizontalAlignment": "Left",
+        "VerticalAlignment": "Top"
+      },
+      "HorizontalAlignment": "Left",
+      "VerticalAlignment": "Top",
+      "FontSize": 50.0
+    }
+  }
+]
 </script>
 <script data-tchmi-target-attribute="data-tchmi-infoimages" type="application/json">
 []
