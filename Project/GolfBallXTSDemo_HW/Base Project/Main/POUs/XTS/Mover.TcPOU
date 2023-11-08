@@ -820,8 +820,8 @@ IF (internalTrackIsReady) THEN
 	fbReadTrackPositions.Enable := TRUE;
 	// copy data when ready
 	IF (fbReadTrackPositions.Valid) THEN
-		TrackInfo.TrackPosition := LMOD(fbReadTrackPositions.TrackPosition, GVL.TRACK_LENGTH);
-		TrackInfo.PartPosition := LMOD(fbReadTrackPositions.PartPosition, GVL.TRACK_LENGTH);
+		TrackInfo.TrackPosition := fbReadTrackPositions.TrackPosition;
+		TrackInfo.PartPosition := fbReadTrackPositions.PartPosition;
 		TrackInfo.TrackId := fbReadTrackPositions.TrackId;
 		TrackInfo.PartId := fbReadTrackPositions.PartId;
 	END_IF

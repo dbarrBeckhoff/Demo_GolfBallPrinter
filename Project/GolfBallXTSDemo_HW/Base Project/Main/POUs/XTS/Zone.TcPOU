@@ -5,10 +5,10 @@
 FUNCTION_BLOCK Zone EXTENDS Objective
 VAR
 
-    internalStartPosition : LREAL;
-    internalEndPosition   : LREAL;
-    internalDirection     : Tc2_MC2.MC_Direction;
-	internalTrackId : DINT; 
+    internalStartPosition	: LREAL;
+    internalEndPosition  	: LREAL;
+    internalDirection    	: Tc2_MC2.MC_Direction;
+	internalTrackId			: DINT := 1;
 
     internalMoverList : MoverList;
 
