@@ -71,7 +71,11 @@ IF Enable THEN
 	END_CASE
 
 ELSIF _Enable THEN
-	;
+	rIO.Outputs.BallClampClose		:= FALSE;
+	rIO.Outputs.BallClampOpen		:= FALSE;
+	rIO.Outputs.ExtendBallSeater	:= FALSE;
+	rIO.Outputs.RetractBallSeater	:= FALSE;
+	State	:= STN_WAIT;
 END_IF
 
 //Save Previous Values
@@ -127,6 +131,7 @@ _Enable	:= Enable;]]></ST>
       <LineId Id="34" Count="0" />
       <LineId Id="112" Count="0" />
       <LineId Id="104" Count="0" />
+      <LineId Id="190" Count="3" />
       <LineId Id="113" Count="2" />
       <LineId Id="103" Count="0" />
       <LineId Id="105" Count="0" />
