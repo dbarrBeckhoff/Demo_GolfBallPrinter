@@ -60,6 +60,8 @@ VAR
 
 	// IO
 	IO: IO_typ;
+	Payload	:		Payload_typ;
+	HMIXTSHelper :	HMIXTSHelper_typ;
 
 END_VAR]]></Declaration>
     <Implementation>
@@ -258,7 +260,7 @@ CASE MainState OF
         IF Station[GVL.STN_VISION].MoverInPosition THEN
             StationTimer[GVL.STN_VISION](IN := TRUE, PT := T#250MS);
             IF StationTimer[GVL.STN_VISION].Q THEN
-                Station[GVL.STN_VISION].CurrentMover.MoveToStation(Station[GVL.STN_ORIENT]);
+                Station[GVL.STN_VISION].CurrentMover.MoveToStation(Station[GVL.STN_KICKOUT]);
             END_IF
         ELSE
             StationTimer[GVL.STN_VISION](IN := FALSE);
@@ -270,9 +272,9 @@ CASE MainState OF
             StationTimer[GVL.STN_KICKOUT](IN := TRUE, PT := T#1000MS);
             IF StationTimer[GVL.STN_KICKOUT].Q THEN
 				// maybe write a function to remove all ball data when ball is removed?
-//				Station[GVL.STN_KICKOUT].CurrentMover.Payload.HasBall		:= FALSE;	
-//				Station[GVL.STN_KICKOUT].CurrentMover.Payload.Reject		:= FALSE;
-//				Station[GVL.STN_KICKOUT].CurrentMover.Payload.BallSeated	:= FALSE;
+				Payload	:= Station[GVL.STN_KICKOUT].CurrentMover.Payload;
+				Payload.HasBall	:= FALSE;	Payload.Reject	:= FALSE;	Payload.BallSeated	:= FALSE;
+				Station[GVL.STN_KICKOUT].CurrentMover.Payload	:= Payload;
                 Station[GVL.STN_KICKOUT].CurrentMover.MoveToStation(Station[GVL.STN_ORIENT]);
             END_IF
         ELSE
@@ -284,6 +286,10 @@ CASE MainState OF
 			MultiStationTimer[GVL.MULTISTN_TRAYLOAD](IN := TRUE, PT := T#1500MS);
 			IF MultiStationTimer[GVL.MULTISTN_TRAYLOAD].Q THEN
 				FOR i := 0 TO 3 DO
+					Payload	:= MultiStation[GVL.MULTISTN_TRAYLOAD].Station[i].CurrentMover.Payload;
+					Payload.HasBall	:= FALSE;	Payload.Reject	:= FALSE;	Payload.BallSeated	:= FALSE;
+					MultiStation[GVL.MULTISTN_TRAYLOAD].Station[i].CurrentMover.Payload	:= Payload;
+
 					MultiStation[GVL.MULTISTN_TRAYLOAD].Station[i].CurrentMover.MoveToStation(Station[GVL.STN_ORIENT]);
 				END_FOR
 				MultiStationTimer[GVL.MULTISTN_TRAYLOAD](IN := FALSE);
@@ -404,6 +410,8 @@ ACT_BallSeat();
 ACT_Print();
 ACT_IOSim();
 
+ACT_HMIXTSHelper();
+
 // Initialize and update diagnostic features
 InitializeUtilityLibrary();
 
@@ -425,11 +433,6 @@ END_FOR
 ]]></ST>
     </Implementation>
     <Folder Name="Stations" Id="{f025fb0e-005b-0773-0290-1b0d76ec6369}" />
-    <Action Name="ACT" Id="{2407f9f6-3a9c-0a23-3122-b9df364660e0}">
-      <Implementation>
-        <ST><![CDATA[]]></ST>
-      </Implementation>
-    </Action>
     <Action Name="ACT_BallSeat" Id="{d30c79e2-8303-0990-143c-9c22e976d6a9}" FolderPath="Stations\">
       <Implementation>
         <ST><![CDATA[// INIT
@@ -442,6 +445,16 @@ BallSeatStation.Enable	:= MainCommands.Enable;
 
 // FB CALLS
 BallSeatStation();]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_HMIXTSHelper" Id="{2407f9f6-3a9c-0a23-3122-b9df364660e0}">
+      <Implementation>
+        <ST><![CDATA[FOR i := 0 TO gvl.NUM_MOVERS - 1 DO
+	Payload	:= Mover[i].Payload;
+	HMIXTSHelper.Mover[i].BallImgVisibility			:= Payload.HasBall;
+	HMIXTSHelper.Mover[i].PlayerNumberVisibility	:= Payload.HasBall;
+	HMIXTSHelper.Mover[i].PlayerNumber				:= Payload.PlayerNumber;
+END_FOR]]></ST>
       </Implementation>
     </Action>
     <Action Name="ACT_IOSim" Id="{6ed4ba4c-34e2-0ad2-01bd-6b8a12409293}" FolderPath="Stations\">
@@ -599,14 +612,20 @@ END_CASE
       <LineId Id="1724" Count="0" />
       <LineId Id="1312" Count="2" />
       <LineId Id="1723" Count="0" />
-      <LineId Id="1720" Count="2" />
+      <LineId Id="2013" Count="0" />
+      <LineId Id="1720" Count="0" />
+      <LineId Id="2014" Count="0" />
       <LineId Id="1316" Count="3" />
       <LineId Id="1311" Count="0" />
       <LineId Id="1381" Count="1" />
       <LineId Id="1438" Count="0" />
       <LineId Id="1445" Count="0" />
       <LineId Id="1444" Count="0" />
-      <LineId Id="1573" Count="1" />
+      <LineId Id="1573" Count="0" />
+      <LineId Id="2016" Count="1" />
+      <LineId Id="2015" Count="0" />
+      <LineId Id="2018" Count="0" />
+      <LineId Id="1574" Count="0" />
       <LineId Id="1450" Count="0" />
       <LineId Id="1633" Count="0" />
       <LineId Id="1437" Count="0" />
@@ -634,6 +653,8 @@ END_CASE
       <LineId Id="1645" Count="0" />
       <LineId Id="1650" Count="0" />
       <LineId Id="1649" Count="0" />
+      <LineId Id="1950" Count="0" />
+      <LineId Id="1949" Count="0" />
       <LineId Id="1078" Count="13" />
       <LineId Id="1881" Count="0" />
       <LineId Id="1159" Count="0" />
@@ -641,9 +662,6 @@ END_CASE
       <LineId Id="1299" Count="0" />
       <LineId Id="1096" Count="0" />
       <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="MAIN.ACT">
-      <LineId Id="1" Count="0" />
     </LineIds>
     <LineIds Name="MAIN.ACT_BallSeat">
       <LineId Id="2" Count="0" />
@@ -655,6 +673,11 @@ END_CASE
       <LineId Id="15" Count="0" />
       <LineId Id="3" Count="0" />
       <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.ACT_HMIXTSHelper">
+      <LineId Id="1" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="2" Count="3" />
     </LineIds>
     <LineIds Name="MAIN.ACT_IOSim">
       <LineId Id="1" Count="3" />

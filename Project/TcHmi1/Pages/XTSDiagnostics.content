@@ -8,14 +8,14 @@
     "MoverSide": "Front",
     "ImageSrc": "Images/Beckhoff_Logo.svg",
     "ProcessingUnitIndex": 0,
-    "IdentificationMode": "All",
-    "IdentificationId": "",
+    "IdentificationMode": "MoverIndex",
+    "IdentificationId": "0",
     "OffsetX": -4.0,
     "OffsetY": -50.0,
     "ImageWidth": 80.0,
     "ImageHeight": 50.0,
     "Rotation": 0.0,
-    "Visible": true,
+    "Visible": "%s%PLC1.MAIN.HMIXTSHelper::Mover[0]::BallImgVisibility%/s%",
     "zIndex": 11000,
     "TextType": "MoverPosition",
     "CustomText": "",
@@ -39,6 +39,258 @@
       "HorizontalAlignment": "Left",
       "VerticalAlignment": "Top",
       "FontSize": 50.0
+    }
+  },
+  {
+    "ToolType": "Image",
+    "MoverSide": "Front",
+    "ImageSrc": "Images/Beckhoff_Logo.svg",
+    "ProcessingUnitIndex": 0,
+    "IdentificationMode": "MoverIndex",
+    "IdentificationId": "1",
+    "OffsetX": -4.0,
+    "OffsetY": -50.0,
+    "ImageWidth": 80.0,
+    "ImageHeight": 50.0,
+    "Rotation": 0.0,
+    "Visible": "%s%PLC1.MAIN.HMIXTSHelper::Mover[1]::BallImgVisibility%/s%",
+    "zIndex": 11000,
+    "TextType": "Custom",
+    "CustomText": "",
+    "TextOptions": {
+      "Color": {
+        "color": "black"
+      },
+      "FontFamily": "",
+      "FontSize": 20,
+      "FontStyle": "Normal",
+      "FontWeight": "Normal",
+      "HorizontalAlignment": "Left",
+      "VerticalAlignment": "Top"
+    }
+  },
+  {
+    "ToolType": "Image",
+    "MoverSide": "Front",
+    "ImageSrc": "Images/Beckhoff_Logo.svg",
+    "ProcessingUnitIndex": 0,
+    "IdentificationMode": "MoverIndex",
+    "IdentificationId": "2",
+    "OffsetX": -4.0,
+    "OffsetY": -50.0,
+    "ImageWidth": 80.0,
+    "ImageHeight": 50.0,
+    "Rotation": 0.0,
+    "Visible": "%s%PLC1.MAIN.HMIXTSHelper::Mover[2]::BallImgVisibility%/s%",
+    "zIndex": 11000,
+    "TextType": "Custom",
+    "CustomText": "",
+    "TextOptions": {
+      "Color": {
+        "color": "black"
+      },
+      "FontFamily": "",
+      "FontSize": 20,
+      "FontStyle": "Normal",
+      "FontWeight": "Normal",
+      "HorizontalAlignment": "Left",
+      "VerticalAlignment": "Top"
+    }
+  },
+  {
+    "ToolType": "Image",
+    "MoverSide": "Front",
+    "ImageSrc": "Images/Beckhoff_Logo.svg",
+    "ProcessingUnitIndex": 0,
+    "IdentificationMode": "MoverIndex",
+    "IdentificationId": "3",
+    "OffsetX": -4.0,
+    "OffsetY": -50.0,
+    "ImageWidth": 80.0,
+    "ImageHeight": 50.0,
+    "Rotation": 0.0,
+    "Visible": "%s%PLC1.MAIN.HMIXTSHelper::Mover[3]::BallImgVisibility%/s%",
+    "zIndex": 11000,
+    "TextType": "Custom",
+    "CustomText": "",
+    "TextOptions": {
+      "Color": {
+        "color": "black"
+      },
+      "FontFamily": "",
+      "FontSize": 20,
+      "FontStyle": "Normal",
+      "FontWeight": "Normal",
+      "HorizontalAlignment": "Left",
+      "VerticalAlignment": "Top"
+    }
+  },
+  {
+    "ToolType": "Image",
+    "MoverSide": "Front",
+    "ImageSrc": "Images/Beckhoff_Logo.svg",
+    "ProcessingUnitIndex": 0,
+    "IdentificationMode": "MoverIndex",
+    "IdentificationId": "4",
+    "OffsetX": -4.0,
+    "OffsetY": -50.0,
+    "ImageWidth": 80.0,
+    "ImageHeight": 50.0,
+    "Rotation": 0.0,
+    "Visible": "%s%PLC1.MAIN.HMIXTSHelper::Mover[4]::BallImgVisibility%/s%",
+    "zIndex": 11000,
+    "TextType": "Custom",
+    "CustomText": "",
+    "TextOptions": {
+      "Color": {
+        "color": "black"
+      },
+      "FontFamily": "",
+      "FontSize": 20,
+      "FontStyle": "Normal",
+      "FontWeight": "Normal",
+      "HorizontalAlignment": "Left",
+      "VerticalAlignment": "Top"
+    }
+  },
+  {
+    "ToolType": "Image",
+    "MoverSide": "Front",
+    "ImageSrc": "Images/Beckhoff_Logo.svg",
+    "ProcessingUnitIndex": 0,
+    "IdentificationMode": "MoverIndex",
+    "IdentificationId": "5",
+    "OffsetX": -4.0,
+    "OffsetY": -50.0,
+    "ImageWidth": 80.0,
+    "ImageHeight": 50.0,
+    "Rotation": 0.0,
+    "Visible": "%s%PLC1.MAIN.HMIXTSHelper::Mover[5]::BallImgVisibility%/s%",
+    "zIndex": 11000,
+    "TextType": "Custom",
+    "CustomText": "",
+    "TextOptions": {
+      "Color": {
+        "color": "black"
+      },
+      "FontFamily": "",
+      "FontSize": 20,
+      "FontStyle": "Normal",
+      "FontWeight": "Normal",
+      "HorizontalAlignment": "Left",
+      "VerticalAlignment": "Top"
+    }
+  },
+  {
+    "ToolType": "Image",
+    "MoverSide": "Front",
+    "ImageSrc": "Images/Beckhoff_Logo.svg",
+    "ProcessingUnitIndex": 0,
+    "IdentificationMode": "MoverIndex",
+    "IdentificationId": "6",
+    "OffsetX": -4.0,
+    "OffsetY": -50.0,
+    "ImageWidth": 80.0,
+    "ImageHeight": 50.0,
+    "Rotation": 0.0,
+    "Visible": "%s%PLC1.MAIN.HMIXTSHelper::Mover[6]::BallImgVisibility%/s%",
+    "zIndex": 11000,
+    "TextType": "Custom",
+    "CustomText": "",
+    "TextOptions": {
+      "Color": {
+        "color": "black"
+      },
+      "FontFamily": "",
+      "FontSize": 20,
+      "FontStyle": "Normal",
+      "FontWeight": "Normal",
+      "HorizontalAlignment": "Left",
+      "VerticalAlignment": "Top"
+    }
+  },
+  {
+    "ToolType": "Image",
+    "MoverSide": "Front",
+    "ImageSrc": "Images/Beckhoff_Logo.svg",
+    "ProcessingUnitIndex": 0,
+    "IdentificationMode": "MoverIndex",
+    "IdentificationId": "7",
+    "OffsetX": -4.0,
+    "OffsetY": -50.0,
+    "ImageWidth": 80.0,
+    "ImageHeight": 50.0,
+    "Rotation": 0.0,
+    "Visible": "%s%PLC1.MAIN.HMIXTSHelper::Mover[7]::BallImgVisibility%/s%",
+    "zIndex": 11000,
+    "TextType": "Custom",
+    "CustomText": "",
+    "TextOptions": {
+      "Color": {
+        "color": "black"
+      },
+      "FontFamily": "",
+      "FontSize": 20,
+      "FontStyle": "Normal",
+      "FontWeight": "Normal",
+      "HorizontalAlignment": "Left",
+      "VerticalAlignment": "Top"
+    }
+  },
+  {
+    "ToolType": "Image",
+    "MoverSide": "Front",
+    "ImageSrc": "Images/Beckhoff_Logo.svg",
+    "ProcessingUnitIndex": 0,
+    "IdentificationMode": "MoverIndex",
+    "IdentificationId": "8",
+    "OffsetX": -4.0,
+    "OffsetY": -50.0,
+    "ImageWidth": 80.0,
+    "ImageHeight": 50.0,
+    "Rotation": 0.0,
+    "Visible": "%s%PLC1.MAIN.HMIXTSHelper::Mover[8]::BallImgVisibility%/s%",
+    "zIndex": 11000,
+    "TextType": "Custom",
+    "CustomText": "",
+    "TextOptions": {
+      "Color": {
+        "color": "black"
+      },
+      "FontFamily": "",
+      "FontSize": 20,
+      "FontStyle": "Normal",
+      "FontWeight": "Normal",
+      "HorizontalAlignment": "Left",
+      "VerticalAlignment": "Top"
+    }
+  },
+  {
+    "ToolType": "Image",
+    "MoverSide": "Front",
+    "ImageSrc": "Images/Beckhoff_Logo.svg",
+    "ProcessingUnitIndex": 0,
+    "IdentificationMode": "MoverIndex",
+    "IdentificationId": "9",
+    "OffsetX": -4.0,
+    "OffsetY": -50.0,
+    "ImageWidth": 80.0,
+    "ImageHeight": 50.0,
+    "Rotation": 0.0,
+    "Visible": "%s%PLC1.MAIN.HMIXTSHelper::Mover[9]::BallImgVisibility%/s%",
+    "zIndex": 11000,
+    "TextType": "Custom",
+    "CustomText": "",
+    "TextOptions": {
+      "Color": {
+        "color": "black"
+      },
+      "FontFamily": "",
+      "FontSize": 20,
+      "FontStyle": "Normal",
+      "FontWeight": "Normal",
+      "HorizontalAlignment": "Left",
+      "VerticalAlignment": "Top"
     }
   }
 ]
