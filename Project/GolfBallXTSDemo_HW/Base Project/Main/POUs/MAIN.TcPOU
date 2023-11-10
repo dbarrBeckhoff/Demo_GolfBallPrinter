@@ -513,8 +513,8 @@ IO.Print.Inputs.PrintComplete	:= SimTimers.TON_Print_PrintComplete.Q;
 
 // Vision
 SimTimers.TON_Vision_ScanBall(IN := IO.Vision.Outputs.Inspect, PT := T#1000MS);
-IO.Vision.Inputs.VisionActive := IO.Vision.Outputs.Inspect AND NOT(IO.Vision.Inputs.VisionPass);
-IF SimTimers.TON_Vision_ScanBall.Q THEN	IO.Vision.Inputs.VisionPass	:= TRUE;	IO.Vision.Inputs.VisionFail	:= FALSE;
+IO.Vision.Inputs.VisionActive := IO.Vision.Outputs.Inspect AND NOT(SimTimers.TON_Vision_ScanBall.Q);
+IF SimTimers.TON_Vision_ScanBall.Q THEN	IO.Vision.Inputs.VisionPass	:= FALSE;	IO.Vision.Inputs.VisionFail	:= TRUE;
 ELSE IO.Vision.Inputs.VisionPass	:= FALSE;	IO.Vision.Inputs.VisionFail	:= FALSE;	END_IF;
 ]]></ST>
       </Implementation>
