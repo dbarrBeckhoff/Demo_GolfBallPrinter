@@ -19,6 +19,12 @@
     <CombineIds>true</CombineIds>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DUTs\HMI\HMIXTSHelper_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\HMI\HMIXTSMoverHelper_typ.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\IO\BallSeat\BallSeat_Inputs_typ.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -200,6 +206,7 @@
     <Folder Include="DUTs\IO\Vision" />
     <Folder Include="DUTs\IO\Kickout" />
     <Folder Include="DUTs\IO\TrayLoad" />
+    <Folder Include="DUTs\HMI" />
     <Folder Include="GVLs" />
     <Folder Include="ITFs" />
     <Folder Include="POUs" />

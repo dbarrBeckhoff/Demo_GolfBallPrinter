@@ -116,7 +116,7 @@ IF Enable THEN
 	END_CASE
 
 ELSIF _Enable THEN
-	;
+	State	:= STN_WAIT;
 END_IF
 
 //Save Previous Values

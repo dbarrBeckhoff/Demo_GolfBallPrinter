@@ -27,7 +27,66 @@
     "DEFAULTTIMEFORMATLOCALE": "client",
     "DEFAULTTIMEZONE": "client",
     "DEFAULTUSERGROUP": "__SystemUsers",
-    "DEFINITIONS": {},
+    "DEFINITIONS": {
+        "PLC1.ARRAY_0..9_OF-HMIXTSMoverHelper_typ": {
+            "items": {
+                "$ref": "#/definitions/PLC1.HMIXTSMoverHelper_typ"
+            },
+            "maxItems": 10,
+            "minItems": 10,
+            "type": "array"
+        },
+        "PLC1.HMIXTSHelper_typ": {
+            "properties": {
+                "Mover": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.ARRAY_0..9_OF-HMIXTSMoverHelper_typ"
+                        },
+                        {
+                            "propertyOrder": 1
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.HMIXTSMoverHelper_typ": {
+            "properties": {
+                "BallImgVisibility": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/BOOL"
+                        },
+                        {
+                            "propertyOrder": 1
+                        }
+                    ]
+                },
+                "MoverText": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/STRING%2880%29"
+                        },
+                        {
+                            "propertyOrder": 3
+                        }
+                    ]
+                },
+                "MoverTextVisibility": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/BOOL"
+                        },
+                        {
+                            "propertyOrder": 2
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        }
+    },
     "DEFLATECOMPRESSIONLEVEL": 5,
     "DIAGNOSTICS_DOMAINS": [],
     "DISABLED_CONFIGURATION_HINTS": [],
@@ -2522,6 +2581,16 @@
             },
             "USEMAPPING": true
         },
+        "PLC1.MAIN.HMIXTSHelper": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::HMIXTSHelper",
+            "SCHEMA": {
+                "$ref": "tchmi:server#/definitions/PLC1.HMIXTSHelper_typ"
+            },
+            "USEMAPPING": true
+        },
         "PLC1.MAIN.MainCommands.Disable": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -4803,10 +4872,13 @@
                 "LocalizeText": 3,
                 "Login": 3,
                 "Logout": 3,
+                "PLC1.MAIN.HMIXTSHelper": 3,
+                "PLC1.MAIN.HMIXTSHelper.Mover.1.BallImgVisibility": 3,
                 "PLC1.MAIN.MainCommands.Disable": 3,
                 "PLC1.MAIN.MainCommands.Enable": 3,
                 "PLC1.MAIN.MainCommands.Start": 3,
                 "PLC1.MAIN.MainCommands.Stop": 3,
+                "PLC1.MAIN.allMoversDisabled": 3,
                 "SetLocale": 3,
                 "SubscribeEvents": 3,
                 "TcHmiEcDiagnostics.Diagnostics": 1,
