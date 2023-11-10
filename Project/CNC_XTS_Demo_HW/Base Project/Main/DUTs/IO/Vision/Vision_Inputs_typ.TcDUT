@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="Vision_Inputs_typ" Id="{88fae82f-f999-08c8-375b-413cdb49d5c0}">
+    <Declaration><![CDATA[TYPE Vision_Inputs_typ:
+STRUCT
+	VisionActive AT %I*: BOOL;
+	VisionPass AT %I*: BOOL;
+	VisionFail AT %I*: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

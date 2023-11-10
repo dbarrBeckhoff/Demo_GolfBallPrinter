@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="Orient_IO_typ" Id="{757a287f-8361-0c18-0c18-f58fdfac726b}">
+    <Declaration><![CDATA[TYPE Orient_IO_typ:
+STRUCT
+	Inputs	: Orient_Inputs_typ;
+	Outputs	: Orient_Outputs_typ;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

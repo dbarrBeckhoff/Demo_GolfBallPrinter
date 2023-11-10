@@ -63,13 +63,23 @@
                         }
                     ]
                 },
+                "BallRejectImgVisibility": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/BOOL"
+                        },
+                        {
+                            "propertyOrder": 2
+                        }
+                    ]
+                },
                 "MoverText": {
                     "allOf": [
                         {
                             "$ref": "tchmi:general#/definitions/STRING%2880%29"
                         },
                         {
-                            "propertyOrder": 3
+                            "propertyOrder": 4
                         }
                     ]
                 },
@@ -79,7 +89,7 @@
                             "$ref": "tchmi:general#/definitions/BOOL"
                         },
                         {
-                            "propertyOrder": 2
+                            "propertyOrder": 3
                         }
                     ]
                 }
@@ -4936,13 +4946,13 @@
     "VIDEOSEGMENTSIZE": 1048576,
     "VIRTUALDIRECTORIES": {
         "/": "..\\..\\TcHmi1\\",
-        "/Beckhoff.TwinCAT.HMI.BaseTemplate": "..\\..\\GolfBallXTSDemo_SIM\\Packages\\Beckhoff.TwinCAT.HMI.BaseTemplate.12.760.48\\runtimes\\native1.12-tchmi",
-        "/Beckhoff.TwinCAT.HMI.Controls": "..\\..\\GolfBallXTSDemo_SIM\\Packages\\Beckhoff.TwinCAT.HMI.Controls.12.760.48\\runtimes\\native1.12-tchmi",
-        "/Beckhoff.TwinCAT.HMI.EcDiagnosticsControl": "..\\..\\GolfBallXTSDemo_SIM\\Packages\\Beckhoff.TwinCAT.HMI.EcDiagnosticsControl.12.760.48\\runtimes\\native1.12-tchmi",
-        "/Beckhoff.TwinCAT.HMI.Functions": "..\\..\\GolfBallXTSDemo_SIM\\Packages\\Beckhoff.TwinCAT.HMI.Functions.12.760.48\\runtimes\\native1.12-tchmi",
-        "/Beckhoff.TwinCAT.HMI.XTS.Controls": "..\\..\\GolfBallXTSDemo_SIM\\Packages\\Beckhoff.TwinCAT.HMI.XTS.Controls.3.2210.6\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.BaseTemplate": "..\\..\\CNC_XTS_Demo_HW\\Packages\\Beckhoff.TwinCAT.HMI.BaseTemplate.12.760.48\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.Controls": "..\\..\\CNC_XTS_Demo_HW\\Packages\\Beckhoff.TwinCAT.HMI.Controls.12.760.48\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.EcDiagnosticsControl": "..\\..\\CNC_XTS_Demo_HW\\Packages\\Beckhoff.TwinCAT.HMI.EcDiagnosticsControl.12.760.48\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.Functions": "..\\..\\CNC_XTS_Demo_HW\\Packages\\Beckhoff.TwinCAT.HMI.Functions.12.760.48\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.XTS.Controls": "..\\..\\CNC_XTS_Demo_HW\\Packages\\Beckhoff.TwinCAT.HMI.XTS.Controls.3.2210.6\\runtimes\\native1.12-tchmi",
         "/bin": "..\\..\\TcHmi1\\bin\\",
         "/bin/framework": "..\\..\\TcHmi1\\bin\\framework",
-        "/framework": "..\\..\\GolfBallXTSDemo_SIM\\Packages\\Beckhoff.TwinCAT.HMI.Framework.12.760.48\\runtimes\\native1.12-tchmi"
+        "/framework": "..\\..\\CNC_XTS_Demo_HW\\Packages\\Beckhoff.TwinCAT.HMI.Framework.12.760.48\\runtimes\\native1.12-tchmi"
     }
 }

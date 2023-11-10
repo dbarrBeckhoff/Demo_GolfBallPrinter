@@ -1,0 +1,467 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MoverList" Id="{6a6492c3-5dac-4c49-8708-8eab34cf4a1d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK MoverList EXTENDS Objective IMPLEMENTS iMoverList
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Methods" Id="{f0610894-1931-4d0e-a817-1d1b4c8212b1}" />
+    <Folder Name="Properties" Id="{3fdda14a-1516-48f6-a734-917962304085}" />
+    <Method Name="ActivateAllTrack" Id="{ad8953ff-aa85-09f3-0f73-09c72fab1fb2}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD ActivateAllTrack : BOOL
+VAR_INPUT
+	Track	: REFERENCE TO Track;
+END_VAR
+VAR
+    i : ULINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// this method is not chainable
+// monitor .IsAllTrackReady before calling additional commands on this list
+
+// For every valid mover in the list, pass it a ActivateTrack command
+FOR i := 0 TO SIZEOF(internalTrackedMovers) / SIZEOF(internalTrackedMovers[i]) - 1 DO
+
+    IF internalTrackedMovers[i] <> 0 THEN
+        internalTrackedMovers[i]^.ActivateTrack(Track);
+    END_IF
+
+END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Contains" Id="{3b6e6689-5a0d-0fe5-1be4-c87805ffbb32}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD Contains : BOOL
+VAR_INPUT
+	
+	Mover		: REFERENCE TO Mover;
+
+END_VAR
+
+VAR
+	i: UDINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+
+// Check if the input Mover is contained within the existing list
+FOR i := 0 TO SIZEOF( internalTrackedMovers ) / SIZEOF( internalTrackedMovers[i]) - 1 DO
+	IF internalTrackedMovers[i] <> 0 AND internalTrackedMovers[i] = ADR( Mover ) THEN
+		Contains	:= TRUE;
+	END_IF
+END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetMoverByLocation" Id="{fef36da4-65e6-4a0c-848b-af8a54f15050}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD GetMoverByLocation : REFERENCE to Mover
+VAR_INPUT
+    Index     : USINT;                // 0 is find the first closest mover, 1 is find the second closest mover, 2 is find the third, etc. etc. etc.
+    Position  : LREAL;                // Fixed track position from which to search for movers by proximity
+    Direction : Tc2_MC2.MC_Direction; // Positive = find the most positive mover whose position is less than the Input. Negative = find the most negative mover whose position is greater than the input
+END_VAR
+
+VAR
+	SortBuffer		: ARRAY[0..GVL.NUM_MOVERS - 1] OF POINTER TO Mover;	// initially empty array of movers, sorted in order by the position search
+	PopBuffer		: ARRAY[0..GVL.NUM_MOVERS - 1] OF POINTER TO Mover; // temporary array, which simplifies the sorting operation at the minor cost of memory
+
+	currentLowDistance		: LREAL;
+	currentMover			: POINTER TO Mover;
+	directionalDistance		: LREAL;
+    leastIDX     : DINT;
+    i            : DINT;
+    j            : DINT;
+
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// copy tracked movers into temporary array
+memcpy(ADR(PopBuffer), ADR(internalTrackedMovers), SIZEOF(internalTrackedMovers));
+
+
+// For every entry in the sorted buffer...
+FOR i := 0 TO SIZEOF( PopBuffer ) / SIZEOF( PopBuffer[0] ) - 1 DO
+	
+	leastIDX			:= 0;
+	currentMover		:= 0;	
+	currentLowDistance	:= 0;
+	
+	// ... find the mover with the least directional distance to the input Position, including rollover
+	FOR j := 0 TO SIZEOF( PopBuffer ) / SIZEOF( PopBuffer[0] ) - 1 DO
+		
+		IF Direction = MC_Positive_Direction THEN
+			// Calculate a directional distance from the input position to each mover, positive search
+			IF PopBuffer[j] <> 0 AND_THEN PopBuffer[j]^.AxisReference.NcToPlc.ModuloActPos <= Position THEN
+				directionalDistance 	:= Position - PopBuffer[j]^.AxisReference.NcToPlc.ModuloActPos;
+			ELSIF PopBuffer[j] <> 0 AND_THEN PopBuffer[j]^.AxisReference.NcToPlc.ModuloActPos > Position THEN
+				directionalDistance		:= Position + ( GVL.TRACK_LENGTH - PopBuffer[j]^.AxisReference.NcToPlc.ModuloActPos );
+			END_IF
+		
+		ELSIF Direction = MC_Negative_Direction THEN
+			// Calculate a directional distance from the input position to each mover, negative search
+			IF PopBuffer[j] <> 0 AND_THEN PopBuffer[j]^.AxisReference.NcToPlc.ModuloActPos <= Position THEN
+				directionalDistance		:= PopBuffer[j]^.AxisReference.NcToPlc.ModuloActPos + ( GVL.TRACK_LENGTH - Position );
+			ELSIF PopBuffer[j] <> 0 AND_THEN PopBuffer[j]^.AxisReference.NcToPlc.ModuloActPos > Position THEN
+				directionalDistance		:= PopBuffer[j]^.AxisReference.NcToPlc.ModuloActPos - Position;
+			END_IF
+
+		ELSE
+			// closest in any direction, typically for linear, non-modulo tracks
+			IF PopBuffer[j] <> 0 THEN
+				directionalDistance := ABS(PopBuffer[j]^.TrackInfo.TrackPosition - Position);
+			END_IF;			
+		END_IF
+	
+		// If the current mover is closer than the staged one, stage that instead
+		IF PopBuffer[j] <> 0 AND ( currentLowDistance = 0 OR directionalDistance < currentLowDistance ) THEN
+			currentMover			:= PopBuffer[j];
+			currentLowDistance		:= directionalDistance;
+			leastIDX				:= j;
+		END_IF
+	END_FOR
+	
+	// ForLoop concludes with the next mover in currentMover slot. add it to the sorted buffer
+	memcpy( ADR( SortBuffer[i] ), ADR( currentMover ), SIZEOF( currentMover ) );
+	memset( ADR( PopBuffer[leastIDX] ), 0, SIZEOF( PopBuffer[0] ) );
+	
+END_FOR
+
+// Output the proper indexed mover from the sorted list
+IF Index < 0 OR Index >= THIS^.TrackedMoverCount THEN
+	GetMoverByLocation REF= 0;
+ELSE
+	GetMoverByLocation REF= SortBuffer[Index]^;
+END_IF
+
+
+// If the MoverList has no proper mover to return, then return an imposter ErrorMover, whose method calls all trigger an error message
+IF __ISVALIDREF(GetMoverByLocation) = FALSE THEN
+	ErrorMover.SourceInstancePath	:= THIS^.InstancePath;
+	GetMoverByLocation				REF= ErrorMover;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="IsAllTrackReady" Id="{6e2cc0c2-f637-0149-0661-22b5c671a702}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY IsAllTrackReady : BOOL]]></Declaration>
+      <Get Name="Get" Id="{cf4fcf50-2d73-046b-2dbd-7c13f3f0f631}">
+        <Declaration><![CDATA[VAR
+	i : ULINT;
+	size : ULINT;
+	allReady : BOOL;
+	zeroCount : ULINT;
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[// For every valid mover in the list, sum up IsTrackReady
+// intentionally returns false if no movers are found
+// this is to support the typical use case when MoverList.ActivateAllTrack and .IsAllTrackReady are called back-to-back
+// to peroform a track change
+// this ensures that during the ~20ms track change in software when no movers may be present on the track, this response will not inadvertantly advance code
+// if zero movers is a common situation an OR condition of "MoverList.TrackedMoverCount = 0" can be added to the statement calling this
+allReady := TRUE;
+size := SIZEOF(internalTrackedMovers) / SIZEOF(internalTrackedMovers[i]) - 1;
+zeroCount := 0;
+
+FOR i := 0 TO size DO
+
+    IF internalTrackedMovers[i] <> 0 THEN
+        allReady := allReady AND internalTrackedMovers[i]^.IsTrackReady;
+	ELSE
+		zeroCount := zeroCount + 1;
+    END_IF
+
+END_FOR
+
+// check for no movers
+IF zeroCount = (size + 1) THEN
+	allReady := FALSE;
+END_IF
+
+IsAllTrackReady := allReady; // return result]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="MoveAllToPosition" Id="{bd912cae-8475-45f4-9366-6d4e3f45dbfd}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD MoveAllToPosition : iMoverList
+VAR_INPUT
+
+    DestinationPosition : LREAL; // position on track for all shuttles to move towards	
+
+END_VAR
+
+VAR
+    i : ulint;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// For every valid mover in the list, pass it a MoveToPosition command
+FOR i := 0 TO SIZEOF(internalTrackedMovers) / SIZEOF(internalTrackedMovers[i]) - 1 DO
+
+    IF internalTrackedMovers[i] <> 0 THEN
+        internalTrackedMovers[i]^.MoveToPosition(DestinationPosition);
+    END_IF
+
+END_FOR
+
+MoveAllToPosition := THIS^; // return this, to allow method chaining]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="MoveAllToStation" Id="{7e8649c5-afae-438c-9d7c-0849d9778d85}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD MoveAllToStation : iMoverList
+VAR_INPUT
+
+    DestinationStation : REFERENCE TO Station;
+
+END_VAR
+
+VAR
+    i : ULINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// For every valid mover in the list, pass it a MoveToStation command
+FOR i := 0 TO SIZEOF(internalTrackedMovers) / SIZEOF(internalTrackedMovers[0]) - 1 DO
+
+    IF internalTrackedMovers[i] <> 0 THEN
+        internalTrackedMovers[i]^.MoveToStation(DestinationStation);
+    END_IF
+
+END_FOR
+
+MoveAllToStation := THIS^; // allows method chaining]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="MoveAllVelocity" Id="{374fc66e-e454-42d2-84eb-da107ea5cc5b}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD MoveAllVelocity : iMoverList
+VAR_INPUT
+
+    Velocity : LREAL;
+
+END_VAR
+VAR
+    i : ULINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// For every valid mover in the list, pass it a MoveVelocity command
+FOR i := 0 TO SIZEOF(internalTrackedMovers) / SIZEOF(internalTrackedMovers[i]) - 1 DO
+
+    IF internalTrackedMovers[i] <> 0 THEN
+        internalTrackedMovers[i]^.MoveVelocity(Velocity);
+    END_IF
+
+END_FOR
+
+MoveAllVelocity := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetAllAcceleration" Id="{e13ce26b-c052-44c4-b781-edc2323e6bd8}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD SetAllAcceleration : iMoverList
+VAR_INPUT
+
+    Acceleration : LREAL;
+
+END_VAR
+
+VAR
+    i : ULINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// For every valid mover in the list, set the Acceleration values
+FOR i := 0 TO SIZEOF(internalTrackedMovers) / SIZEOF(internalTrackedMovers[i]) - 1 DO
+
+    IF internalTrackedMovers[i] <> 0 THEN
+        internalTrackedMovers[i]^.SetAcceleration(Acceleration);
+    END_IF
+
+END_FOR
+
+SetAllAcceleration := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetAllDeceleration" Id="{b4a74589-da0f-40fe-9d74-9df176d68d9e}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD SetAllDeceleration : iMoverList
+VAR_INPUT
+
+    Deceleration : LREAL;
+
+END_VAR
+VAR
+    i : ULINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// For every valid mover in the list, set the Deceleration values
+FOR i := 0 TO SIZEOF(internalTrackedMovers) / SIZEOF(internalTrackedMovers[i]) - 1 DO
+
+    IF internalTrackedMovers[i] <> 0 THEN
+        internalTrackedMovers[i]^.SetDeceleration(Deceleration);
+    END_IF
+
+END_FOR
+
+SetAllDeceleration := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetAllDirection" Id="{61dc841d-816d-4126-817b-0edc70c354b4}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD SetAllDirection : iMoverList
+VAR_INPUT
+
+    Direction : Tc3_Mc3Definitions.MC_DIRECTION;
+
+END_VAR
+VAR
+    i : ULINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// For every valid mover in the list, update the internal Direction parameter
+FOR i := 0 TO SIZEOF(internalTrackedMovers) / SIZEOF(internalTrackedMovers[i]) - 1 DO
+
+    IF internalTrackedMovers[i] <> 0 THEN
+        internalTrackedMovers[i]^.SetDirection(Direction);
+    END_IF
+
+END_FOR
+
+SetAllDirection := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetAllJerk" Id="{713a2faa-4d72-4826-b835-2931c44827b9}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD SetAllJerk : iMoverList
+VAR_INPUT
+
+    Jerk : LREAL;
+
+END_VAR
+VAR
+    i : ULINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// For every valid mover in the list, update the internal Jerk Parameter
+FOR i := 0 TO SIZEOF(internalTrackedMovers) / SIZEOF(internalTrackedMovers[i]) - 1 DO
+
+    IF internalTrackedMovers[i] <> 0 THEN
+        internalTrackedMovers[i]^.SetJerk(Jerk);
+    END_IF
+
+END_FOR
+
+SetAllJerk := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetAllVelocity" Id="{cee9569c-3982-4955-90f1-8e5baf09c135}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD SetAllVelocity : iMoverList
+VAR_INPUT
+
+    Velocity : LREAL;
+
+END_VAR
+VAR
+    i : ULINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// For every valid mover in the list, set the Velocity values
+FOR i := 0 TO SIZEOF(internalTrackedMovers) / SIZEOF(internalTrackedMovers[i]) - 1 DO
+
+    IF internalTrackedMovers[i] <> 0 THEN
+        internalTrackedMovers[i]^.SetVelocity(Velocity);
+    END_IF
+
+END_FOR
+
+SetAllVelocity := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="UnregisterAll" Id="{9f7a3d8e-3975-4fa4-8579-c54f77146104}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD UnregisterAll : BOOL
+VAR_INPUT
+END_VAR
+VAR
+    i : ulint;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR i := 0 TO SIZEOF(internalTrackedMovers) / SIZEOF(internalTrackedMovers[i]) - 1 DO
+    IF internalTrackedMovers[i] <> 0 THEN
+        THIS^.UnregisterMover(internalTrackedMovers[i]^);
+    END_IF
+END_FOR
+
+//UnregisterAll		:= THIS^;	// dunno how you would method chain from this call, but there ya go
+
+// Nope!]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="MoverList">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="MoverList.ActivateAllTrack">
+      <LineId Id="24" Count="0" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="6" Count="7" />
+    </LineIds>
+    <LineIds Name="MoverList.Contains">
+      <LineId Id="3" Count="6" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="MoverList.GetMoverByLocation">
+      <LineId Id="3" Count="28" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="80" Count="3" />
+      <LineId Id="32" Count="27" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="MoverList.IsAllTrackReady.Get">
+      <LineId Id="5" Count="0" />
+      <LineId Id="24" Count="4" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="6" Count="3" />
+      <LineId Id="31" Count="1" />
+      <LineId Id="10" Count="2" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="35" Count="2" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="MoverList.MoveAllToPosition">
+      <LineId Id="3" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="MoverList.MoveAllToStation">
+      <LineId Id="3" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="MoverList.MoveAllVelocity">
+      <LineId Id="3" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="MoverList.SetAllAcceleration">
+      <LineId Id="3" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="MoverList.SetAllDeceleration">
+      <LineId Id="3" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="MoverList.SetAllDirection">
+      <LineId Id="3" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="MoverList.SetAllJerk">
+      <LineId Id="3" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="MoverList.SetAllVelocity">
+      <LineId Id="3" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="MoverList.UnregisterAll">
+      <LineId Id="3" Count="7" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

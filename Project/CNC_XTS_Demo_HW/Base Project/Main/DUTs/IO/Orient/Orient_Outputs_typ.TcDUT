@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="Orient_Outputs_typ" Id="{9c611e32-5366-0f50-34dd-2ab9b34151b3}">
+    <Declaration><![CDATA[TYPE Orient_Outputs_typ:
+STRUCT
+	BallClampOpen AT %Q*: BOOL;
+	BallClampClose AT %Q*: BOOL;
+	LoadBall AT %Q*: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="TrayLoad_Inputs_typ" Id="{21385577-aa88-0851-2921-aaed85529ad8}">
+    <Declaration><![CDATA[TYPE TrayLoad_Inputs_typ:
+STRUCT
+	BallClampOpened AT %I*: BOOL;
+	BallClampClosed AT %I*: BOOL;
+	TrayLoadComplete AT %I*: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

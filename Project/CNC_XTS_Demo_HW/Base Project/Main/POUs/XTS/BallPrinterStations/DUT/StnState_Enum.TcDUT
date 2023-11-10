@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="StnState_Enum" Id="{93cc00be-d40c-08cf-2b2e-cf69a4020741}">
+    <Declaration><![CDATA[(*{attribute 'qualified_only'}*)
+{attribute 'strict'}
+TYPE StnState_Enum :
+(
+	STN_WAIT				:= 0,
+	STN_CHECKMOVER			:= 1,
+	STN_OPENBALLCLAMP		:= 2,
+	STN_PROCESS				:= 3,
+	STN_CLOSEBALLCLAMP		:= 4,
+	STN_SEND				:= 5,
+	STN_ERROR				:= 10
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

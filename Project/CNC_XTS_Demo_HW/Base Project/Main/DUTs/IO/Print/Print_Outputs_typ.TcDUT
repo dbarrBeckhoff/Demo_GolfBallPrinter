@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="Print_Outputs_typ" Id="{370bd6c2-c557-04d0-12b4-e69a4ac084f3}">
+    <Declaration><![CDATA[TYPE Print_Outputs_typ:
+STRUCT
+	Print AT %Q*: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

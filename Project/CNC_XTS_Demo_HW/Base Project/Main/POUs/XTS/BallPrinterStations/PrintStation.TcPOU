@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="PrintStation" Id="{bbe07669-1b09-0bc2-0cf7-35c98289024b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK PrintStation EXTENDS MachineStation
+VAR_INPUT
+	rIO				: REFERENCE TO Print_IO_typ;
+	rMultiStn		: REFERENCE TO MultiStation;
+	rVisionStation	: REFERENCE TO Station;
+	rKickoutStation	: REFERENCE TO Station;
+	NumIndex		: USINT;
+	NumColor		: USINT;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	PosTriggerPayload	: Payload_typ;
+	StationPayload		: ARRAY[0..GVL.MULTISTN_NUM_STN - 1] OF Payload_typ;
+	MoverHalted			: BOOL;
+	PrintConfig			: PrintConfig_typ;
+	i					: INT;
+	FarthestIndex0StnTrackedMovers: INT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT (__ISVALIDREF(rMultiStn) AND __ISVALIDREF(rIO) AND __ISVALIDREF(rVisionStation) AND __ISVALIDREF(rKickoutStation)) THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'Invalid reference at %s.', InstancePath);	// how to make this work?
+	RETURN;
+END_IF
+
+// Station Sequence
+IF Enable THEN
+	IF NOT _Enable THEN
+		ACT_ConfigurePrint();
+	END_IF
+
+	// Catch Incoming Shuttles and process them
+	IF rMultiStn.PositionTrigger.MoverPassedPosition THEN
+(*		PosTriggerPayload	:= rMultiStn.PositionTrigger.CurrentMover.Payload;
+		// Mover payload not valid for printing
+		IF PosTriggerPayload.Reject OR NOT(PosTriggerPayload.HasBall AND PosTriggerPayload.BallSeated) THEN		
+			PosTriggerPayload.Reject	:= TRUE;
+			IF rMultiStn.TrackedMoverCount > 0 THEN
+				MoverHalted				:= TRUE;
+				rMultiStn.PositionTrigger.CurrentMover.Halt();
+			ELSE
+				rMultiStn.PositionTrigger.CurrentMover.MoveToStation(rKickoutStation);
+				rMultiStn.PositionTrigger.CurrentMover.Payload	:= PosTriggerPayload;
+				rMultiStn.PositionTrigger.MuteCurrent();
+				MoverHalted				:= FALSE;
+			END_IF
+		// mover ok to print
+		ELSE						*) // This doesn't work and it's not really necessary.  
+										// PositionTrigger would need to buffer events.  
+										// this only works when movers are going slow
+										// Peter eventually going to add event buffering to position trigger, not worth doing for demo
+			FarthestIndex0StnTrackedMovers	:= 100;
+			FOR i := PrintConfig.LastProcessIndex0StnIndex TO 0 BY -1 DO
+				IF rMultiStn.Station[i].TrackedMoverCount < FarthestIndex0StnTrackedMovers THEN
+					FarthestIndex0StnTrackedMovers	:= i;
+				END_IF
+			END_FOR
+					
+			FOR i := PrintConfig.LastProcessIndex0StnIndex TO 0 BY -1 DO
+				IF PrintConfig.StationEnable[i] AND PrintConfig.ProcessIndex[i] = 0 AND rMultiStn.Station[i].TrackedMoverCount = 0 THEN
+					rMultiStn.PositionTrigger.CurrentMover.MoveToStation(rMultiStn.Station[i]);
+					rMultiStn.PositionTrigger.MuteCurrent();
+					EXIT;
+				ELSIF i = 0 THEN
+					rMultiStn.PositionTrigger.CurrentMover.MoveToStation(rMultiStn.Station[FarthestIndex0StnTrackedMovers]);
+					rMultiStn.PositionTrigger.MuteCurrent();
+					EXIT;
+				END_IF
+			END_FOR
+		(*END_IF*)
+	END_IF
+
+	// Printing Sequence State Machine
+	CASE State OF
+		STN_WAIT:
+			IF Run AND_THEN THIS^.MoversReadyForCycle() THEN
+				FOR i := 0 TO GVL.MULTISTN_NUM_STN - 1 DO
+					IF rMultiStn.Station[i].TrackedMoverCount > 0 THEN
+						StationPayload[i]	:= rMultiStn.Station[i].CurrentMover.Payload;
+					END_IF
+				END_FOR
+				rIO.Outputs.Print	:= TRUE;
+				State				:= STN_PROCESS;
+			END_IF
+
+		STN_PROCESS:
+			IF rIO.Inputs.PrintComplete THEN
+				rIO.Outputs.Print		:= FALSE;
+				FOR i := 0 TO GVL.MULTISTN_NUM_STN - 1 DO
+					IF rMultiStn.Station[i].TrackedMoverCount > 0 THEN
+						StationPayload[i].PrintStepComplete[PrintConfig.ProcessIndex[i]]	:= TRUE;
+						IF PrintConfig.FinalPrint[i] THEN StationPayload[i].PrintComplete		:= TRUE; END_IF
+					END_IF
+				END_FOR
+			State	:= STN_SEND;
+			END_IF
+
+		STN_SEND:
+
+			// Write Payload Data
+			FOR i := 0 TO GVL.MULTISTN_NUM_STN - 1 DO
+				IF rMultiStn.Station[i].TrackedMoverCount > 0 THEN
+					rMultiStn.Station[i].CurrentMover.Payload							:= StationPayload[i];
+				END_IF
+			END_FOR
+
+			// Send Mover
+			ACT_PrintSendMover();
+			State	:= STN_WAIT;
+
+		STN_ERROR:
+
+	END_CASE
+
+ELSIF _Enable THEN
+	State	:= STN_WAIT;
+END_IF
+
+//Save Previous Values
+_Enable	:= Enable;]]></ST>
+    </Implementation>
+    <Action Name="ACT_ConfigurePrint" Id="{601c8496-4333-0468-3432-b38913d31293}">
+      <Implementation>
+        <ST><![CDATA[memset(ADR(PrintConfig), 0, SIZEOF(PrintConfig));
+
+CASE NumColor OF
+1:
+	CASE NumIndex OF
+	1:	PrintConfig.StationEnable[2] := TRUE;	PrintConfig.ProcessIndex[2] := 0; PrintConfig.FinalPrint[2] := TRUE;	PrintConfig.LastProcessIndex0StnIndex	:= 2;
+
+	2:	PrintConfig.StationEnable[1] := TRUE;	PrintConfig.ProcessIndex[1] := 0; PrintConfig.FinalPrint[1] := TRUE;
+		PrintConfig.StationEnable[2] := TRUE;	PrintConfig.ProcessIndex[2] := 0; PrintConfig.FinalPrint[2] := TRUE;	PrintConfig.LastProcessIndex0StnIndex	:= 2;
+
+	3:	PrintConfig.StationEnable[1] := TRUE;	PrintConfig.ProcessIndex[1] := 0; PrintConfig.FinalPrint[1] := TRUE;
+		PrintConfig.StationEnable[2] := TRUE;	PrintConfig.ProcessIndex[2] := 0; PrintConfig.FinalPrint[2] := TRUE;
+		PrintConfig.StationEnable[3] := TRUE;	PrintConfig.ProcessIndex[3] := 0; PrintConfig.FinalPrint[3] := TRUE;	PrintConfig.LastProcessIndex0StnIndex	:= 3;
+
+	4:	PrintConfig.StationEnable[0] := TRUE;	PrintConfig.ProcessIndex[0] := 0; PrintConfig.FinalPrint[0] := TRUE;
+		PrintConfig.StationEnable[1] := TRUE;	PrintConfig.ProcessIndex[1] := 0; PrintConfig.FinalPrint[1] := TRUE;
+		PrintConfig.StationEnable[2] := TRUE;	PrintConfig.ProcessIndex[2] := 0; PrintConfig.FinalPrint[2] := TRUE;
+		PrintConfig.StationEnable[3] := TRUE;	PrintConfig.ProcessIndex[3] := 0; PrintConfig.FinalPrint[3] := TRUE;	PrintConfig.LastProcessIndex0StnIndex	:= 3;
+	END_CASE
+2:
+	CASE NumIndex OF
+	1:	PrintConfig.StationEnable[1] := TRUE;	PrintConfig.ProcessIndex[1] := 0; PrintConfig.FinalPrint[1] := FALSE;	PrintConfig.LastProcessIndex0StnIndex	:= 1;
+		PrintConfig.StationEnable[2] := TRUE;	PrintConfig.ProcessIndex[2] := 1; PrintConfig.FinalPrint[2] := TRUE;
+
+	2:	PrintConfig.StationEnable[0] := TRUE;	PrintConfig.ProcessIndex[0] := 0; PrintConfig.FinalPrint[0] := FALSE;
+		PrintConfig.StationEnable[1] := TRUE;	PrintConfig.ProcessIndex[1] := 0; PrintConfig.FinalPrint[1] := FALSE;	PrintConfig.LastProcessIndex0StnIndex	:= 1;
+		PrintConfig.StationEnable[2] := TRUE;	PrintConfig.ProcessIndex[2] := 1; PrintConfig.FinalPrint[2] := TRUE;
+		PrintConfig.StationEnable[3] := TRUE;	PrintConfig.ProcessIndex[3] := 1; PrintConfig.FinalPrint[3] := TRUE;
+	END_CASE
+3:
+		PrintConfig.StationEnable[1] := TRUE;	PrintConfig.ProcessIndex[1] := 0; PrintConfig.FinalPrint[1] := FALSE;	PrintConfig.LastProcessIndex0StnIndex	:= 1;
+		PrintConfig.StationEnable[2] := TRUE;	PrintConfig.ProcessIndex[2] := 1; PrintConfig.FinalPrint[2] := FALSE;
+		PrintConfig.StationEnable[3] := TRUE;	PrintConfig.ProcessIndex[3] := 2; PrintConfig.FinalPrint[3] := TRUE;
+
+4:		PrintConfig.StationEnable[0] := TRUE;	PrintConfig.ProcessIndex[0] := 0; PrintConfig.FinalPrint[0] := FALSE;	PrintConfig.LastProcessIndex0StnIndex	:= 0;
+		PrintConfig.StationEnable[1] := TRUE;	PrintConfig.ProcessIndex[1] := 1; PrintConfig.FinalPrint[1] := FALSE;
+		PrintConfig.StationEnable[2] := TRUE;	PrintConfig.ProcessIndex[2] := 2; PrintConfig.FinalPrint[2] := FALSE;
+		PrintConfig.StationEnable[3] := TRUE;	PrintConfig.ProcessIndex[3] := 3; PrintConfig.FinalPrint[3] := TRUE;
+END_CASE]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_PrintSendMover" Id="{baa55ba3-6772-0913-18e2-14ac7dc71cc3}">
+      <Implementation>
+        <ST><![CDATA[CASE NumColor OF
+1:
+	CASE NumIndex OF
+	1:	IF rMultiStn.Station[2].TrackedMoverCount > 0 THEN rMultiStn.Station[2].CurrentMover.MoveToStation(rVisionStation);			rMultiStn.Station[2].UnregisterCurrent();	END_IF
+
+	2:	IF rMultiStn.Station[2].TrackedMoverCount > 0 THEN rMultiStn.Station[2].CurrentMover.MoveToStation(rVisionStation);			rMultiStn.Station[2].UnregisterCurrent();	END_IF
+		IF rMultiStn.Station[1].TrackedMoverCount > 0 THEN rMultiStn.Station[1].CurrentMover.MoveToStation(rVisionStation);			rMultiStn.Station[1].UnregisterCurrent();	END_IF
+
+	3:	IF rMultiStn.Station[3].TrackedMoverCount > 0 THEN rMultiStn.Station[3].CurrentMover.MoveToStation(rVisionStation);			rMultiStn.Station[3].UnregisterCurrent();	END_IF
+		IF rMultiStn.Station[2].TrackedMoverCount > 0 THEN rMultiStn.Station[2].CurrentMover.MoveToStation(rVisionStation);			rMultiStn.Station[2].UnregisterCurrent();	END_IF
+		IF rMultiStn.Station[1].TrackedMoverCount > 0 THEN rMultiStn.Station[1].CurrentMover.MoveToStation(rVisionStation);			rMultiStn.Station[1].UnregisterCurrent();	END_IF
+
+	4:	IF rMultiStn.Station[3].TrackedMoverCount > 0 THEN rMultiStn.Station[3].CurrentMover.MoveToStation(rVisionStation);			rMultiStn.Station[3].UnregisterCurrent();	END_IF
+		IF rMultiStn.Station[2].TrackedMoverCount > 0 THEN rMultiStn.Station[2].CurrentMover.MoveToStation(rVisionStation);			rMultiStn.Station[2].UnregisterCurrent();	END_IF
+		IF rMultiStn.Station[1].TrackedMoverCount > 0 THEN rMultiStn.Station[1].CurrentMover.MoveToStation(rVisionStation);			rMultiStn.Station[1].UnregisterCurrent();	END_IF
+		IF rMultiStn.Station[0].TrackedMoverCount > 0 THEN rMultiStn.Station[0].CurrentMover.MoveToStation(rVisionStation);			rMultiStn.Station[0].UnregisterCurrent();	END_IF
+	END_CASE
+2:
+	CASE NumIndex OF
+	1:	IF rMultiStn.Station[2].TrackedMoverCount > 0 THEN rMultiStn.Station[2].CurrentMover.MoveToStation(rVisionStation);			rMultiStn.Station[2].UnregisterCurrent();	END_IF
+		IF rMultiStn.Station[1].TrackedMoverCount > 0 THEN rMultiStn.Station[1].CurrentMover.MoveToStation(rMultiStn.Station[2]);	rMultiStn.Station[1].UnregisterCurrent();	END_IF
+
+
+	2:	IF rMultiStn.Station[3].TrackedMoverCount > 0 THEN rMultiStn.Station[3].CurrentMover.MoveToStation(rVisionStation);			rMultiStn.Station[3].UnregisterCurrent();	END_IF
+		IF rMultiStn.Station[2].TrackedMoverCount > 0 THEN rMultiStn.Station[2].CurrentMover.MoveToStation(rVisionStation);			rMultiStn.Station[2].UnregisterCurrent();	END_IF
+		IF rMultiStn.Station[1].TrackedMoverCount > 0 THEN rMultiStn.Station[1].CurrentMover.MoveToStation(rMultiStn.Station[3]);	rMultiStn.Station[1].UnregisterCurrent();	END_IF
+		IF rMultiStn.Station[0].TrackedMoverCount > 0 THEN rMultiStn.Station[0].CurrentMover.MoveToStation(rMultiStn.Station[2]);	rMultiStn.Station[0].UnregisterCurrent();	END_IF
+	END_CASE
+
+3:		IF rMultiStn.Station[3].TrackedMoverCount > 0 THEN rMultiStn.Station[3].CurrentMover.MoveToStation(rVisionStation);			rMultiStn.Station[3].UnregisterCurrent();	END_IF
+		IF rMultiStn.Station[2].TrackedMoverCount > 0 THEN rMultiStn.Station[2].CurrentMover.MoveToStation(rMultiStn.Station[3]);	rMultiStn.Station[2].UnregisterCurrent();	END_IF
+		IF rMultiStn.Station[1].TrackedMoverCount > 0 THEN rMultiStn.Station[1].CurrentMover.MoveToStation(rMultiStn.Station[2]);	rMultiStn.Station[1].UnregisterCurrent();	END_IF
+
+4:		IF rMultiStn.Station[3].TrackedMoverCount > 0 THEN rMultiStn.Station[3].CurrentMover.MoveToStation(rVisionStation);			rMultiStn.Station[3].UnregisterCurrent();	END_IF
+		IF rMultiStn.Station[2].TrackedMoverCount > 0 THEN rMultiStn.Station[2].CurrentMover.MoveToStation(rMultiStn.Station[3]);	rMultiStn.Station[2].UnregisterCurrent();	END_IF
+		IF rMultiStn.Station[1].TrackedMoverCount > 0 THEN rMultiStn.Station[1].CurrentMover.MoveToStation(rMultiStn.Station[2]);	rMultiStn.Station[1].UnregisterCurrent();	END_IF
+		IF rMultiStn.Station[0].TrackedMoverCount > 0 THEN rMultiStn.Station[0].CurrentMover.MoveToStation(rMultiStn.Station[1]);	rMultiStn.Station[0].UnregisterCurrent();	END_IF
+END_CASE]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_PrintStatuses" Id="{8bac2ebf-b136-0db1-3b11-972b59d5d565}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <Method Name="MoversReadyForCycle" Id="{6a607cef-9a44-02b3-2972-5c485212345e}">
+      <Declaration><![CDATA[METHOD MoversReadyForCycle : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Check that all movers are in position, and that there are movers in all of the enabled process index 0 print positions
+MoversReadyForCycle	:= TRUE; 
+IF NOT rMultiStn.AllMoversInPosition THEN	// Any stations with tracked movers that don't have mover in position will trigger this false
+	MoversReadyForCycle	:= FALSE;
+ELSE
+	FOR i := GVL.MULTISTN_NUM_STN - 1 TO 0 BY - 1 DO
+		IF PrintConfig.StationEnable[i] AND PrintConfig.ProcessIndex[i] = 0 THEN	// Check that all process index 0 stations have movers to ensure full print cycle
+			IF rMultiStn.Station[i].TrackedMoverCount = 0 AND NOT MoverHalted THEN		// Ignore this check if there is a mover halted by the position trigger
+				MoversReadyForCycle	:= FALSE;
+			END_IF
+		END_IF
+	END_FOR
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="PrintStation">
+      <LineId Id="333" Count="2" />
+      <LineId Id="97" Count="0" />
+      <LineId Id="130" Count="0" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="108" Count="0" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="109" Count="0" />
+      <LineId Id="287" Count="3" />
+      <LineId Id="336" Count="0" />
+      <LineId Id="291" Count="8" />
+      <LineId Id="339" Count="0" />
+      <LineId Id="300" Count="0" />
+      <LineId Id="337" Count="0" />
+      <LineId Id="301" Count="0" />
+      <LineId Id="340" Count="2" />
+      <LineId Id="393" Count="0" />
+      <LineId Id="392" Count="0" />
+      <LineId Id="395" Count="0" />
+      <LineId Id="397" Count="2" />
+      <LineId Id="396" Count="0" />
+      <LineId Id="302" Count="1" />
+      <LineId Id="305" Count="1" />
+      <LineId Id="367" Count="0" />
+      <LineId Id="372" Count="2" />
+      <LineId Id="371" Count="0" />
+      <LineId Id="309" Count="2" />
+      <LineId Id="286" Count="0" />
+      <LineId Id="315" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="161" Count="1" />
+      <LineId Id="164" Count="2" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="143" Count="0" />
+      <LineId Id="197" Count="0" />
+      <LineId Id="285" Count="0" />
+      <LineId Id="203" Count="2" />
+      <LineId Id="209" Count="0" />
+      <LineId Id="206" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="211" Count="0" />
+      <LineId Id="194" Count="0" />
+      <LineId Id="189" Count="3" />
+      <LineId Id="188" Count="0" />
+      <LineId Id="195" Count="0" />
+      <LineId Id="193" Count="0" />
+      <LineId Id="173" Count="0" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="104" Count="0" />
+      <LineId Id="113" Count="2" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="105" Count="0" />
+    </LineIds>
+    <LineIds Name="PrintStation.ACT_ConfigurePrint">
+      <LineId Id="53" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="1" Count="1" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="39" Count="1" />
+      <LineId Id="42" Count="2" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="46" Count="1" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="48" Count="2" />
+      <LineId Id="5" Count="1" />
+    </LineIds>
+    <LineIds Name="PrintStation.ACT_PrintSendMover">
+      <LineId Id="1" Count="1" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="43" Count="1" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="54" Count="1" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="56" Count="2" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="60" Count="1" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="PrintStation.ACT_PrintStatuses">
+      <LineId Id="70" Count="0" />
+    </LineIds>
+    <LineIds Name="PrintStation.MoversReadyForCycle">
+      <LineId Id="6" Count="11" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

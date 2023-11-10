@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="BallSeat_Outputs_typ" Id="{b87854b4-db30-0432-3ab6-6af6e6533665}">
+    <Declaration><![CDATA[TYPE BallSeat_Outputs_typ:
+STRUCT
+	BallClampOpen AT %Q*: BOOL;
+	BallClampClose AT %Q*: BOOL;
+	ExtendBallSeater AT %Q*: BOOL;
+	RetractBallSeater AT %Q*: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

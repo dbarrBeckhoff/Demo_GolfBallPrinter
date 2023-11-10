@@ -4669,7 +4669,7 @@ and will return to Group State Standby when the situation permits.
 	<Project ProjectGUID="{E3FDD453-7143-4CBE-AF2D-E7E762464CFC}" Target64Bit="true" ShowHideConfigurations="#x106">
 		<System>
 			<Settings MaxCpus="12" RouterMemory="1073741824" MaxStackSize="256">
-				<Cpu CpuId="2" BaseTime="2500"/>
+				<Cpu CpuId="2"/>
 				<Cpu CpuId="3"/>
 				<IoIdleTask Priority="10" Affinity="#x00000008"/>
 			</Settings>
@@ -4686,7 +4686,7 @@ and will return to Group State Standby when the situation permits.
 					<Name>Job Task</Name>
 					<ImageId>327</ImageId>
 				</Task>
-				<Task Id="4" Priority="1" CycleTime="2500" AmsPort="351" Affinity="#x00000004" AdtTasks="true">
+				<Task Id="4" Priority="1" CycleTime="10000" AmsPort="351" Affinity="#x00000004" AdtTasks="true">
 					<Name>XTS Task 1</Name>
 				</Task>
 			</Tasks>
@@ -4710,7 +4710,7 @@ and will return to Group State Standby when the situation permits.
 									<OTCID>#x02010040</OTCID>
 								</ManualConfig>
 								<Priority>1</Priority>
-								<CycleTime>250000</CycleTime>
+								<CycleTime>1000000</CycleTime>
 							</Context>
 							<Context>
 								<Id>2</Id>
@@ -7012,7 +7012,7 @@ and will return to Group State Standby when the situation permits.
 											<OTCID>#x02010040</OTCID>
 										</ManualConfig>
 										<Priority>1</Priority>
-										<CycleTime>250000</CycleTime>
+										<CycleTime>1000000</CycleTime>
 									</Context>
 								</Contexts>
 								<Interfaces>
@@ -8508,7 +8508,7 @@ and will return to Group State Standby when the situation permits.
 											<OTCID>#x02010040</OTCID>
 										</ManualConfig>
 										<Priority>1</Priority>
-										<CycleTime>250000</CycleTime>
+										<CycleTime>1000000</CycleTime>
 									</Context>
 								</Contexts>
 								<Interfaces>
@@ -10004,7 +10004,7 @@ and will return to Group State Standby when the situation permits.
 											<OTCID>#x02010040</OTCID>
 										</ManualConfig>
 										<Priority>1</Priority>
-										<CycleTime>250000</CycleTime>
+										<CycleTime>1000000</CycleTime>
 									</Context>
 								</Contexts>
 								<Interfaces>
@@ -11500,7 +11500,7 @@ and will return to Group State Standby when the situation permits.
 											<OTCID>#x02010040</OTCID>
 										</ManualConfig>
 										<Priority>1</Priority>
-										<CycleTime>250000</CycleTime>
+										<CycleTime>1000000</CycleTime>
 									</Context>
 								</Contexts>
 								<Interfaces>
@@ -12996,7 +12996,7 @@ and will return to Group State Standby when the situation permits.
 											<OTCID>#x02010040</OTCID>
 										</ManualConfig>
 										<Priority>1</Priority>
-										<CycleTime>250000</CycleTime>
+										<CycleTime>1000000</CycleTime>
 									</Context>
 								</Contexts>
 								<Interfaces>
@@ -14492,7 +14492,7 @@ and will return to Group State Standby when the situation permits.
 											<OTCID>#x02010040</OTCID>
 										</ManualConfig>
 										<Priority>1</Priority>
-										<CycleTime>250000</CycleTime>
+										<CycleTime>1000000</CycleTime>
 									</Context>
 								</Contexts>
 								<Interfaces>
@@ -15988,7 +15988,7 @@ and will return to Group State Standby when the situation permits.
 											<OTCID>#x02010040</OTCID>
 										</ManualConfig>
 										<Priority>1</Priority>
-										<CycleTime>250000</CycleTime>
+										<CycleTime>1000000</CycleTime>
 									</Context>
 								</Contexts>
 								<Interfaces>
@@ -17484,7 +17484,7 @@ and will return to Group State Standby when the situation permits.
 											<OTCID>#x02010040</OTCID>
 										</ManualConfig>
 										<Priority>1</Priority>
-										<CycleTime>250000</CycleTime>
+										<CycleTime>1000000</CycleTime>
 									</Context>
 								</Contexts>
 								<Interfaces>
@@ -18980,7 +18980,7 @@ and will return to Group State Standby when the situation permits.
 											<OTCID>#x02010040</OTCID>
 										</ManualConfig>
 										<Priority>1</Priority>
-										<CycleTime>250000</CycleTime>
+										<CycleTime>1000000</CycleTime>
 									</Context>
 								</Contexts>
 								<Interfaces>
@@ -20476,7 +20476,7 @@ and will return to Group State Standby when the situation permits.
 											<OTCID>#x02010040</OTCID>
 										</ManualConfig>
 										<Priority>1</Priority>
-										<CycleTime>250000</CycleTime>
+										<CycleTime>1000000</CycleTime>
 									</Context>
 								</Contexts>
 								<Interfaces>
@@ -21972,7 +21972,7 @@ and will return to Group State Standby when the situation permits.
 											<OTCID>#x02010040</OTCID>
 										</ManualConfig>
 										<Priority>1</Priority>
-										<CycleTime>250000</CycleTime>
+										<CycleTime>1000000</CycleTime>
 									</Context>
 								</Contexts>
 								<Interfaces>
@@ -23468,7 +23468,7 @@ and will return to Group State Standby when the situation permits.
 											<OTCID>#x02010040</OTCID>
 										</ManualConfig>
 										<Priority>1</Priority>
-										<CycleTime>250000</CycleTime>
+										<CycleTime>1000000</CycleTime>
 									</Context>
 								</Contexts>
 								<Interfaces>
@@ -25151,7 +25151,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -25553,7 +25553,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -25955,7 +25955,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -26357,7 +26357,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -26759,7 +26759,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -27161,7 +27161,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -27563,7 +27563,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -27965,7 +27965,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -28367,7 +28367,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -28769,7 +28769,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -29335,7 +29335,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -32733,7 +32733,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -36131,7 +36131,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -39529,7 +39529,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -42927,7 +42927,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -46325,7 +46325,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -49723,7 +49723,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -53121,7 +53121,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -56519,7 +56519,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -59917,7 +59917,7 @@ and will return to Group State Standby when the situation permits.
 										<OTCID>#x02010040</OTCID>
 									</ManualConfig>
 									<Priority>1</Priority>
-									<CycleTime>250000</CycleTime>
+									<CycleTime>1000000</CycleTime>
 								</Context>
 							</Contexts>
 							<Interfaces>
@@ -63419,7 +63419,7 @@ and will return to Group State Standby when the situation permits.
 		</Motion>
 		<Plc>
 			<Project GUID="{DD3A0B29-8E7C-4E32-989D-B0222C998777}" Name="Main" PrjFilePath="..\..\GolfBallXTSDemo_HW\Base Project\Main\Main.plcproj" TmcFilePath="..\..\GolfBallXTSDemo_HW\Base Project\Main\Main.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="..\..\GolfBallXTSDemo_HW\Base Project\Main\Main.tmc" TmcHash="{722C14D2-B574-DBBD-B7C2-DC67459A92A1}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="..\..\GolfBallXTSDemo_HW\Base Project\Main\Main.tmc" TmcHash="{060AA5F8-B08A-B658-DBDD-A16BAF80113B}">
 					<Name>Main Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
