@@ -63,17 +63,17 @@
                         }
                     ]
                 },
-                "PlayerNumber": {
+                "MoverText": {
                     "allOf": [
                         {
-                            "$ref": "tchmi:general#/definitions/UINT"
+                            "$ref": "tchmi:general#/definitions/STRING%2880%29"
                         },
                         {
                             "propertyOrder": 3
                         }
                     ]
                 },
-                "PlayerNumberVisibility": {
+                "MoverTextVisibility": {
                     "allOf": [
                         {
                             "$ref": "tchmi:general#/definitions/BOOL"

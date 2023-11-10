@@ -452,8 +452,13 @@ BallSeatStation();]]></ST>
         <ST><![CDATA[FOR i := 0 TO gvl.NUM_MOVERS - 1 DO
 	Payload	:= Mover[i].Payload;
 	HMIXTSHelper.Mover[i].BallImgVisibility			:= Payload.HasBall;
-	HMIXTSHelper.Mover[i].PlayerNumberVisibility	:= Payload.HasBall;
-	HMIXTSHelper.Mover[i].PlayerNumber				:= Payload.PlayerNumber;
+	HMIXTSHelper.Mover[i].MoverTextVisibility		:= Payload.HasBall;
+	CASE Payload.PlayerNumber OF
+	1:		HMIXTSHelper.Mover[i].MoverText	:= '1';
+	2:		HMIXTSHelper.Mover[i].MoverText	:= '2';
+	3:		HMIXTSHelper.Mover[i].MoverText	:= '3';
+	4:		HMIXTSHelper.Mover[i].MoverText	:= '4';
+	ELSE	HMIXTSHelper.Mover[i].MoverText	:= 'Invalid Player Num';	END_CASE
 END_FOR]]></ST>
       </Implementation>
     </Action>
@@ -677,7 +682,9 @@ END_CASE
     <LineIds Name="MAIN.ACT_HMIXTSHelper">
       <LineId Id="1" Count="0" />
       <LineId Id="10" Count="0" />
-      <LineId Id="2" Count="3" />
+      <LineId Id="2" Count="1" />
+      <LineId Id="11" Count="5" />
+      <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="MAIN.ACT_IOSim">
       <LineId Id="1" Count="3" />

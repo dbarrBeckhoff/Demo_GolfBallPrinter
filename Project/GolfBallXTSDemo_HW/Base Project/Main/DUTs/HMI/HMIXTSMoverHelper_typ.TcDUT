@@ -4,8 +4,8 @@
     <Declaration><![CDATA[TYPE HMIXTSMoverHelper_typ :
 STRUCT
 	BallImgVisibility:		BOOL;
-	PlayerNumberVisibility: BOOL;
-	PlayerNumber: 			UINT;
+	MoverTextVisibility: BOOL;
+	MoverText: 			STRING;
 END_STRUCT
 END_TYPE
 ]]></Declaration>

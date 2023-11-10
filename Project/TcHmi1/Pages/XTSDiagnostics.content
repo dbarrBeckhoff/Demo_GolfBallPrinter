@@ -17,28 +17,18 @@
     "Rotation": 0.0,
     "Visible": "%s%PLC1.MAIN.HMIXTSHelper::Mover[0]::BallImgVisibility%/s%",
     "zIndex": 11000,
-    "TextType": "MoverPosition",
+    "TextType": "Custom",
     "CustomText": "",
     "TextOptions": {
       "Color": {
-        "color": "Transparent"
+        "color": "black"
       },
+      "FontFamily": "",
+      "FontSize": 20,
       "FontStyle": "Normal",
       "FontWeight": "Normal",
-      "FontFamily": {
-        "Color": {
-          "color": "black"
-        },
-        "FontFamily": "",
-        "FontSize": 20,
-        "FontStyle": "Normal",
-        "FontWeight": "Normal",
-        "HorizontalAlignment": "Left",
-        "VerticalAlignment": "Top"
-      },
       "HorizontalAlignment": "Left",
-      "VerticalAlignment": "Top",
-      "FontSize": 50.0
+      "VerticalAlignment": "Top"
     }
   },
   {
@@ -304,31 +294,14 @@
 <script data-tchmi-target-attribute="data-tchmi-transformation" type="application/json">
 []
 </script>
-<script data-tchmi-target-attribute="data-tchmi-custommoverlayout" type="application/json">
-{
-  "ImageSrcFrontSide": null,
-  "ImageWidthFrontSide": 70,
-  "ImageHeightFrontSide": 126,
-  "XOffsetFrontSide": 0,
-  "YOffsetFrontSide": 0,
-  "ImageSrcBackSide": "",
-  "ImageWidthBackSide": 70,
-  "ImageHeightBackSide": 80,
-  "XOffsetBackSide": 0,
-  "YOffsetBackSide": 0
-}
-</script>
+
 <script data-tchmi-target-attribute="data-tchmi-moverselection" type="application/json">
 []
 </script>
 <script data-tchmi-target-attribute="data-tchmi-moduleselection" type="application/json">
 []
 </script>
-<script data-tchmi-target-attribute="data-tchmi-moduleselectioncolor" type="application/json">
-{
-  "color": "Transparent"
-}
-</script>
+
 <script data-tchmi-target-attribute="data-tchmi-moverselectioncolor" type="application/json">
 {
   "color": "Transparent"

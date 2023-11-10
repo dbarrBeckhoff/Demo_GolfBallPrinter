@@ -54,6 +54,7 @@ IF Enable THEN
 			IF rIO.Inputs.BallLoadComplete THEN
 				rIO.Outputs.LoadBall		:= FALSE;
 				Payload.HasBall				:= TRUE;
+				Payload.PlayerNumber		:= 1;
 				rIO.Outputs.BallClampClose	:= TRUE;
 				State						:= STN_CLOSEBALLCLAMP;
 			END_IF
@@ -119,7 +120,9 @@ _Enable	:= Enable;]]></ST>
       <LineId Id="71" Count="1" />
       <LineId Id="38" Count="0" />
       <LineId Id="30" Count="0" />
-      <LineId Id="76" Count="5" />
+      <LineId Id="76" Count="2" />
+      <LineId Id="162" Count="0" />
+      <LineId Id="79" Count="2" />
       <LineId Id="74" Count="0" />
       <LineId Id="31" Count="0" />
       <LineId Id="83" Count="1" />
