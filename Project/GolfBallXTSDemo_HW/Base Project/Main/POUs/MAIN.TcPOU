@@ -169,13 +169,13 @@ CASE MainState OF
         Station[GVL.STN_VISION].Position	:= 2125;
         Station[GVL.STN_KICKOUT].Position	:= 2375;
 
-		MultiStation[GVL.MULTISTN_PRINT].PositionTrigger.Position	:= 1400;
+		MultiStation[GVL.MULTISTN_PRINT].PositionTrigger.Position	:= 1541;
 		MultiStation[GVL.MULTISTN_PRINT].Station[0].Position		:= 1621;
 		MultiStation[GVL.MULTISTN_PRINT].Station[1].Position		:= 1707;
 		MultiStation[GVL.MULTISTN_PRINT].Station[2].Position		:= 1793;
 		MultiStation[GVL.MULTISTN_PRINT].Station[3].Position		:= 1879;
 
-		MultiStation[GVL.MULTISTN_TRAYLOAD].PositionTrigger.Position	:= 2900;
+		MultiStation[GVL.MULTISTN_TRAYLOAD].PositionTrigger.Position	:= 41;
 		MultiStation[GVL.MULTISTN_TRAYLOAD].Station[0].Position			:= 121;
 		MultiStation[GVL.MULTISTN_TRAYLOAD].Station[1].Position			:= 207;
 		MultiStation[GVL.MULTISTN_TRAYLOAD].Station[2].Position			:= 293;
