@@ -62,6 +62,8 @@ VAR
 	// IO
 	IO: IO_typ;
 
+	Payload: Payload_typ;
+	HMIXTSHelper : HMIXTSHelper_typ;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[(* ======================================================================================
@@ -191,14 +193,14 @@ CASE MainState OF
 		
 		// If a single logical track is used (typically aa closed loop) then tracks to not need to be initialized
 		Track[0].OTCID := 0;				// special "absolute reference" case for a single closed loop
-//		Track[1].OTCID:= 16#010100A0;		// value copied from XtsProcessingUnit1 > Track x > Object > Object Id field
+		Track[1].OTCID:= 16#010100C0;		// value copied from XtsProcessingUnit1 > Track x > Object > Object Id field
 
 		MainState := MS_ACTIVATE_TRACKS;
 		
 	MS_ACTIVATE_TRACKS:
 		// activate all movers on track[0]
 		FOR i := 0 TO GVL.NUM_MOVERS - 1 DO
-            Mover[i].ActivateTrack(Track[0]);
+            Mover[i].ActivateTrack(Track[1]);
         END_FOR
 		
 		MainState := MS_WAIT_FOR_TRACKS;
@@ -277,9 +279,11 @@ CASE MainState OF
             StationTimer[GVL.STN_KICKOUT](IN := TRUE, PT := T#1000MS);
             IF StationTimer[GVL.STN_KICKOUT].Q THEN
 				// maybe write a function to remove all ball data when ball is removed?
-//				Station[GVL.STN_KICKOUT].CurrentMover.Payload.HasBall		:= FALSE;	
-//				Station[GVL.STN_KICKOUT].CurrentMover.Payload.Reject		:= FALSE;
-//				Station[GVL.STN_KICKOUT].CurrentMover.Payload.BallSeated	:= FALSE;
+				Payload				:= Station[GVL.STN_KICKOUT].CurrentMover.Payload;
+				Payload.HasBall		:= FALSE;	
+				Payload.Reject		:= FALSE;
+				Payload.BallSeated	:= FALSE;
+				Station[GVL.STN_KICKOUT].CurrentMover.Payload	:= Payload;
                 Station[GVL.STN_KICKOUT].CurrentMover.MoveToStation(Station[GVL.STN_ORIENT]);
             END_IF
         ELSE
@@ -449,6 +453,8 @@ ACT_Print();
 ACT_Vision();
 ACT_IOSim();
 
+ACT_HMIHelper();
+
 // Initialize and update diagnostic features
 InitializeUtilityLibrary();
 
@@ -481,6 +487,22 @@ BallSeatStation.Enable	:= MainCommands.Enable;
 
 // FB CALLS
 BallSeatStation();]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_HMIHelper" Id="{7eb84608-d05e-0b93-1595-65759eea56ae}">
+      <Implementation>
+        <ST><![CDATA[FOR i := 0 TO gvl.NUM_MOVERS - 1 DO
+	Payload	:= Mover[i].Payload;
+	HMIXTSHelper.Mover[i].BallImgVisibility		:= Payload.HasBall;
+	HMIXTSHelper.Mover[i].MoverTextVisibility	:= Payload.HasBall;
+	CASE Payload.PlayerNumber OF
+	1:		HMIXTSHelper.Mover[i].MoverText		:= '1';
+	2:		HMIXTSHelper.Mover[i].MoverText		:= '2';
+	3:		HMIXTSHelper.Mover[i].MoverText		:= '3';
+	4:		HMIXTSHelper.Mover[i].MoverText		:= '4';
+	ELSE	HMIXTSHelper.Mover[i].MoverText		:= 'InvalidText';
+	END_CASE
+END_FOR]]></ST>
       </Implementation>
     </Action>
     <Action Name="ACT_IOSim" Id="{6ed4ba4c-34e2-0ad2-01bd-6b8a12409293}" FolderPath="Stations\">
@@ -656,7 +678,9 @@ END_CASE
       <LineId Id="1724" Count="0" />
       <LineId Id="1312" Count="2" />
       <LineId Id="1723" Count="0" />
+      <LineId Id="1916" Count="0" />
       <LineId Id="1720" Count="2" />
+      <LineId Id="1917" Count="0" />
       <LineId Id="1316" Count="3" />
       <LineId Id="1311" Count="0" />
       <LineId Id="1381" Count="1" />
@@ -699,6 +723,8 @@ END_CASE
       <LineId Id="1650" Count="0" />
       <LineId Id="1850" Count="0" />
       <LineId Id="1649" Count="0" />
+      <LineId Id="1915" Count="0" />
+      <LineId Id="1914" Count="0" />
       <LineId Id="1078" Count="13" />
       <LineId Id="1159" Count="0" />
       <LineId Id="1418" Count="0" />
@@ -716,6 +742,11 @@ END_CASE
       <LineId Id="15" Count="0" />
       <LineId Id="3" Count="0" />
       <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.ACT_HMIHelper">
+      <LineId Id="1" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="7" />
     </LineIds>
     <LineIds Name="MAIN.ACT_IOSim">
       <LineId Id="1" Count="3" />
