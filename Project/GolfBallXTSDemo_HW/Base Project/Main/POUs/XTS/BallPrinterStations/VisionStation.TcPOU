@@ -44,26 +44,29 @@ IF Enable THEN
 
 		STN_PROCESS:
 			
-				
-				IF rIO.Inputs.VisionPass THEN
-					Payload.VisionPass 	:= TRUE;
+				IF NOT(rIO.Inputs.VisionActive)THEN
+					IF rIO.Inputs.VisionPass THEN
+						Payload.VisionPass 	:= TRUE;
+						
+					ELSIF rIO.Inputs.VisionFail THEN
+						Payload.VisionPass 	:= FALSE;
+						
+					ELSE // Failed to get feedback. TODO: Need alarm.
+					END_IF;
 					
+					rIO.Outputs.Inspect := FALSE;
 					State 				:= STN_SEND;
-				ELSIF rIO.Inputs.VisionFail THEN
-					Payload.VisionPass 	:= FALSE;
-					
-					State 				:= STN_SEND;
-				ELSE // Failed to get feedback. TODO: Need alarm.
 				END_IF;
+					
 
 		STN_SEND:
-				rIO.Outputs.Inspect := FALSE;
+				
 			IF Payload.VisionPass THEN
 				rStation.CurrentMover.Payload	:= Payload;
 				rStation.CurrentMover.MoveToStation(rTrayLoadStation);
 				rStation.UnregisterCurrent();
 			ELSE
-				Payload.Reject					:= TRUE;
+				//Payload.Reject					:= TRUE;
 				rStation.CurrentMover.Payload	:= Payload;
 				rStation.CurrentMover.MoveToStation(rKickoutStation);
 				rStation.UnregisterCurrent();
@@ -98,12 +101,14 @@ _Enable	:= Enable;]]></ST>
       <LineId Id="158" Count="0" />
       <LineId Id="149" Count="0" />
       <LineId Id="154" Count="0" />
-      <LineId Id="205" Count="1" />
+      <LineId Id="205" Count="0" />
       <LineId Id="155" Count="1" />
       <LineId Id="209" Count="0" />
-      <LineId Id="207" Count="0" />
       <LineId Id="159" Count="0" />
       <LineId Id="144" Count="0" />
+      <LineId Id="214" Count="1" />
+      <LineId Id="212" Count="0" />
+      <LineId Id="210" Count="1" />
       <LineId Id="120" Count="1" />
       <LineId Id="178" Count="0" />
       <LineId Id="140" Count="0" />
