@@ -7,6 +7,7 @@ VAR
 	OrientStation:		OrientStation;
 	BallSeatStation:	BallSeatStation;
 	PrintStation:		PrintStation;
+	VisionStation:		VisionStation;
 	SimTimers:			SimTimers_typ;
 
 	// ========= System Control / FSM Variables =========
@@ -257,17 +258,18 @@ CASE MainState OF
 		OrientStation.Run	:= TRUE;
 		BallSeatStation.Run	:= TRUE;
 		PrintStation.Run	:= TRUE;
+		VisionStation.Run	:= TRUE;
 	
         // Vision Station Logic	
 		// Station specific logic to be moved to FUB
-        IF Station[GVL.STN_VISION].MoverInPosition THEN
-            StationTimer[GVL.STN_VISION](IN := TRUE, PT := T#250MS);
-            IF StationTimer[GVL.STN_VISION].Q THEN
-                Station[GVL.STN_VISION].CurrentMover.MoveToStation(Station[GVL.STN_ORIENT]);
-            END_IF
-        ELSE
-            StationTimer[GVL.STN_VISION](IN := FALSE);
-        END_IF
+//        IF Station[GVL.STN_VISION].MoverInPosition THEN
+//            StationTimer[GVL.STN_VISION](IN := TRUE, PT := T#250MS);
+//            IF StationTimer[GVL.STN_VISION].Q THEN
+//                Station[GVL.STN_VISION].CurrentMover.MoveToStation(Station[GVL.STN_ORIENT]);
+//            END_IF
+//        ELSE
+//            StationTimer[GVL.STN_VISION](IN := FALSE);
+//        END_IF
 
 		// Kickout Station Logic
 		// Station specific logic to be moved to FUB
@@ -444,6 +446,7 @@ END_CASE;
 ACT_Orient();
 ACT_BallSeat();
 ACT_Print();
+ACT_Vision();
 ACT_IOSim();
 
 // Initialize and update diagnostic features
@@ -508,6 +511,11 @@ SimTimers.TON_Print_PrintComplete(IN := IO.Print.Outputs.Print, PT := T#1200MS);
 IO.Print.Inputs.PrintActive		:= SimTimers.TON_Print_PrintComplete.IN AND NOT SimTimers.TON_Print_PrintComplete.Q;
 IO.Print.Inputs.PrintComplete	:= SimTimers.TON_Print_PrintComplete.Q;
 
+// Vision
+SimTimers.TON_Vision_ScanBall(IN := IO.Vision.Outputs.Inspect, PT := T#1000MS);
+IO.Vision.Inputs.VisionActive := IO.Vision.Outputs.Inspect AND NOT(IO.Vision.Inputs.VisionPass);
+IF SimTimers.TON_Vision_ScanBall.Q THEN	IO.Vision.Inputs.VisionPass	:= TRUE;	IO.Vision.Inputs.VisionFail	:= FALSE;
+ELSE IO.Vision.Inputs.VisionPass	:= FALSE;	IO.Vision.Inputs.VisionFail	:= FALSE;	END_IF;
 ]]></ST>
       </Implementation>
     </Action>
@@ -541,6 +549,21 @@ PrintStation.NumIndex	:= 2;
 
 // FB CALLS
 PrintStation();]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_Vision" Id="{1d152b17-17a5-050c-3a77-9500dd0f2c67}" FolderPath="Stations\">
+      <Implementation>
+        <ST><![CDATA[// INIT
+VisionStation.rStation			REF= Station[GVL.STN_VISION];
+VisionStation.rIO				REF= IO.Vision;
+VisionStation.rKickoutStation	REF= Station[GVL.STN_KICKOUT];
+VisionStation.rTrayloadStation	REF= Station[GVL.MULTISTN_TRAYLOAD];
+
+// Inputs
+VisionStation.Enable	:= MainCommands.Enable;
+
+// FB CALLS
+VisionStation();]]></ST>
       </Implementation>
     </Action>
     <Action Name="InitializeUtilityLibrary" Id="{4ac3b602-bbee-0af7-24db-b9d89bbd3ae5}">
@@ -620,6 +643,7 @@ END_CASE
       <LineId Id="1653" Count="0" />
       <LineId Id="1652" Count="0" />
       <LineId Id="1654" Count="1" />
+      <LineId Id="1848" Count="0" />
       <LineId Id="884" Count="0" />
       <LineId Id="1300" Count="0" />
       <LineId Id="1725" Count="0" />
@@ -673,6 +697,7 @@ END_CASE
       <LineId Id="1643" Count="0" />
       <LineId Id="1645" Count="0" />
       <LineId Id="1650" Count="0" />
+      <LineId Id="1850" Count="0" />
       <LineId Id="1649" Count="0" />
       <LineId Id="1078" Count="13" />
       <LineId Id="1159" Count="0" />
@@ -710,7 +735,11 @@ END_CASE
       <LineId Id="29" Count="0" />
       <LineId Id="27" Count="1" />
       <LineId Id="25" Count="0" />
-      <LineId Id="24" Count="0" />
+      <LineId Id="30" Count="1" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="36" Count="0" />
     </LineIds>
     <LineIds Name="MAIN.ACT_Orient">
       <LineId Id="2" Count="0" />
@@ -736,6 +765,10 @@ END_CASE
       <LineId Id="15" Count="0" />
       <LineId Id="3" Count="0" />
       <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.ACT_Vision">
+      <LineId Id="2" Count="9" />
+      <LineId Id="1" Count="0" />
     </LineIds>
     <LineIds Name="MAIN.InitializeUtilityLibrary">
       <LineId Id="2" Count="49" />

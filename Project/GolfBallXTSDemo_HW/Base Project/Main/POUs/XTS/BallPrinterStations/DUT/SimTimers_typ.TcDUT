@@ -16,6 +16,9 @@ STRUCT
 
 	// Printer
 	TON_Print_PrintComplete		: TON;
+	
+	// Vision
+	TON_Vision_ScanBall		: TON;
 
 END_STRUCT
 END_TYPE

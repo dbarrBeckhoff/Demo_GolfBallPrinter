@@ -140,6 +140,9 @@
     <Compile Include="POUs\XTS\BallPrinterStations\MachineStation.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\XTS\BallPrinterStations\VisionStation.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\XTS\ErrorMover.TcPOU">
       <SubType>Code</SubType>
     </Compile>
