@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="KickoutStation" Id="{1842ff95-20fa-0ac9-39e6-1dfcb969a2fa}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK KickoutStation EXTENDS MachineStation
+VAR_INPUT
+	rIO					: REFERENCE TO Kickout_IO_typ;
+	rStation			: REFERENCE TO Station;
+	rOrientStation 		: REFERENCE TO Station;
+
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	Payload			: Payload_typ;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT (__ISVALIDREF(rStation) AND __ISVALIDREF(rIO) AND __ISVALIDREF(rOrientStation) ) THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'Invalid reference at %s.', InstancePath);	// how to make this work?
+	RETURN;
+END_IF
+
+IF Enable THEN
+	IF NOT _Enable THEN
+		;
+	END_IF
+
+	CASE State OF
+		STN_WAIT:
+			IF Run AND rStation.MoverInPosition THEN
+				State	:= STN_CHECKMOVER;
+				Payload	:= rStation.CurrentMover.Payload;
+			END_IF
+
+		STN_CHECKMOVER:
+			
+		IF rIO.Inputs.BallRemoved THEN 
+			// Oops ??
+		ELSE
+			rIO.Outputs.BallClampOpen := TRUE;
+			State := STN_OPENBALLCLAMP;
+				
+		END_IF
+			
+		
+		STN_OPENBALLCLAMP:
+			IF rIO.Inputs.BallClampOpened THEN
+				rIO.Outputs.BallClampOpen	:= FALSE;
+				rIO.Outputs.RemoveBall		:= TRUE;
+				State						:= STN_PROCESS;
+			END_IF
+
+		STN_PROCESS:
+			IF rIO.Inputs.BallRemoved THEN
+				rIO.Outputs.RemoveBall		:= FALSE;
+				Payload.HasBall 			:= FALSE;
+				Payload.BallSeated 			:= FALSE;
+				Payload.Reject 				:= FALSE;
+				rIO.Outputs.BallClampClose 	:= TRUE;
+				State 						:= STN_CLOSEBALLCLAMP;
+			END_IF;
+			
+		STN_CLOSEBALLCLAMP:
+			IF rIO.Inputs.BallClampClosed THEN
+				rIO.Outputs.BallClampClose 	:= FALSE;
+				State						:= STN_SEND;
+			END_IF
+
+		STN_SEND:
+
+			rStation.CurrentMover.Payload	:= Payload;
+			rStation.CurrentMover.MoveToStation(rOrientStation);
+			rStation.UnregisterCurrent();
+
+			State							:= STN_WAIT;
+		
+		STN_ERROR:
+	
+	END_CASE
+
+ELSIF _Enable THEN
+	rIO.Outputs.BallClampClose	:= FALSE;
+	rIO.Outputs.BallClampOpen	:= FALSE;
+	rIO.Outputs.RemoveBall		:= FALSE;
+	State	:= STN_WAIT;
+END_IF
+
+//Save Previous Values
+_Enable	:= Enable;]]></ST>
+    </Implementation>
+    <LineIds Name="KickoutStation">
+      <LineId Id="15" Count="2" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="76" Count="12" />
+      <LineId Id="202" Count="0" />
+      <LineId Id="244" Count="1" />
+      <LineId Id="247" Count="0" />
+      <LineId Id="257" Count="0" />
+      <LineId Id="249" Count="0" />
+      <LineId Id="248" Count="0" />
+      <LineId Id="246" Count="0" />
+      <LineId Id="166" Count="0" />
+      <LineId Id="250" Count="1" />
+      <LineId Id="253" Count="3" />
+      <LineId Id="252" Count="0" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="258" Count="0" />
+      <LineId Id="260" Count="0" />
+      <LineId Id="240" Count="0" />
+      <LineId Id="242" Count="1" />
+      <LineId Id="262" Count="0" />
+      <LineId Id="212" Count="0" />
+      <LineId Id="259" Count="0" />
+      <LineId Id="263" Count="3" />
+      <LineId Id="268" Count="0" />
+      <LineId Id="267" Count="0" />
+      <LineId Id="120" Count="1" />
+      <LineId Id="140" Count="0" />
+      <LineId Id="179" Count="0" />
+      <LineId Id="183" Count="1" />
+      <LineId Id="189" Count="0" />
+      <LineId Id="128" Count="6" />
+      <LineId Id="269" Count="2" />
+      <LineId Id="135" Count="3" />
+      <LineId Id="18" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -8,6 +8,7 @@ VAR
 	BallSeatStation:	BallSeatStation;
 	PrintStation:		PrintStation;
 	VisionStation:		VisionStation;
+	KickoutStation:		KickoutStation;
 	SimTimers:			SimTimers_typ;
 
 	// ========= System Control / FSM Variables =========
@@ -261,6 +262,7 @@ CASE MainState OF
 		BallSeatStation.Run	:= TRUE;
 		PrintStation.Run	:= TRUE;
 		VisionStation.Run	:= TRUE;
+		KickoutStation.Run	:= TRUE;
 	
         // Vision Station Logic	
 		// Station specific logic to be moved to FUB
@@ -275,20 +277,20 @@ CASE MainState OF
 
 		// Kickout Station Logic
 		// Station specific logic to be moved to FUB
-        IF Station[GVL.STN_KICKOUT].MoverInPosition THEN
-            StationTimer[GVL.STN_KICKOUT](IN := TRUE, PT := T#1000MS);
-            IF StationTimer[GVL.STN_KICKOUT].Q THEN
-				// maybe write a function to remove all ball data when ball is removed?
-				Payload				:= Station[GVL.STN_KICKOUT].CurrentMover.Payload;
-				Payload.HasBall		:= FALSE;	
-				Payload.Reject		:= FALSE;
-				Payload.BallSeated	:= FALSE;
-				Station[GVL.STN_KICKOUT].CurrentMover.Payload	:= Payload;
-                Station[GVL.STN_KICKOUT].CurrentMover.MoveToStation(Station[GVL.STN_ORIENT]);
-            END_IF
-        ELSE
-            StationTimer[GVL.STN_KICKOUT](IN := FALSE);
-        END_IF
+//        IF Station[GVL.STN_KICKOUT].MoverInPosition THEN
+//            StationTimer[GVL.STN_KICKOUT](IN := TRUE, PT := T#1000MS);
+//            IF StationTimer[GVL.STN_KICKOUT].Q THEN
+//				// maybe write a function to remove all ball data when ball is removed?
+//				Payload				:= Station[GVL.STN_KICKOUT].CurrentMover.Payload;
+//				Payload.HasBall		:= FALSE;	
+//				Payload.Reject		:= FALSE;
+//				Payload.BallSeated	:= FALSE;
+//				Station[GVL.STN_KICKOUT].CurrentMover.Payload	:= Payload;
+//                Station[GVL.STN_KICKOUT].CurrentMover.MoveToStation(Station[GVL.STN_ORIENT]);
+//            END_IF
+//        ELSE
+//            StationTimer[GVL.STN_KICKOUT](IN := FALSE);
+//        END_IF
 
 		// Tray Load Station Logic
 		IF MultiStation[GVL.MULTISTN_TRAYLOAD].Station[0].MoverInPosition THEN
@@ -451,6 +453,7 @@ ACT_Orient();
 ACT_BallSeat();
 ACT_Print();
 ACT_Vision();
+ACT_Kickout();
 ACT_IOSim();
 
 ACT_HMIHelper();
@@ -538,7 +541,29 @@ SimTimers.TON_Vision_ScanBall(IN := IO.Vision.Outputs.Inspect, PT := T#1000MS);
 IO.Vision.Inputs.VisionActive := IO.Vision.Outputs.Inspect AND NOT(SimTimers.TON_Vision_ScanBall.Q);
 IF SimTimers.TON_Vision_ScanBall.Q THEN	IO.Vision.Inputs.VisionPass	:= FALSE;	IO.Vision.Inputs.VisionFail	:= TRUE;
 ELSE IO.Vision.Inputs.VisionPass	:= FALSE;	IO.Vision.Inputs.VisionFail	:= FALSE;	END_IF;
-]]></ST>
+
+// Kickout
+SimTimers.TON_Kickout_OpenBallClamp(IN := IO.Kickout.Outputs.BallClampOpen AND NOT IO.Kickout.Outputs.BallClampClose, PT := T#150MS);
+SimTimers.TON_Kickout_CloseBallClamp(IN := IO.Kickout.Outputs.BallClampClose AND NOT IO.Kickout.Outputs.BallClampOpen, PT := T#150MS);
+SimTimers.TON_Kickout_RemoveBall(IN := IO.Kickout.Outputs.RemoveBall, PT := T#700MS);
+
+IF SimTimers.TON_Kickout_OpenBallClamp.Q THEN		IO.Kickout.Inputs.BallClampOpened		:= TRUE;	IO.Kickout.Inputs.BallClampClosed		:= FALSE;	END_IF
+IF SimTimers.TON_Kickout_CloseBallClamp.Q THEN		IO.Kickout.Inputs.BallClampClosed		:= TRUE;	IO.Kickout.Inputs.BallClampOpened		:= FALSE;	END_IF
+IO.Kickout.Inputs.BallRemoved						:= SimTimers.TON_Kickout_RemoveBall.Q;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_Kickout" Id="{2d5a9017-72e6-0d5d-31e7-0246b71c6c97}" FolderPath="Stations\">
+      <Implementation>
+        <ST><![CDATA[// INIT
+KickoutStation.rStation			REF= Station[GVL.STN_KICKOUT];
+KickoutStation.rIO				REF= IO.Kickout;
+KickoutStation.rOrientStation	REF= Station[GVL.STN_ORIENT];
+
+// Inputs
+KickoutStation.Enable	:= MainCommands.Enable;
+
+// FB CALLS
+KickoutStation();]]></ST>
       </Implementation>
     </Action>
     <Action Name="ACT_Orient" Id="{32224cff-87eb-095f-1e16-1fc8acfca016}" FolderPath="Stations\">
@@ -666,6 +691,7 @@ END_CASE
       <LineId Id="1652" Count="0" />
       <LineId Id="1654" Count="1" />
       <LineId Id="1848" Count="0" />
+      <LineId Id="1981" Count="0" />
       <LineId Id="884" Count="0" />
       <LineId Id="1300" Count="0" />
       <LineId Id="1725" Count="0" />
@@ -722,6 +748,7 @@ END_CASE
       <LineId Id="1645" Count="0" />
       <LineId Id="1650" Count="0" />
       <LineId Id="1850" Count="0" />
+      <LineId Id="1982" Count="0" />
       <LineId Id="1649" Count="0" />
       <LineId Id="1915" Count="0" />
       <LineId Id="1914" Count="0" />
@@ -770,7 +797,18 @@ END_CASE
       <LineId Id="48" Count="0" />
       <LineId Id="35" Count="0" />
       <LineId Id="37" Count="0" />
+      <LineId Id="49" Count="0" />
       <LineId Id="36" Count="0" />
+      <LineId Id="52" Count="1" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="56" Count="1" />
+      <LineId Id="50" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.ACT_Kickout">
+      <LineId Id="2" Count="3" />
+      <LineId Id="7" Count="4" />
+      <LineId Id="1" Count="0" />
     </LineIds>
     <LineIds Name="MAIN.ACT_Orient">
       <LineId Id="2" Count="0" />
