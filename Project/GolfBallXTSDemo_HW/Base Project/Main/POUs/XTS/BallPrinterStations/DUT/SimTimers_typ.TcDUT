@@ -19,6 +19,12 @@ STRUCT
 	
 	// Vision
 	TON_Vision_ScanBall		: TON;
+	
+	// Kickout
+	TON_Kickout_OpenBallClamp		: TON;
+	TON_Kickout_CloseBallClamp		: TON;
+	TON_Kickout_RemoveBall			: TON;
+	
 
 END_STRUCT
 END_TYPE
