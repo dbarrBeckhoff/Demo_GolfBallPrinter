@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MachineStation" Id="{a1e30f3d-6564-0f41-3e79-0f2f13fb327e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK MachineStation
+VAR_INPUT
+	Enable	: BOOL;
+	Run		: BOOL;
+	Reset	: BOOL;
+END_VAR
+VAR_OUTPUT
+	State	: StnState_Enum;
+	Error	: BOOL;
+	ErrorID	: DINT;
+END_VAR
+VAR
+	_Enable	: BOOL;
+
+    {attribute 'instance-path'}
+    {attribute 'noinit'}
+    InstancePath 				: STRING; // Unique variable path of the instance
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <LineIds Name="MachineStation">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
