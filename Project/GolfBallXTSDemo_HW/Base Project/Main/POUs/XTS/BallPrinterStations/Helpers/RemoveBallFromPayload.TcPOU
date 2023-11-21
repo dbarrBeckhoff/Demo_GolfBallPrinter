@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="RemoveBallFromPayload" Id="{653e083c-ebe4-0910-32d1-15472cf10b22}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION RemoveBallFromPayload : BOOL
+VAR_INPUT
+	rPayload	: REFERENCE TO Payload_typ;
+END_VAR
+VAR
+	i			: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[rPayload.HasBall		:= FALSE;
+rPayload.BallSeated		:= FALSE;
+rPayload.PlayerNumber	:= 0;
+rPayload.PrintComplete	:= FALSE;
+FOR i := 0 TO SIZEOF(rPayload.PrintStepComplete) / SIZEOF(rPayload.PrintStepComplete[0]) - 1 DO
+	rPayload.PrintStepComplete[i]	:= FALSE;
+END_FOR
+rPayload.Reject			:= FALSE;
+rPayload.VisionPass		:= FALSE;]]></ST>
+    </Implementation>
+    <LineIds Name="RemoveBallFromPayload">
+      <LineId Id="10" Count="3" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="18" Count="2" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

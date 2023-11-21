@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="TrayLoadStation" Id="{459b61a5-3a8e-006f-3bc9-886e6b749ec6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK TrayLoadStation EXTENDS MachineStation
+VAR_INPUT
+	rIO				: REFERENCE TO TrayLoad_IO_typ;
+	rMultiStn		: REFERENCE TO MultiStation;
+	rOrientStation	: REFERENCE TO Station;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	PosTriggerPayload	: Payload_typ;
+	StationPayload		: ARRAY[0..GVL.MULTISTN_NUM_STN - 1] OF Payload_typ;
+	MoverHalted			: BOOL;
+	i					: INT;
+	FarthestIndex0StnTrackedMovers: INT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT (__ISVALIDREF(rMultiStn) AND __ISVALIDREF(rIO) AND __ISVALIDREF(rOrientStation)) THEN
+	ADSLOGSTR( ADSLOG_MSGTYPE_ERROR, 'Invalid reference at %s.', InstancePath);	// how to make this work?
+	RETURN;
+END_IF
+
+// Station Sequence
+IF Enable THEN
+	IF NOT _Enable THEN
+		;
+	END_IF
+
+	// Catch Incoming Shuttles and process them
+	IF rMultiStn.PositionTrigger.MoverPassedPosition THEN
+(*		PosTriggerPayload	:= rMultiStn.PositionTrigger.CurrentMover.Payload;
+		// Mover payload not valid for printing
+		IF PosTriggerPayload.Reject OR NOT(PosTriggerPayload.HasBall AND PosTriggerPayload.BallSeated) THEN		
+			PosTriggerPayload.Reject	:= TRUE;
+			IF rMultiStn.TrackedMoverCount > 0 THEN
+				MoverHalted				:= TRUE;
+				rMultiStn.PositionTrigger.CurrentMover.Halt();
+			ELSE
+				rMultiStn.PositionTrigger.CurrentMover.MoveToStation(rKickoutStation);
+				rMultiStn.PositionTrigger.CurrentMover.Payload	:= PosTriggerPayload;
+				rMultiStn.PositionTrigger.MuteCurrent();
+				MoverHalted				:= FALSE;
+			END_IF
+		// mover ok to print
+		ELSE						*) // This doesn't work and it's not really necessary.  
+										// PositionTrigger would need to buffer events.  
+										// this only works when movers are going slow
+										// Peter eventually going to add event buffering to position trigger, not worth doing for demo
+			FarthestIndex0StnTrackedMovers	:= 100;
+			FOR i := 3 TO 0 BY -1 DO
+				IF rMultiStn.Station[i].TrackedMoverCount < FarthestIndex0StnTrackedMovers THEN
+					FarthestIndex0StnTrackedMovers	:= i;
+				END_IF
+			END_FOR
+					
+			FOR i := 3 TO 0 BY -1 DO
+				IF rMultiStn.Station[i].TrackedMoverCount = 0 THEN
+					rMultiStn.PositionTrigger.CurrentMover.MoveToStation(rMultiStn.Station[i]);
+					rMultiStn.PositionTrigger.MuteCurrent();
+					EXIT;
+				ELSIF i = 0 THEN
+					rMultiStn.PositionTrigger.CurrentMover.MoveToStation(rMultiStn.Station[FarthestIndex0StnTrackedMovers]);
+					rMultiStn.PositionTrigger.MuteCurrent();
+					EXIT;
+				END_IF
+			END_FOR
+		(*END_IF*)
+	END_IF
+
+	// Printing Sequence State Machine
+	CASE State OF
+		STN_WAIT:
+			IF Run AND_THEN THIS^.MoversReadyForCycle() THEN
+				FOR i := 0 TO GVL.MULTISTN_NUM_STN - 1 DO
+					IF rMultiStn.Station[i].TrackedMoverCount > 0 THEN
+						StationPayload[i]	:= rMultiStn.Station[i].CurrentMover.Payload;
+					END_IF
+				END_FOR
+				rIO.Outputs.BallClampOpen	:= TRUE;
+				State						:= STN_OPENBALLCLAMP;
+			END_IF
+
+		STN_OPENBALLCLAMP:
+			IF rIO.Inputs.BallClampOpened THEN
+				rIO.Outputs.BallClampOpen	:= FALSE;
+				rIO.Outputs.LoadTray		:= TRUE;
+				State						:= STN_PROCESS;
+			END_IF
+
+		STN_PROCESS:
+			IF rIO.Inputs.TrayLoadComplete THEN
+				rIO.Outputs.LoadTray		:= FALSE;
+				FOR i := 0 TO GVL.MULTISTN_NUM_STN - 1 DO
+					IF rMultiStn.Station[i].TrackedMoverCount > 0 THEN
+						RemoveBallFromPayload(StationPayload[i]);
+					END_IF
+				END_FOR
+			rIO.Outputs.BallClampClose	:= TRUE;
+			State						:= STN_CLOSEBALLCLAMP;
+			END_IF
+
+		STN_CLOSEBALLCLAMP:
+			IF rIO.Inputs.BallClampClosed THEN
+				rIO.Outputs.BallClampClose	:= FALSE;
+				State						:= STN_SEND;
+			END_IF
+
+		STN_SEND:
+			// Write Payload Data
+			FOR i := 0 TO GVL.MULTISTN_NUM_STN - 1 DO
+				IF rMultiStn.Station[i].TrackedMoverCount > 0 THEN
+					rMultiStn.Station[i].CurrentMover.Payload		:= StationPayload[i];
+				END_IF
+			END_FOR
+
+			// Send Mover
+			ACT_TLSendMover();
+			State	:= STN_WAIT;
+
+		STN_ERROR:
+
+	END_CASE
+
+ELSIF _Enable THEN
+	memset(ADR(rIO.Outputs), 0, SIZEOF(rIO.Outputs));
+	State	:= STN_WAIT;
+END_IF
+
+//Save Previous Values
+_Enable	:= Enable;]]></ST>
+    </Implementation>
+    <Action Name="ACT_TLSendMover" Id="{5a622825-1ca1-0de9-300d-c8d3f5c74922}">
+      <Implementation>
+        <ST><![CDATA[
+IF rMultiStn.Station[3].TrackedMoverCount > 0 THEN rMultiStn.Station[3].CurrentMover.MoveToStation(rOrientStation);		rMultiStn.Station[3].UnregisterCurrent();	END_IF
+IF rMultiStn.Station[2].TrackedMoverCount > 0 THEN rMultiStn.Station[2].CurrentMover.MoveToStation(rOrientStation);		rMultiStn.Station[2].UnregisterCurrent();	END_IF
+IF rMultiStn.Station[1].TrackedMoverCount > 0 THEN rMultiStn.Station[1].CurrentMover.MoveToStation(rOrientStation);		rMultiStn.Station[1].UnregisterCurrent();	END_IF
+IF rMultiStn.Station[0].TrackedMoverCount > 0 THEN rMultiStn.Station[0].CurrentMover.MoveToStation(rOrientStation);		rMultiStn.Station[0].UnregisterCurrent();	END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Method Name="MoversReadyForCycle" Id="{951f49a7-ee97-08d0-2a57-3ed7f21a8362}">
+      <Declaration><![CDATA[METHOD MoversReadyForCycle : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Check that all movers are in position, and that there are movers in all of the enabled process index 0 print positions
+MoversReadyForCycle	:= TRUE; 
+IF NOT rMultiStn.AllMoversInPosition THEN	// Any stations with tracked movers that don't have mover in position will trigger this false
+	MoversReadyForCycle	:= FALSE;
+ELSE
+	FOR i := GVL.MULTISTN_NUM_STN - 1 TO 0 BY - 1 DO
+		IF rMultiStn.Station[i].TrackedMoverCount = 0 AND NOT MoverHalted THEN		// Ignore this check if there is a mover halted by the position trigger
+			MoversReadyForCycle	:= FALSE;
+		END_IF
+	END_FOR
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="TrayLoadStation">
+      <LineId Id="333" Count="2" />
+      <LineId Id="97" Count="0" />
+      <LineId Id="130" Count="0" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="108" Count="0" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="109" Count="0" />
+      <LineId Id="287" Count="3" />
+      <LineId Id="336" Count="0" />
+      <LineId Id="291" Count="8" />
+      <LineId Id="339" Count="0" />
+      <LineId Id="300" Count="0" />
+      <LineId Id="337" Count="0" />
+      <LineId Id="301" Count="0" />
+      <LineId Id="340" Count="2" />
+      <LineId Id="393" Count="0" />
+      <LineId Id="392" Count="0" />
+      <LineId Id="395" Count="0" />
+      <LineId Id="397" Count="2" />
+      <LineId Id="396" Count="0" />
+      <LineId Id="302" Count="1" />
+      <LineId Id="305" Count="1" />
+      <LineId Id="367" Count="0" />
+      <LineId Id="372" Count="2" />
+      <LineId Id="371" Count="0" />
+      <LineId Id="309" Count="2" />
+      <LineId Id="286" Count="0" />
+      <LineId Id="315" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="161" Count="1" />
+      <LineId Id="164" Count="2" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="438" Count="0" />
+      <LineId Id="437" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="440" Count="3" />
+      <LineId Id="439" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="143" Count="0" />
+      <LineId Id="197" Count="0" />
+      <LineId Id="285" Count="0" />
+      <LineId Id="204" Count="1" />
+      <LineId Id="446" Count="0" />
+      <LineId Id="209" Count="0" />
+      <LineId Id="206" Count="0" />
+      <LineId Id="448" Count="0" />
+      <LineId Id="447" Count="0" />
+      <LineId Id="449" Count="3" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="194" Count="0" />
+      <LineId Id="189" Count="3" />
+      <LineId Id="188" Count="0" />
+      <LineId Id="195" Count="0" />
+      <LineId Id="193" Count="0" />
+      <LineId Id="173" Count="0" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="104" Count="0" />
+      <LineId Id="454" Count="0" />
+      <LineId Id="113" Count="2" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="105" Count="0" />
+    </LineIds>
+    <LineIds Name="TrayLoadStation.ACT_TLSendMover">
+      <LineId Id="27" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="43" Count="1" />
+      <LineId Id="42" Count="0" />
+    </LineIds>
+    <LineIds Name="TrayLoadStation.MoversReadyForCycle">
+      <LineId Id="6" Count="5" />
+      <LineId Id="13" Count="2" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

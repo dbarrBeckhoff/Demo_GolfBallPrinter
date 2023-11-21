@@ -9,6 +9,7 @@ VAR
 	PrintStation:		PrintStation;
 	VisionStation:		VisionStation;
 	KickoutStation:		KickoutStation;
+	TrayLoadStation:	TrayLoadStation;
 	SimTimers:			SimTimers_typ;
 
 	// ========= System Control / FSM Variables =========
@@ -263,47 +264,7 @@ CASE MainState OF
 		PrintStation.Run	:= TRUE;
 		VisionStation.Run	:= TRUE;
 		KickoutStation.Run	:= TRUE;
-	
-        // Vision Station Logic	
-		// Station specific logic to be moved to FUB
-//        IF Station[GVL.STN_VISION].MoverInPosition THEN
-//            StationTimer[GVL.STN_VISION](IN := TRUE, PT := T#250MS);
-//            IF StationTimer[GVL.STN_VISION].Q THEN
-//                Station[GVL.STN_VISION].CurrentMover.MoveToStation(Station[GVL.STN_ORIENT]);
-//            END_IF
-//        ELSE
-//            StationTimer[GVL.STN_VISION](IN := FALSE);
-//        END_IF
-
-		// Kickout Station Logic
-		// Station specific logic to be moved to FUB
-//        IF Station[GVL.STN_KICKOUT].MoverInPosition THEN
-//            StationTimer[GVL.STN_KICKOUT](IN := TRUE, PT := T#1000MS);
-//            IF StationTimer[GVL.STN_KICKOUT].Q THEN
-//				// maybe write a function to remove all ball data when ball is removed?
-//				Payload				:= Station[GVL.STN_KICKOUT].CurrentMover.Payload;
-//				Payload.HasBall		:= FALSE;	
-//				Payload.Reject		:= FALSE;
-//				Payload.BallSeated	:= FALSE;
-//				Station[GVL.STN_KICKOUT].CurrentMover.Payload	:= Payload;
-//                Station[GVL.STN_KICKOUT].CurrentMover.MoveToStation(Station[GVL.STN_ORIENT]);
-//            END_IF
-//        ELSE
-//            StationTimer[GVL.STN_KICKOUT](IN := FALSE);
-//        END_IF
-
-		// Tray Load Station Logic
-		IF MultiStation[GVL.MULTISTN_TRAYLOAD].Station[0].MoverInPosition THEN
-			MultiStationTimer[GVL.MULTISTN_TRAYLOAD](IN := TRUE, PT := T#1500MS);
-			IF MultiStationTimer[GVL.MULTISTN_TRAYLOAD].Q THEN
-				FOR i := 0 TO 3 DO
-					MultiStation[GVL.MULTISTN_TRAYLOAD].Station[i].CurrentMover.MoveToStation(Station[GVL.STN_ORIENT]);
-				END_FOR
-				MultiStationTimer[GVL.MULTISTN_TRAYLOAD](IN := FALSE);
-			END_IF
-		ELSE
-			MultiStationTimer[GVL.MULTISTN_TRAYLOAD](IN := FALSE);
-		END_IF
+		TrayLoadStation.Run	:= TRUE;
 
 		// Example call to XTS Utility library. See Diagnostics section of docs for more info
 		(*
@@ -330,6 +291,9 @@ CASE MainState OF
 		OrientStation.Run	:= FALSE;
 		BallSeatStation.Run	:= FALSE;
 		PrintStation.Run	:= FALSE;
+		VisionStation.Run	:= FALSE;
+		KickoutStation.Run	:= FALSE;
+		TrayLoadStation.Run	:= FALSE;
 	
 		MainState					:= MS_STOPPING;
 	
@@ -454,6 +418,7 @@ ACT_BallSeat();
 ACT_Print();
 ACT_Vision();
 ACT_Kickout();
+ACT_TRAYLOAD();
 ACT_IOSim();
 
 ACT_HMIHelper();
@@ -533,14 +498,13 @@ IF SimTimers.TON_BallSeat_RetractBallSeater.Q THEN	IO.BallSeat.Inputs.BallSeatRe
 
 // Printer
 SimTimers.TON_Print_PrintComplete(IN := IO.Print.Outputs.Print, PT := T#1200MS);
-
 IO.Print.Inputs.PrintActive		:= SimTimers.TON_Print_PrintComplete.IN AND NOT SimTimers.TON_Print_PrintComplete.Q;
 IO.Print.Inputs.PrintComplete	:= SimTimers.TON_Print_PrintComplete.Q;
 
 // Vision
 SimTimers.TON_Vision_ScanBall(IN := IO.Vision.Outputs.Inspect, PT := T#1000MS);
 IO.Vision.Inputs.VisionActive := IO.Vision.Outputs.Inspect AND NOT(SimTimers.TON_Vision_ScanBall.Q);
-IF SimTimers.TON_Vision_ScanBall.Q THEN	IO.Vision.Inputs.VisionPass	:= FALSE;	IO.Vision.Inputs.VisionFail	:= TRUE;
+IF SimTimers.TON_Vision_ScanBall.Q THEN	IO.Vision.Inputs.VisionPass	:= TRUE;	IO.Vision.Inputs.VisionFail	:= FALSE;
 ELSE IO.Vision.Inputs.VisionPass	:= FALSE;	IO.Vision.Inputs.VisionFail	:= FALSE;	END_IF;
 
 // Kickout
@@ -550,7 +514,16 @@ SimTimers.TON_Kickout_RemoveBall(IN := IO.Kickout.Outputs.RemoveBall, PT := T#70
 
 IF SimTimers.TON_Kickout_OpenBallClamp.Q THEN		IO.Kickout.Inputs.BallClampOpened		:= TRUE;	IO.Kickout.Inputs.BallClampClosed		:= FALSE;	END_IF
 IF SimTimers.TON_Kickout_CloseBallClamp.Q THEN		IO.Kickout.Inputs.BallClampClosed		:= TRUE;	IO.Kickout.Inputs.BallClampOpened		:= FALSE;	END_IF
-IO.Kickout.Inputs.BallRemoved						:= SimTimers.TON_Kickout_RemoveBall.Q;]]></ST>
+IO.Kickout.Inputs.BallRemoved						:= SimTimers.TON_Kickout_RemoveBall.Q;
+
+// Tray Load
+SimTimers.TON_TrayLoad_OpenBallClamp(IN := IO.TrayLoad.Outputs.BallClampOpen AND NOT IO.TrayLoad.Outputs.BallClampClose, PT := T#150MS);
+SimTimers.TON_TrayLoad_CloseBallClamp(IN := IO.TrayLoad.Outputs.BallClampClose AND NOT IO.TrayLoad.Outputs.BallClampOpen, PT := T#150MS);
+SimTimers.TON_TrayLoad_Complete(IN := IO.TrayLoad.Outputs.LoadTray, PT := T#1500MS);
+
+IF SimTimers.TON_TrayLoad_OpenBallClamp.Q THEN		IO.TrayLoad.Inputs.BallClampOpened		:= TRUE;	IO.TrayLoad.Inputs.BallClampClosed		:= FALSE;	END_IF
+IF SimTimers.TON_TrayLoad_CloseBallClamp.Q THEN		IO.TrayLoad.Inputs.BallClampClosed		:= TRUE;	IO.TrayLoad.Inputs.BallClampOpened		:= FALSE;	END_IF
+IO.TrayLoad.Inputs.TrayLoadComplete					:= SimTimers.TON_TrayLoad_Complete.Q;]]></ST>
       </Implementation>
     </Action>
     <Action Name="ACT_Kickout" Id="{2d5a9017-72e6-0d5d-31e7-0246b71c6c97}" FolderPath="Stations\">
@@ -559,6 +532,7 @@ IO.Kickout.Inputs.BallRemoved						:= SimTimers.TON_Kickout_RemoveBall.Q;]]></ST
 KickoutStation.rStation			REF= Station[GVL.STN_KICKOUT];
 KickoutStation.rIO				REF= IO.Kickout;
 KickoutStation.rOrientStation	REF= Station[GVL.STN_ORIENT];
+KickoutStation.rTrayLoadStation REF= MultiStation[GVL.MULTISTN_TRAYLOAD];
 
 // Inputs
 KickoutStation.Enable	:= MainCommands.Enable;
@@ -599,13 +573,27 @@ PrintStation.NumIndex	:= 2;
 PrintStation();]]></ST>
       </Implementation>
     </Action>
+    <Action Name="ACT_TrayLoad" Id="{bf4ac4db-ba17-0d15-1e34-eb3866fcf9fe}" FolderPath="Stations\">
+      <Implementation>
+        <ST><![CDATA[// INIT
+TrayLoadStation.rMultiStn		REF= MultiStation[GVL.MULTISTN_TRAYLOAD];
+TrayLoadStation.rIO				REF= IO.TrayLoad;
+TrayLoadStation.rOrientStation	REF= Station[GVL.STN_ORIENT];
+
+// Inputs
+TrayLoadStation.Enable		:= MainCommands.Enable;
+
+// FB CALLS
+TrayLoadStation();]]></ST>
+      </Implementation>
+    </Action>
     <Action Name="ACT_Vision" Id="{1d152b17-17a5-050c-3a77-9500dd0f2c67}" FolderPath="Stations\">
       <Implementation>
         <ST><![CDATA[// INIT
 VisionStation.rStation			REF= Station[GVL.STN_VISION];
 VisionStation.rIO				REF= IO.Vision;
 VisionStation.rKickoutStation	REF= Station[GVL.STN_KICKOUT];
-VisionStation.rTrayloadStation	REF= Station[GVL.MULTISTN_TRAYLOAD];
+VisionStation.rTrayloadStation	REF= MultiStation[GVL.MULTISTN_TRAYLOAD];
 
 // Inputs
 VisionStation.Enable	:= MainCommands.Enable;
@@ -693,37 +681,12 @@ END_CASE
       <LineId Id="1654" Count="1" />
       <LineId Id="1848" Count="0" />
       <LineId Id="1981" Count="0" />
-      <LineId Id="884" Count="0" />
-      <LineId Id="1300" Count="0" />
-      <LineId Id="1725" Count="0" />
-      <LineId Id="1301" Count="2" />
-      <LineId Id="1631" Count="0" />
-      <LineId Id="1306" Count="2" />
-      <LineId Id="941" Count="0" />
-      <LineId Id="1310" Count="0" />
-      <LineId Id="1309" Count="0" />
-      <LineId Id="1724" Count="0" />
-      <LineId Id="1312" Count="2" />
-      <LineId Id="1723" Count="0" />
-      <LineId Id="1916" Count="0" />
-      <LineId Id="1720" Count="2" />
-      <LineId Id="1917" Count="0" />
-      <LineId Id="1316" Count="3" />
-      <LineId Id="1311" Count="0" />
-      <LineId Id="1381" Count="1" />
-      <LineId Id="1438" Count="0" />
-      <LineId Id="1445" Count="0" />
-      <LineId Id="1444" Count="0" />
-      <LineId Id="1573" Count="1" />
-      <LineId Id="1450" Count="0" />
-      <LineId Id="1633" Count="0" />
-      <LineId Id="1437" Count="0" />
-      <LineId Id="1465" Count="0" />
-      <LineId Id="1464" Count="0" />
-      <LineId Id="1446" Count="0" />
+      <LineId Id="2047" Count="0" />
       <LineId Id="942" Count="21" />
       <LineId Id="1657" Count="2" />
       <LineId Id="1656" Count="0" />
+      <LineId Id="2049" Count="1" />
+      <LineId Id="2048" Count="0" />
       <LineId Id="964" Count="32" />
       <LineId Id="1000" Count="3" />
       <LineId Id="1408" Count="0" />
@@ -750,6 +713,7 @@ END_CASE
       <LineId Id="1650" Count="0" />
       <LineId Id="1850" Count="0" />
       <LineId Id="1982" Count="0" />
+      <LineId Id="2051" Count="0" />
       <LineId Id="1649" Count="0" />
       <LineId Id="1915" Count="0" />
       <LineId Id="1914" Count="0" />
@@ -792,7 +756,6 @@ END_CASE
       <LineId Id="22" Count="0" />
       <LineId Id="21" Count="0" />
       <LineId Id="23" Count="0" />
-      <LineId Id="29" Count="0" />
       <LineId Id="27" Count="1" />
       <LineId Id="25" Count="0" />
       <LineId Id="30" Count="1" />
@@ -806,9 +769,17 @@ END_CASE
       <LineId Id="60" Count="0" />
       <LineId Id="56" Count="1" />
       <LineId Id="50" Count="0" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="67" Count="2" />
+      <LineId Id="66" Count="0" />
     </LineIds>
     <LineIds Name="MAIN.ACT_Kickout">
       <LineId Id="2" Count="3" />
+      <LineId Id="12" Count="0" />
       <LineId Id="7" Count="4" />
       <LineId Id="1" Count="0" />
     </LineIds>
@@ -833,6 +804,17 @@ END_CASE
       <LineId Id="17" Count="1" />
       <LineId Id="16" Count="0" />
       <LineId Id="20" Count="1" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.ACT_TrayLoad">
+      <LineId Id="2" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="16" Count="0" />
       <LineId Id="15" Count="0" />
       <LineId Id="3" Count="0" />
       <LineId Id="5" Count="0" />

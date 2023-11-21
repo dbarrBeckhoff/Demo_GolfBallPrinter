@@ -24,7 +24,11 @@ STRUCT
 	TON_Kickout_OpenBallClamp		: TON;
 	TON_Kickout_CloseBallClamp		: TON;
 	TON_Kickout_RemoveBall			: TON;
-	
+
+	// Tray Load
+	TON_TrayLoad_OpenBallClamp		: TON;
+	TON_TrayLoad_CloseBallClamp		: TON;
+	TON_TrayLoad_Complete			: TON;
 
 END_STRUCT
 END_TYPE

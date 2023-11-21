@@ -140,10 +140,16 @@
     <Compile Include="POUs\XTS\BallPrinterStations\DUT\StnState_Enum.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\XTS\BallPrinterStations\Helpers\RemoveBallFromPayload.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\XTS\BallPrinterStations\PrintStation.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\XTS\BallPrinterStations\MachineStation.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\XTS\BallPrinterStations\TrayLoadStation.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\XTS\BallPrinterStations\VisionStation.TcPOU">
@@ -216,6 +222,7 @@
     <Folder Include="POUs\XTS" />
     <Folder Include="POUs\XTS\BallPrinterStations" />
     <Folder Include="POUs\XTS\BallPrinterStations\DUT" />
+    <Folder Include="POUs\XTS\BallPrinterStations\Helpers" />
     <Folder Include="VISUs" />
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,7 @@ VAR_INPUT
 	rIO					: REFERENCE TO Kickout_IO_typ;
 	rStation			: REFERENCE TO Station;
 	rOrientStation 		: REFERENCE TO Station;
+	rTrayLoadStation	: REFERENCE TO MultiStation;
 
 END_VAR
 VAR_OUTPUT
@@ -69,6 +70,7 @@ IF Enable THEN
 		STN_SEND:
 
 			rStation.CurrentMover.Payload	:= Payload;
+			rStation.CurrentMover.MoveToMultiStation(rTrayLoadStation);
 			rStation.CurrentMover.MoveToStation(rOrientStation);
 			rStation.UnregisterCurrent();
 
@@ -119,6 +121,7 @@ _Enable	:= Enable;]]></ST>
       <LineId Id="120" Count="1" />
       <LineId Id="140" Count="0" />
       <LineId Id="179" Count="0" />
+      <LineId Id="284" Count="0" />
       <LineId Id="183" Count="1" />
       <LineId Id="189" Count="0" />
       <LineId Id="128" Count="6" />

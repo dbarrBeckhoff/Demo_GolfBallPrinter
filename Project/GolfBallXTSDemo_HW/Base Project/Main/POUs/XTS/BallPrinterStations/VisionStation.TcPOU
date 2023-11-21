@@ -6,7 +6,7 @@ VAR_INPUT
 	rIO					: REFERENCE TO Vision_IO_typ;
 	rStation			: REFERENCE TO Station;
 	rKickoutStation 	: REFERENCE TO Station;
-	rTrayLoadStation 	: REFERENCE TO Station;
+	rTrayLoadStation 	: REFERENCE TO MultiStation;
 END_VAR
 VAR_OUTPUT
 END_VAR
@@ -35,21 +35,18 @@ IF Enable THEN
 		STN_CHECKMOVER:
 				
 			rIO.Outputs.Inspect := TRUE; // Start inspect
-			
-				
-			
 			IF rIO.Inputs.VisionActive THEN
 				State := STN_PROCESS;
 			END_IF
 
 		STN_PROCESS:
-			
 				IF NOT(rIO.Inputs.VisionActive)THEN
 					IF rIO.Inputs.VisionPass THEN
 						Payload.VisionPass 	:= TRUE;
 						
 					ELSIF rIO.Inputs.VisionFail THEN
 						Payload.VisionPass 	:= FALSE;
+						Payload.Reject		:= TRUE;
 						
 					ELSE // Failed to get feedback. TODO: Need alarm.
 					END_IF;
@@ -61,26 +58,24 @@ IF Enable THEN
 
 		STN_SEND:
 				
-			IF Payload.VisionPass THEN
-				rStation.CurrentMover.Payload	:= Payload;
-				rStation.CurrentMover.MoveToStation(rTrayLoadStation);
-				rStation.UnregisterCurrent();
-			ELSE
-				//Payload.Reject					:= TRUE;
+			IF Payload.Reject THEN
 				rStation.CurrentMover.Payload	:= Payload;
 				rStation.CurrentMover.MoveToStation(rKickoutStation);
+				rStation.UnregisterCurrent();	
+			ELSE
+				rStation.CurrentMover.Payload	:= Payload;
+				rStation.CurrentMover.MoveToMultiStation(rTrayLoadStation);
 				rStation.UnregisterCurrent();
-				
 			END_IF;
-
-			State							:= STN_WAIT;
+			State								:= STN_WAIT;
 		
 		STN_ERROR:
 	
 	END_CASE
 
 ELSIF _Enable THEN
-	;
+	memset(ADR(rIO.Outputs), 0, SIZEOF(rIO.Outputs));
+	State	:= STN_WAIT;
 END_IF
 
 //Save Previous Values
@@ -93,16 +88,15 @@ _Enable	:= Enable;]]></ST>
       <LineId Id="76" Count="12" />
       <LineId Id="98" Count="0" />
       <LineId Id="204" Count="0" />
-      <LineId Id="202" Count="1" />
-      <LineId Id="163" Count="0" />
       <LineId Id="165" Count="2" />
       <LineId Id="105" Count="0" />
-      <LineId Id="107" Count="1" />
+      <LineId Id="107" Count="0" />
       <LineId Id="158" Count="0" />
       <LineId Id="149" Count="0" />
       <LineId Id="154" Count="0" />
       <LineId Id="205" Count="0" />
       <LineId Id="155" Count="1" />
+      <LineId Id="228" Count="0" />
       <LineId Id="209" Count="0" />
       <LineId Id="159" Count="0" />
       <LineId Id="144" Count="0" />
@@ -111,17 +105,16 @@ _Enable	:= Enable;]]></ST>
       <LineId Id="210" Count="1" />
       <LineId Id="120" Count="1" />
       <LineId Id="178" Count="0" />
+      <LineId Id="242" Count="0" />
+      <LineId Id="244" Count="1" />
+      <LineId Id="243" Count="0" />
       <LineId Id="140" Count="0" />
       <LineId Id="179" Count="0" />
       <LineId Id="183" Count="1" />
-      <LineId Id="180" Count="0" />
-      <LineId Id="187" Count="0" />
-      <LineId Id="185" Count="1" />
-      <LineId Id="182" Count="0" />
-      <LineId Id="181" Count="0" />
       <LineId Id="174" Count="0" />
-      <LineId Id="189" Count="0" />
-      <LineId Id="128" Count="10" />
+      <LineId Id="128" Count="6" />
+      <LineId Id="229" Count="0" />
+      <LineId Id="135" Count="3" />
       <LineId Id="18" Count="0" />
     </LineIds>
   </POU>
