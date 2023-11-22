@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="JobMgr" Id="{bc0b6362-74f3-0105-0ef2-523b606f0192}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK JobMgr
+VAR_INPUT
+	Cmd:	JobCmd_typ;
+END_VAR
+VAR_OUTPUT
+	Sts:		JobSts_typ;
+END_VAR
+VAR
+	State:		JobState_enum;
+	Orient:		JobStn_typ;
+	BallSeat:	JobStn_typ;
+	Print:		JobStn_typ;
+	Vision:		JobStn_typ;
+	Kickout:	JobStn_typ;
+	TrayLoad:	JobStn_typ;
+
+	StnCmdRun:	BOOL;
+	StnStsAllNotRunning: BOOL;
+
+	_State:		JobState_enum;
+	i: INT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE State OF
+	Job_Disabled:
+		IF _State <> Job_Disabled THEN
+			;//Clear Job Statuses and Counts
+		END_IF
+
+		IF Cmd.Run THEN
+			StnCmdRun	:= TRUE;
+			State		:= Job_Running;
+		END_IF
+
+	Job_Running:
+		IF Sts.Done THEN
+			StnCmdRun	:= FALSE;
+			State		:= Job_Done;
+		ELSIF NOT Cmd.Run THEN
+			StnCmdRun	:= FALSE;
+			State		:= Job_Pausing;
+		END_IF
+
+	Job_Pausing:
+		IF Cmd.Run THEN
+			StnCmdRun	:= TRUE;
+			State		:= Job_Running;
+		END_IF
+
+	Job_Paused:
+		IF Cmd.Run THEN
+			StnCmdRun	:= TRUE;
+			State		:= Job_Running;
+		ELSIF Cmd.Cleanout THEN
+			;	// rZone.SendAllMovers.whatever
+		END_IF
+
+	Job_Done:
+		IF NOT Cmd.Run THEN
+			State	:= Job_Disabled;
+		END_IF
+
+	Job_Cleanout:
+		IF Sts.CleanoutDone AND NOT Cmd.Cleanout THEN
+			State	:= Job_Disabled;
+		END_IF
+END_CASE;
+
+// Stn Commands
+Orient.Cmd.Run := BallSeat.Cmd.Run := Print.Cmd.Run := StnCmdRun := Vision.Cmd.Run := Kickout.Cmd.Run := TrayLoad.Cmd.Run := StnCmdRun;
+
+// Stn Specific Commands
+FOR i := 0 TO 3 DO
+	Orient.Cmd.PlayerNumberCount[i]	:= Cmd.PlayerNumberCount[i] + Sts.RejectedPlayerNumberCount[i];
+END_FOR
+Print.Cmd.NumColor		:= Cmd.NumColor;
+Print.Cmd.NumIndex		:= Cmd.NumIndex;
+Print.Cmd.IgnoreVision	:= Cmd.IgnoreVision;
+Vision.Cmd.IgnoreVision	:= Cmd.IgnoreVision;
+
+// Stn Statuses
+StnStsAllNotRunning := NOT (Orient.Sts.Running OR BallSeat.Sts.Running OR Print.Sts.Running OR Vision.Sts.Running OR Kickout.Sts.Running OR TrayLoad.Sts.Running);
+
+// Outputs
+Sts.Running						:= State = Job_Running;
+Sts.Done						:= State = Job_Done;
+Sts.PlayerNumberCount			:= TrayLoad.Sts.PlayerNumberCount;
+FOR i := 0 TO 3 DO
+Sts.RejectedPlayerNumberCount[i]	:= Orient.Sts.RejectedPlayerNumberCount[i] + BallSeat.Sts.RejectedPlayerNumberCount[i] +
+									Print.Sts.RejectedPlayerNumberCount[i] + Vision.Sts.RejectedPlayerNumberCount[i] +
+									Kickout.Sts.RejectedPlayerNumberCount[i] + Trayload.Sts.RejectedPlayerNumberCount[i];
+END_FOR
+
+// Save Previous Values
+_State	:= State;]]></ST>
+    </Implementation>
+    <LineIds Name="JobMgr">
+      <LineId Id="25" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="106" Count="3" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="74" Count="1" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="37" Count="1" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="51" Count="1" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="77" Count="3" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="81" Count="2" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="93" Count="0" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="98" Count="0" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="95" Count="2" />
+      <LineId Id="100" Count="0" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="87" Count="0" />
+      <LineId Id="89" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="90" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="116" Count="0" />
+      <LineId Id="22" Count="2" />
+      <LineId Id="102" Count="0" />
+      <LineId Id="118" Count="0" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="103" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

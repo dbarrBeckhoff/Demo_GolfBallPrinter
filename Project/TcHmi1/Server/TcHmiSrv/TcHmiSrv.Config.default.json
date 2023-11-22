@@ -2591,16 +2591,6 @@
             },
             "USEMAPPING": true
         },
-        "PLC1.MAIN.HMIXTSHelper": {
-            "ACCESS": 3,
-            "DOMAIN": "ADS",
-            "DYNAMIC": true,
-            "MAPPING": "PLC1::MAIN::HMIXTSHelper",
-            "SCHEMA": {
-                "$ref": "tchmi:server#/definitions/PLC1.HMIXTSHelper_typ"
-            },
-            "USEMAPPING": true
-        },
         "PLC1.MAIN.MainCommands.Disable": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -2670,6 +2660,16 @@
                         "propertyOrder": 3
                     }
                 ]
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.PRG_XTS.HMIXTSHelper": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::PRG_XTS::HMIXTSHelper",
+            "SCHEMA": {
+                "$ref": "tchmi:server#/definitions/PLC1.HMIXTSHelper_typ"
             },
             "USEMAPPING": true
         },
@@ -4889,6 +4889,7 @@
                 "PLC1.MAIN.MainCommands.Start": 3,
                 "PLC1.MAIN.MainCommands.Stop": 3,
                 "PLC1.MAIN.allMoversDisabled": 3,
+                "PLC1.PRG_XTS.HMIXTSHelper": 3,
                 "SetLocale": 3,
                 "SubscribeEvents": 3,
                 "TcHmiEcDiagnostics.Diagnostics": 1,

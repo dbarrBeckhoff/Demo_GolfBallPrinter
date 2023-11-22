@@ -22,7 +22,7 @@
     <TargetFramework>native1.12-tchmi</TargetFramework>
     <AzureFunctionsVersion>v2</AzureFunctionsVersion>
     <Name>TcHmi1</Name>
-    <HmiCommunicationRouterPort>10106</HmiCommunicationRouterPort>
+    <HmiCommunicationRouterPort>10113</HmiCommunicationRouterPort>
     <HmiCommunicationServerAuthPort>13000</HmiCommunicationServerAuthPort>
     <HmiInitial>1.12.760.48</HmiInitial>
     <HmiRecent>1.12.760.48</HmiRecent>
@@ -116,6 +116,7 @@
     <Folder Include="KeyboardLayouts\" />
     <Folder Include="Localization" />
     <Folder Include="Pages\" />
+    <Folder Include="Pages\EthercatDiagContents" />
     <Folder Include="Server\ADS\" />
     <Folder Include="Server\TcHmiEcDiagnostics" />
     <Folder Include="Server\TcHmiLua\" />
@@ -144,6 +145,15 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="Pages\Alarms.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Pages\EthercatDiagContents\Device5.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Pages\EthercatDiagContents\Device4.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Pages\EthercatDiagContents\Device3.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Pages\EtherCATDiagnostics.content">

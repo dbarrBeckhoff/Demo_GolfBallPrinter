@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
-  <DUT Name="MainCommands_typ" Id="{dc2a4f5e-f09b-4e87-82b1-79343e5d1394}">
-    <Declaration><![CDATA[TYPE MainCommands_typ :
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="XTSMainCommands_typ" Id="{3347392e-c6a8-06be-1abe-c02be81f84f7}">
+    <Declaration><![CDATA[TYPE XTSMainCommands_typ :
     STRUCT
 
         Enable  : BOOL; // Enables Movers & Collision Avoidance, activates M1 Detection

@@ -88,7 +88,7 @@
                     </o>
                     <o>
                       <v n="Id">743958181L</v>
-                      <v n="Value">"MAIN.MainCommands.Enable"</v>
+                      <v n="Value">"GVL.XTS.Cmd.Enable"</v>
                     </o>
                     <o>
                       <v n="Id">2597686782L</v>
@@ -448,7 +448,7 @@
                     </o>
                     <o>
                       <v n="Id">743958181L</v>
-                      <v n="Value">"MAIN.MainCommands.Start"</v>
+                      <v n="Value">"GVL.XTS.Cmd.Start"</v>
                     </o>
                     <o>
                       <v n="Id">2597686782L</v>
@@ -679,7 +679,7 @@
                     </o>
                     <o>
                       <v n="Id">743958181L</v>
-                      <v n="Value">"MAIN.MainCommands.Stop"</v>
+                      <v n="Value">"GVL.XTS.Cmd.Stop"</v>
                     </o>
                     <o>
                       <v n="Id">2597686782L</v>
@@ -910,7 +910,7 @@
                     </o>
                     <o>
                       <v n="Id">743958181L</v>
-                      <v n="Value">"MAIN.MainCommands.Disable"</v>
+                      <v n="Value">"GVL.XTS.Cmd.Disable"</v>
                     </o>
                     <o>
                       <v n="Id">2597686782L</v>

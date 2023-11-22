@@ -7,7 +7,6 @@ VAR_INPUT
 	rStation			: REFERENCE TO Station;
 	rOrientStation 		: REFERENCE TO Station;
 	rTrayLoadStation	: REFERENCE TO MultiStation;
-
 END_VAR
 VAR_OUTPUT
 END_VAR
@@ -28,7 +27,7 @@ IF Enable THEN
 
 	CASE State OF
 		STN_WAIT:
-			IF Run AND rStation.MoverInPosition THEN
+			IF rJobIF.Cmd.Run AND rStation.MoverInPosition THEN
 				State	:= STN_CHECKMOVER;
 				Payload	:= rStation.CurrentMover.Payload;
 			END_IF

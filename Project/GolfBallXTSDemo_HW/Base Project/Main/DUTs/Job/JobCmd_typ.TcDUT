@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="JobCmd_typ" Id="{a96b7b22-79c9-0c9b-1cb6-0dad434ffebd}">
+    <Declaration><![CDATA[TYPE JobCmd_typ :
+STRUCT
+	Run:				BOOL;
+	Cleanout:			BOOL;
+	IgnoreVision:		BOOL;
+	PlayerNumberCount:	ARRAY[0..3] OF UDINT;
+	NumColor:			UINT;
+	NumIndex:			UINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

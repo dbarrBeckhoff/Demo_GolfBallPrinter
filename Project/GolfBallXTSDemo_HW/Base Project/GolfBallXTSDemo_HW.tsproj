@@ -4525,6 +4525,7 @@ and will return to Group State Standby when the situation permits.
 			<Licenses>
 				<Target>
 					<ManualSelect>{57BD9670-089D-434A-85CF-90A857EE0EFF}</ManualSelect>
+					<ManualSelect>{2752D285-16AD-4E89-AE6C-80E72784D264}</ManualSelect>
 				</Target>
 			</Licenses>
 			<Tasks>

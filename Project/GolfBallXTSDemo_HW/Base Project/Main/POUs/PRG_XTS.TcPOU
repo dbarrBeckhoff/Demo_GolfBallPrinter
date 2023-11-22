@@ -1,0 +1,749 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="PRG_XTS" Id="{d52d6b4e-fde2-0059-2829-794f28bd8c51}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_XTS
+VAR
+	// Machine Stations
+	OrientStation:		OrientStation;
+	BallSeatStation:	BallSeatStation;
+	PrintStation:		PrintStation;
+	VisionStation:		VisionStation;
+	KickoutStation:		KickoutStation;
+	TrayLoadStation:	TrayLoadStation;
+	SimTimers:			SimTimers_typ;
+
+	// ========= Linked NC Variables & References =========
+
+	Mover    			: ARRAY[0..GVL.NUM_MOVERS - 1] OF Mover; 	// instantiation of Mover objects. Matches the number of movers on the system
+    GroupRef 			: AXES_GROUP_REF;                       	 // linked to the Collision Avoidance group and passed cyclically to every Mover object
+
+	// ========= Objectives & Parameters =========
+
+    MoverList    		: MoverList;
+    ParameterSet 		: MotionParameters_typ;
+
+    Station         	: ARRAY[0..GVL.NUM_STATIONS - 1] OF Station;
+	MultiStation		: ARRAY[0..GVL.NUM_MULTISTATIONS - 1] OF MultiStation;
+    Zone            	: ARRAY[0..0] OF Zone;
+
+    // ========= Example Application Variables =========
+
+    lowVelocity    		: LREAL := 200;  	// mm/s
+    mediumVelocity 		: LREAL := 800;  	// mm/s
+    highVelocity   		: LREAL := 1200; 	// mm/s
+
+    // ========= Helper, State, & Index Variables =========
+	
+    i                	: UINT; 	// index variable; gets reused in various FOR loops
+	j					: UINT;		// index variable; gets reused in various FOR loops
+    n                	: UINT; 	// secondary index variable, for enabling movers
+    allMoversEnabled 	: BOOL; 	// helper flag for verifying enable status of all movers
+	allMoverTracksEnabled : BOOL;	// helper flag for verifying track active status of all movers
+	allMoversDisabled	: BOOL;		// helper flag for verifying disable status of all movers
+	allMoversHalted		: BOOL;		// helper flag for verifying halt status of all movers
+
+    StationTimer 		: ARRAY[0..GVL.NUM_STATIONS-1] OF TON; // timer blocks, for station dwells	
+    MultiStationTimer 	: ARRAY[0..GVL.NUM_MultiSTATIONS-1] OF TON; // timer blocks, for station dwells	
+	
+	// ========= XTS Utility Diagnostics =========
+	
+	VisuDiag						: FB_VisuXtsDiag;
+	fbXtsEnvironment				: FB_TcIoXtsEnvironment;
+	fbXtsEnvironmentVisu			: FB_XtsEnvironmentVisu;
+	stXtsEnvironmentConfiguration	: ST_XtsEnvironmentConfiguration;
+	nEnvironmentState				: INT;
+	
+	// ======== Track management ========
+	Track		: ARRAY [0..GVL.NUM_TRACKS] OF Track;
+
+	// IO
+	IO: IO_typ;
+
+	Payload: Payload_typ;
+	HMIXTSHelper : HMIXTSHelper_typ;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* ======================================================================================
+
+--- XTS Starter Project ---
+
+This MAIN (PRG) is intended to serve as an example, which can be modified to suit your specific application.
+
+No programming changes should be necessary inside the provided XTS objects / function block definitions.
+They are intended to be simply instantiated and controlled via the provided methods and properties.
+However the objects are provided as open-source for modification and extension as needed.
+
+Documentation for these objects can be found online at:
+https://beckhoff-usa-community.github.io/XTS_Base/
+
+Bug reports, new feature requests, and general feedback is always welcome on our Github page.
+For any other questions, please reach out to your local Application Engineer.
+
+- Beckhoff USA Advanced Applications Group
+
+====================================================================================== *)
+_AppInfo.KeepOutputsOnBP := TRUE;
+CASE GVL.XTS.Sts.State OF
+    MS_DISABLED: // --------------------------------------------------------- IDLE STATE
+		(*Wait here until an operator issues a MainCommand to Enable the system. 
+		Disallow Start and Stop commands until the system has been Enabled*)
+
+        GVL.XTS.Cmd.Start		:= FALSE;
+		GVL.XTS.Cmd.Stop		:= FALSE;
+
+        IF GVL.XTS.Cmd.Enable THEN
+            GVL.XTS.Cmd.Disable := FALSE;
+            GVL.XTS.Sts.State   := MS_INITIALIZING_MOVERS;
+        END_IF
+
+    MS_INITIALIZING_MOVERS: // --------------------------------------------- SET MOVER MOTION PARAMETERS
+		(*Initialize Mover motion parameters via a Parameter Set. Once complete, step
+		forward to begin Enabling movers on the system*)
+
+		ParameterSet.Jerk         := 1E5; // mm/s3
+		ParameterSet.Acceleration := 1E4; // mm/s2
+		ParameterSet.Deceleration := 1E4; // mm/s2
+		ParameterSet.Velocity     := 1E3; // mm/s
+		ParameterSet.Direction    := mcDirectionPositive;
+
+        FOR i := 0 TO GVL.NUM_MOVERS - 1 DO
+            Mover[i].MotionParameters := ParameterSet;
+        END_FOR
+
+		IF GVL.XTS.Cmd.Disable THEN
+			GVL.XTS.Cmd.Enable		:= FALSE;
+			GVL.XTS.Sts.State		:= MS_DISABLED;
+		ELSIF GVL.XTS.Cmd.Stop THEN
+			GVL.XTS.Cmd.Stop		:= FALSE;
+			GVL.XTS.Cmd.Disable		:= TRUE;
+			GVL.XTS.Cmd.Start		:= FALSE;
+			GVL.XTS.Sts.State		:= MS_DISABLED;
+		ELSIF GVL.XTS.Cmd.Enable THEN
+        	GVL.XTS.Sts.State 		:= MS_ONESHOT_ENABLE;
+		END_IF
+
+	MS_ONESHOT_ENABLE:	// -------------------------------------------------- SINGLE-CYCLE ISSUE ENABLE COMMANDS
+		(*Begin Enabling movers by calling Mover.Enable(). Methods in this project
+		are intended to be called once, although they will function correctly if called repeatedly*)
+
+		FOR i := 0 TO GVL.NUM_MOVERS - 1 DO
+			Mover[i].Enable();
+		END_FOR
+
+		GVL.XTS.Sts.State		:= MS_ENABLING_MOVERS;
+
+    MS_ENABLING_MOVERS: // -------------------------------------------------- RESETTING AND ENABLING AXES
+		(*Wait here until all movers have Enabled. This means that the Axis has
+		fully energized, and also that all Collision Avoidance grouping and Mover 1 detection
+		has finished. If the state machine gets stuck in this state, check the Error output
+		of an individual Mover to see what the issue is. A common cause is forgetting to link
+		Mover NC Axes to the AXIS_REF inside the PLC*)
+
+        allMoversEnabled := TRUE; // default ...
+
+        FOR i := 0 TO GVL.NUM_MOVERS - 1 DO
+            IF Mover[i].Ready = FALSE THEN
+                allMoversEnabled 		:= FALSE;
+            END_IF
+        END_FOR
+
+        IF allMoversEnabled THEN
+			IF GVL.XTS.Cmd.Disable THEN
+				GVL.XTS.Cmd.Enable		:=FALSE;
+            	GVL.XTS.Sts.State		:= MS_ONESHOT_DISABLE;
+			ELSIF GVL.XTS.Cmd.Stop	 THEN
+				GVL.XTS.Cmd.Start		:=FALSE;
+				GVL.XTS.Sts.State		:= MS_ONESHOT_STOP;
+			ELSIF GVL.XTS.Cmd.Enable THEN
+	        	GVL.XTS.Sts.State 		:= MS_INITIALIZING_OBJECTIVES;
+			END_IF
+        END_IF
+
+    MS_INITIALIZING_OBJECTIVES: // --------------------------------------------- WRITING OBJECTIVE PARAMETERS
+		(*Initialize Station positions, Position Trigger positions, Zones etc. *)
+
+        // Initialize station positions
+        Station[GVL.STN_ORIENT].Position	:= 800;
+        Station[GVL.STN_BALLSEAT].Position	:= 900;
+        Station[GVL.STN_VISION].Position	:= 2125;
+        Station[GVL.STN_KICKOUT].Position	:= 2375;
+
+		MultiStation[GVL.MULTISTN_PRINT].PositionTrigger.Position	:= 1541;
+		MultiStation[GVL.MULTISTN_PRINT].Station[0].Position		:= 1621;
+		MultiStation[GVL.MULTISTN_PRINT].Station[1].Position		:= 1707;
+		MultiStation[GVL.MULTISTN_PRINT].Station[2].Position		:= 1793;
+		MultiStation[GVL.MULTISTN_PRINT].Station[3].Position		:= 1879;
+
+		MultiStation[GVL.MULTISTN_TRAYLOAD].PositionTrigger.Position	:= 41;
+		MultiStation[GVL.MULTISTN_TRAYLOAD].Station[0].Position			:= 121;
+		MultiStation[GVL.MULTISTN_TRAYLOAD].Station[1].Position			:= 207;
+		MultiStation[GVL.MULTISTN_TRAYLOAD].Station[2].Position			:= 293;
+		MultiStation[GVL.MULTISTN_TRAYLOAD].Station[3].Position			:= 379;
+
+        Zone[0].StartPosition := 0;
+        Zone[0].EndPosition   := 3000;
+
+		// give all tracks their ID number
+		FOR i := 0 TO GVL.NUM_TRACKS DO
+			Track[i].Id := UINT_TO_INT(i);
+		END_FOR
+
+		// If a single logical track is used (typically aa closed loop) then tracks to not need to be initialized
+		Track[0].OTCID	:= 0;				// special "absolute reference" case for a single closed loop
+		Track[1].OTCID	:= 16#010100C0;		// value copied from XtsProcessingUnit1 > Track x > Object > Object Id field
+
+		GVL.XTS.Sts.State := MS_ACTIVATE_TRACKS;
+
+	MS_ACTIVATE_TRACKS:
+		// activate all movers on track[0]
+		FOR i := 0 TO GVL.NUM_MOVERS - 1 DO
+            Mover[i].ActivateTrack(Track[1]);
+        END_FOR
+
+		GVL.XTS.Sts.State := MS_WAIT_FOR_TRACKS;
+
+	MS_WAIT_FOR_TRACKS:
+		// wait for all movers to activate their tracks
+
+		allMoverTracksEnabled := TRUE;
+		FOR i := 0 TO GVL.NUM_MOVERS - 1 DO
+			IF (NOT Mover[i].IsTrackReady) THEN
+            	allMoverTracksEnabled := FALSE;
+			END_IF;
+        END_FOR
+		IF (allMoverTracksEnabled) THEN
+			GVL.XTS.Sts.State := MS_ENABLED;	
+		END_IF
+
+    MS_ENABLED: // ------------------------------------------------------------- MOVERS ENABLED, STOPPED
+		(*In this state, Movers should be energized and holding their position. They should wait
+		until a Start command is issued. This is also a good state to include basic Recovery steps.
+		Our example shows a simple use-case involving Zones for localized recovery*)
+
+		GVL.XTS.Cmd.Stop	:= FALSE;
+
+        IF GVL.XTS.Cmd.Start THEN
+
+            // ===== RECOVERY LOGIC =====
+
+            (*
+			Recovery is typically very application-specific. Each implementation will need to determine
+			what to do with work-in-progres, rejects, movers with unknown product status, etc.s
+			*)
+
+            // Register all movers with all Zones, for recovery
+            FOR i := 0 TO GVL.NUM_MOVERS - 1 DO
+				FOR j := 0 TO GVL.NUM_ZONES - 1 DO
+					Zone[j].RegisterMover( Mover[i] );
+				END_FOR
+            END_FOR
+
+            Zone[0].CurrentMoverList.SetAllVelocity(1500).MoveAllToStation(Station[GVL.STN_ORIENT]);
+
+            // ===== END =====
+            GVL.XTS.Sts.State	:= MS_RUN;
+
+        ELSIF GVL.XTS.Cmd.Disable THEN
+            GVL.XTS.Cmd.Enable	:= FALSE;
+            GVL.XTS.Sts.State 	:= MS_ONESHOT_STOP;
+        END_IF
+
+    MS_RUN: // --------------------------------------------------------------- OPERATING
+		(*Mover routing logic should be written here to define the system's operating behavior.
+		Station implementations, Position Trigger logic, etc. In general, you can remove the example code
+		here down to the short line break that looks like this: // ============= *)
+
+		OrientStation.Run	:= TRUE;
+		BallSeatStation.Run	:= TRUE;
+		PrintStation.Run	:= TRUE;
+		VisionStation.Run	:= TRUE;
+		KickoutStation.Run	:= TRUE;
+		TrayLoadStation.Run	:= TRUE;
+
+		// Example call to XTS Utility library. See Diagnostics section of docs for more info
+		(*
+		myMoverMileage	:= fbXtsEnvironment.XpuTcIo(1).MoverTcIo(2).GetDistanceDriven();
+		*)
+
+		// =============
+
+        IF GVL.XTS.Cmd.Stop THEN
+            GVL.XTS.Cmd.Start 	:= FALSE;
+            GVL.XTS.Sts.State   := MS_ONESHOT_STOP;
+        ELSIF GVL.XTS.Cmd.Disable THEN
+            GVL.XTS.Cmd.Enable	:= FALSE;
+            GVL.XTS.Sts.State   := MS_ONESHOT_STOP;
+        END_IF
+
+	MS_ONESHOT_STOP:	// --------------------------------------------------- SINGLE-CYCLE ISSUE HALT COMMANDS
+		(*Issue a halt command, then change states right away to wait for Movers to carry out the instruction*)
+
+		FOR i := 0 TO GVL.NUM_MOVERS - 1 DO
+			Mover[i].Halt();
+		END_FOR
+
+		OrientStation.Run	:= FALSE;
+		BallSeatStation.Run	:= FALSE;
+		PrintStation.Run	:= FALSE;
+		VisionStation.Run	:= FALSE;
+		KickoutStation.Run	:= FALSE;
+		TrayLoadStation.Run	:= FALSE;
+
+		GVL.XTS.Sts.State	:= MS_STOPPING;
+
+    MS_STOPPING: // ---------------------------------------------------------- STOPPING MOVERS
+		(*Movers are coming to a stop here in this state*)
+
+		// Stop all movers
+		allMoversHalted				:= TRUE;
+		FOR i := 0 TO GVL.NUM_MOVERS - 1 DO
+			Mover[i].AxisReference.ReadStatus();
+			IF Mover[i].AxisReference.Status.Moving THEN
+				allMoversHalted		:= FALSE;
+			END_IF
+		END_FOR
+
+		GVL.XTS.Cmd.Start			:= FALSE;
+ 
+		IF allMoversHalted THEN
+           	GVL.XTS.Sts.State 		:= MS_STOPPED;
+		END_IF
+
+    MS_STOPPED: // ------------------------------------------------------------ Stop Command has been sent, hold here
+		(*Movers are now stopped, and further Main Commands can be issued to the system*)
+
+        IF GVL.XTS.Cmd.Disable THEN
+            GVL.XTS.Cmd.Enable 	:= FALSE;
+			GVL.XTS.Cmd.Start	:= FALSE;
+            GVL.XTS.Sts.State   := MS_ONESHOT_DISABLE;
+        ELSIF GVL.XTS.Cmd.Start THEN
+            GVL.XTS.Cmd.Stop 	:= FALSE;
+            GVL.XTS.Sts.State   := MS_ENABLING_MOVERS;
+        END_IF
+
+        // Unregister everything from everything
+        FOR i := 0 TO GVL.NUM_STATIONS - 1 DO	 									Station[i].UnregisterAll();  END_FOR
+		FOR i := 0 TO GVL.NUM_MULTISTATIONS - 1 DO									MultiStation[i].UnregisterAll();	END_FOR
+//      FOR i := 0 TO SIZEOF(PositionTrigger) / SIZEOF(PositionTrigger[0]) - 1 DO	PositionTrigger[i].UnregisterAll();	END_FOR
+//      FOR i := 0 TO SIZEOF(SpeedTrigger) / SIZEOF(SpeedTrigger[0]) - 1 DO 		SpeedTrigger[i].UnregisterAll(); END_FOR
+        FOR i := 0 TO SIZEOF(Zone) / SIZEOF(Zone[0]) - 1 DO 						Zone[i].UnregisterAll();	END_FOR
+
+	MS_ONESHOT_DISABLE:	// ------------------------------------------------------- SINGLE CYCLE ISSUE DISABLE COMMANDS
+		(*Mover disable commands are issued here, followed by a state tranisition to await completion of the Disabling*)
+		FOR i := 0 TO GVL.NUM_MOVERS DO
+			Mover[i].Disable();
+		END_FOR
+
+		GVL.XTS.Sts.State	:=	MS_DISABLING;
+
+    MS_DISABLING: // --------------------------------------------------- DISABLING MOVERS
+		(*Movers are Disabling. During this step, we also Unregister movers from relevant Objectives
+		to ensure proper startup behavior*)
+
+        // Unregister everything from everything
+        FOR i := 0 TO GVL.NUM_STATIONS - 1 DO	 									Station[i].UnregisterAll();  END_FOR
+		FOR i := 0 TO GVL.NUM_MULTISTATIONS - 1 DO									MultiStation[i].UnregisterAll();	END_FOR
+//      FOR i := 0 TO SIZEOF(PositionTrigger) / SIZEOF(PositionTrigger[0]) - 1 DO	PositionTrigger[i].UnregisterAll();	END_FOR
+//      FOR i := 0 TO SIZEOF(SpeedTrigger) / SIZEOF(SpeedTrigger[0]) - 1 DO 		SpeedTrigger[i].UnregisterAll(); END_FOR
+        FOR i := 0 TO SIZEOF(Zone) / SIZEOF(Zone[0]) - 1 DO 						Zone[i].UnregisterAll();	END_FOR
+		allMoversDisabled	:= TRUE;
+
+		FOR i := 0 TO gvl.NUM_MOVERS-1 DO
+			IF NOT Mover[i].AxisReference.Status.Disabled THEN 
+				allMoversDisabled	:= FALSE;
+			END_IF
+		END_FOR
+ 
+        IF allMoversDisabled THEN
+            GVL.XTS.Sts.State		:= MS_DISABLED;
+        END_IF
+
+    MS_ERROR: // --------------------------------------------------- ERRORSTATE
+		(*A reset command can be included here to clear Mover errors, etc. and return
+		to a controlled state*)
+
+    MS_DEBUG: // ------------------------------------------------------- DEV USE ONLY
+		(*This state is intentionally left blank, 
+		for optional use by a developer during programming*)
+
+END_CASE;
+
+// Station Actions
+ACT_Orient();
+ACT_BallSeat();
+ACT_Print();
+ACT_Vision();
+ACT_Kickout();
+ACT_TRAYLOAD();
+ACT_IOSim();
+
+ACT_HMIHelper();
+
+// Initialize and update diagnostic features
+InitializeUtilityLibrary();
+
+// Call all mover function blocks cyclically
+FOR i := 0 TO GVL.NUM_MOVERS - 1 DO
+    Mover[i].Cyclic(GroupRef);
+	Mover[i].AxisReference.ReadStatus();
+END_FOR;
+
+// Call all station function blocks cyclically
+FOR i := 0 TO GVL.NUM_STATIONS - 1 DO
+    Station[i].Cyclic();
+END_FOR
+
+FOR i := 0 TO GVL.NUM_MULTISTATIONS - 1 DO
+	MultiStation[i].Cyclic();
+END_FOR]]></ST>
+    </Implementation>
+    <Folder Name="Stations" Id="{6e70e85f-aaeb-0d3f-2744-da53d0468f5f}" />
+    <Action Name="ACT_BallSeat" Id="{cebceb22-3daf-0e5f-3160-b814b0968291}" FolderPath="Stations\">
+      <Implementation>
+        <ST><![CDATA[// INIT
+BallSeatStation.rStation		REF= Station[GVL.STN_BALLSEAT];
+BallSeatStation.rIO				REF= IO.BallSeat;
+BallSeatStation.rPrintStation	REF= MultiStation[GVL.MULTISTN_PRINT];
+BallSeatStation.rJobIF			REF= GVL.Job.BallSeat;
+
+// Inputs
+BallSeatStation.Enable	:= GVL.XTS.Cmd.Enable;
+
+// FB CALLS
+BallSeatStation();]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_HMIHelper" Id="{e768916c-7524-0bad-0b18-62d6fe412045}">
+      <Implementation>
+        <ST><![CDATA[FOR i := 0 TO gvl.NUM_MOVERS - 1 DO
+	Payload	:= Mover[i].Payload;
+	HMIXTSHelper.Mover[i].BallImgVisibility			:= Payload.HasBall AND NOT Payload.Reject;
+	HMIXTSHelper.Mover[i].BallRejectImgVisibility	:= Payload.HasBall AND Payload.Reject;
+	HMIXTSHelper.Mover[i].MoverTextVisibility		:= Payload.HasBall;
+	CASE Payload.PlayerNumber OF
+	1:		HMIXTSHelper.Mover[i].MoverText		:= '1';
+	2:		HMIXTSHelper.Mover[i].MoverText		:= '2';
+	3:		HMIXTSHelper.Mover[i].MoverText		:= '3';
+	4:		HMIXTSHelper.Mover[i].MoverText		:= '4';
+	ELSE	HMIXTSHelper.Mover[i].MoverText		:= 'InvalidText';
+	END_CASE
+END_FOR]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_IOSim" Id="{3134f052-6873-0416-20c8-9ad1db05e1c7}" FolderPath="Stations\">
+      <Implementation>
+        <ST><![CDATA[// Orient
+SimTimers.TON_Orient_OpenBallClamp(IN := IO.Orient.Outputs.BallClampOpen AND NOT IO.Orient.Outputs.BallClampClose, PT := T#150MS);
+SimTimers.TON_Orient_CloseBallClamp(IN := IO.Orient.Outputs.BallClampClose AND NOT IO.Orient.Outputs.BallClampOpen, PT := T#150MS);
+SimTimers.TON_Orient_LoadBall(IN := IO.Orient.Outputs.LoadBall, PT := T#700MS);
+
+IF SimTimers.TON_Orient_CloseBallClamp.Q THEN		IO.Orient.Inputs.BallClampClosed	:= TRUE;	IO.Orient.Inputs.BallClampOpened	:= FALSE;	END_IF
+IF SimTimers.TON_Orient_OpenBallClamp.Q THEN		IO.Orient.Inputs.BallClampOpened	:= TRUE;	IO.Orient.Inputs.BallClampClosed	:= FALSE;	END_IF
+IO.Orient.Inputs.BallLoadComplete					:= SimTimers.TON_Orient_LoadBall.Q;
+
+// Ball Seater
+SimTimers.TON_BallSeat_OpenBallClamp(IN := IO.BallSeat.Outputs.BallClampOpen AND NOT IO.BallSeat.Outputs.BallClampClose, PT := T#150MS);
+SimTimers.TON_BallSeat_CloseBallClamp(IN := IO.BallSeat.Outputs.BallClampClose AND NOT IO.BallSeat.Outputs.BallClampOpen, PT := T#150MS);
+SimTimers.TON_BallSeat_ExtendBallSeater(IN := IO.BallSeat.Outputs.ExtendBallSeater AND NOT IO.BallSeat.Outputs.RetractBallSeater, PT := T#150MS);
+SimTimers.TON_BallSeat_RetractBallSeater(IN := IO.BallSeat.Outputs.RetractBallSeater AND NOT IO.BallSeat.Outputs.ExtendBallSeater, PT := T#150MS);
+
+IF SimTimers.TON_BallSeat_CloseBallClamp.Q THEN		IO.BallSeat.Inputs.BallClampClosed		:= TRUE;	IO.BallSeat.Inputs.BallClampOpened		:= FALSE;	END_IF
+IF SimTimers.TON_BallSeat_OpenBallClamp.Q THEN		IO.BallSeat.Inputs.BallClampOpened		:= TRUE;	IO.BallSeat.Inputs.BallClampClosed		:= FALSE;	END_IF
+IF SimTimers.TON_BallSeat_ExtendBallSeater.Q THEN	IO.BallSeat.Inputs.BallSeatExtended		:= TRUE;	IO.BallSeat.Inputs.BallSeatRetracted	:= FALSE;	END_IF
+IF SimTimers.TON_BallSeat_RetractBallSeater.Q THEN	IO.BallSeat.Inputs.BallSeatRetracted	:= TRUE;	IO.BallSeat.Inputs.BallSeatExtended		:= FALSE;	END_IF
+
+// Printer
+SimTimers.TON_Print_PrintComplete(IN := IO.Print.Outputs.Print, PT := T#1200MS);
+IO.Print.Inputs.PrintActive		:= SimTimers.TON_Print_PrintComplete.IN AND NOT SimTimers.TON_Print_PrintComplete.Q;
+IO.Print.Inputs.PrintComplete	:= SimTimers.TON_Print_PrintComplete.Q;
+
+// Vision
+SimTimers.TON_Vision_ScanBall(IN := IO.Vision.Outputs.Inspect, PT := T#1000MS);
+IO.Vision.Inputs.VisionActive := IO.Vision.Outputs.Inspect AND NOT(SimTimers.TON_Vision_ScanBall.Q);
+IF SimTimers.TON_Vision_ScanBall.Q THEN	IO.Vision.Inputs.VisionPass	:= TRUE;	IO.Vision.Inputs.VisionFail	:= FALSE;
+ELSE IO.Vision.Inputs.VisionPass	:= FALSE;	IO.Vision.Inputs.VisionFail	:= FALSE;	END_IF;
+
+// Kickout
+SimTimers.TON_Kickout_OpenBallClamp(IN := IO.Kickout.Outputs.BallClampOpen AND NOT IO.Kickout.Outputs.BallClampClose, PT := T#150MS);
+SimTimers.TON_Kickout_CloseBallClamp(IN := IO.Kickout.Outputs.BallClampClose AND NOT IO.Kickout.Outputs.BallClampOpen, PT := T#150MS);
+SimTimers.TON_Kickout_RemoveBall(IN := IO.Kickout.Outputs.RemoveBall, PT := T#700MS);
+
+IF SimTimers.TON_Kickout_OpenBallClamp.Q THEN		IO.Kickout.Inputs.BallClampOpened		:= TRUE;	IO.Kickout.Inputs.BallClampClosed		:= FALSE;	END_IF
+IF SimTimers.TON_Kickout_CloseBallClamp.Q THEN		IO.Kickout.Inputs.BallClampClosed		:= TRUE;	IO.Kickout.Inputs.BallClampOpened		:= FALSE;	END_IF
+IO.Kickout.Inputs.BallRemoved						:= SimTimers.TON_Kickout_RemoveBall.Q;
+
+// Tray Load
+SimTimers.TON_TrayLoad_OpenBallClamp(IN := IO.TrayLoad.Outputs.BallClampOpen AND NOT IO.TrayLoad.Outputs.BallClampClose, PT := T#150MS);
+SimTimers.TON_TrayLoad_CloseBallClamp(IN := IO.TrayLoad.Outputs.BallClampClose AND NOT IO.TrayLoad.Outputs.BallClampOpen, PT := T#150MS);
+SimTimers.TON_TrayLoad_Complete(IN := IO.TrayLoad.Outputs.LoadTray, PT := T#1500MS);
+
+IF SimTimers.TON_TrayLoad_OpenBallClamp.Q THEN		IO.TrayLoad.Inputs.BallClampOpened		:= TRUE;	IO.TrayLoad.Inputs.BallClampClosed		:= FALSE;	END_IF
+IF SimTimers.TON_TrayLoad_CloseBallClamp.Q THEN		IO.TrayLoad.Inputs.BallClampClosed		:= TRUE;	IO.TrayLoad.Inputs.BallClampOpened		:= FALSE;	END_IF
+IO.TrayLoad.Inputs.TrayLoadComplete					:= SimTimers.TON_TrayLoad_Complete.Q;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_Kickout" Id="{014e66aa-a8eb-0343-2525-148d783e7f6e}" FolderPath="Stations\">
+      <Implementation>
+        <ST><![CDATA[// INIT
+KickoutStation.rStation			REF= Station[GVL.STN_KICKOUT];
+KickoutStation.rIO				REF= IO.Kickout;
+KickoutStation.rOrientStation	REF= Station[GVL.STN_ORIENT];
+KickoutStation.rTrayLoadStation REF= MultiStation[GVL.MULTISTN_TRAYLOAD];
+KickoutStation.rJobIF			REF= GVL.Job.Kickout;
+
+// Inputs
+KickoutStation.Enable	:= GVL.XTS.Cmd.Enable;
+
+// FB CALLS
+KickoutStation();]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_Orient" Id="{d0f16b18-f832-08c7-281f-98634a6efb7e}" FolderPath="Stations\">
+      <Implementation>
+        <ST><![CDATA[// INIT
+OrientStation.rStation		REF= Station[GVL.STN_ORIENT];
+OrientStation.rIO			REF= IO.Orient;
+OrientStation.rBallSeatStn	REF= Station[GVL.STN_BALLSEAT];
+OrientStation.rKickoutStn	REF= Station[GVL.STN_KICKOUT];
+OrientStation.rJobIF		REF= GVL.Job.Orient;
+
+// Inputs
+OrientStation.Enable	:= GVL.XTS.Cmd.Enable;
+
+// FB CALLS
+OrientStation();]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_Print" Id="{bae2e2f1-575e-013e-2581-94f6a26fb787}" FolderPath="Stations\">
+      <Implementation>
+        <ST><![CDATA[// INIT
+PrintStation.rMultiStn			REF= MultiStation[GVL.MULTISTN_PRINT];
+PrintStation.rIO				REF= IO.Print;
+PrintStation.rVisionStation		REF= Station[GVL.STN_VISION];
+PrintStation.rKickoutStation	REF= Station[GVL.STN_KICKOUT];
+PrintStation.rJobIF				REF= GVL.Job.Print;
+
+// Inputs
+PrintStation.Enable		:= GVL.XTS.Cmd.Enable;
+PrintStation.NumColor	:= 2;
+PrintStation.NumIndex	:= 2;
+
+// FB CALLS
+PrintStation();]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_TrayLoad" Id="{360ef673-8c23-0a8b-3af6-4f4d50115981}" FolderPath="Stations\">
+      <Implementation>
+        <ST><![CDATA[// INIT
+TrayLoadStation.rMultiStn		REF= MultiStation[GVL.MULTISTN_TRAYLOAD];
+TrayLoadStation.rIO				REF= IO.TrayLoad;
+TrayLoadStation.rOrientStation	REF= Station[GVL.STN_ORIENT];
+TrayLoadStation.rJobIF			REF= GVL.Job.TrayLoad;
+
+// Inputs
+TrayLoadStation.Enable		:= GVL.XTS.Cmd.Enable;
+
+// FB CALLS
+TrayLoadStation();]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ACT_Vision" Id="{f9fbcb7d-f55d-04fe-358f-43aa54eb8032}" FolderPath="Stations\">
+      <Implementation>
+        <ST><![CDATA[// INIT
+VisionStation.rStation			REF= Station[GVL.STN_VISION];
+VisionStation.rIO				REF= IO.Vision;
+VisionStation.rKickoutStation	REF= Station[GVL.STN_KICKOUT];
+VisionStation.rTrayloadStation	REF= MultiStation[GVL.MULTISTN_TRAYLOAD];
+VisionStation.rJobIF			REF= GVL.Job.Vision;
+
+// Inputs
+VisionStation.Enable	:= GVL.XTS.Cmd.Enable;
+
+// FB CALLS
+VisionStation();]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="InitializeUtilityLibrary" Id="{d316b5d2-dca2-07db-3642-998211ded02b}">
+      <Implementation>
+        <ST><![CDATA[
+
+
+CASE nEnvironmentState OF
+	0:	// ----------------------------------------- Enable Init Items
+	
+		// Enable init Info Server if needed
+		stXtsEnvironmentConfiguration.bEnableInitInfoServer		:= TRUE;
+		
+		// Enable init CA Group if needed
+		stXtsEnvironmentConfiguration.bEnableInitCaGroup		:= TRUE;
+		
+		// Set configuration of XtsUtility init
+		fbXtsEnvironment.P_XtsEnvironmentConfiguration			:= stXtsEnvironmentConfiguration;
+		
+		// Next step
+		nEnvironmentState	:= 1;
+		
+	1:	// ------------------------------------------ Init Environment
+		
+		// Start init
+		IF fbXtsEnvironment.Init(TRUE) THEN
+			// stop init
+			fbXtsEnvironment.Init(FALSE);
+			
+			// next step
+			nEnvironmentState	:= 2;
+		END_IF
+		
+	2:	// ------------------------------------------ Check for success
+	
+		// Check IsInitialized property
+		IF fbXtsEnvironment.P_IsInitialized THEN
+			// next step
+			nEnvironmentState	:= 3;
+		END_IF
+		
+	3:	// ------------------------------------------- Init Visu
+	
+		fbXtsEnvironmentVisu( ipTcIoXtsEnvironment := fbXtsEnvironment );
+		
+		// next step
+		nEnvironmentState	:= 4;
+		
+	4:	// ------------------------------------------- Init done
+
+		fbXtsEnvironmentVisu.Cycle();
+		
+END_CASE
+
+]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="PRG_XTS">
+      <LineId Id="6" Count="137" />
+      <LineId Id="444" Count="0" />
+      <LineId Id="145" Count="38" />
+      <LineId Id="185" Count="66" />
+      <LineId Id="253" Count="12" />
+      <LineId Id="439" Count="4" />
+      <LineId Id="289" Count="15" />
+      <LineId Id="309" Count="0" />
+      <LineId Id="314" Count="0" />
+      <LineId Id="319" Count="0" />
+      <LineId Id="324" Count="0" />
+      <LineId Id="328" Count="49" />
+    </LineIds>
+    <LineIds Name="PRG_XTS.ACT_BallSeat">
+      <LineId Id="2" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="PRG_XTS.ACT_HMIHelper">
+      <LineId Id="1" Count="2" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="7" />
+    </LineIds>
+    <LineIds Name="PRG_XTS.ACT_IOSim">
+      <LineId Id="1" Count="3" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="6" Count="3" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="17" Count="2" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="27" Count="1" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="30" Count="1" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="52" Count="1" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="56" Count="1" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="67" Count="2" />
+      <LineId Id="66" Count="0" />
+    </LineIds>
+    <LineIds Name="PRG_XTS.ACT_Kickout">
+      <LineId Id="2" Count="3" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="8" Count="3" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="PRG_XTS.ACT_Orient">
+      <LineId Id="2" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="12" Count="1" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="PRG_XTS.ACT_Print">
+      <LineId Id="2" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="20" Count="1" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="PRG_XTS.ACT_TrayLoad">
+      <LineId Id="2" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="PRG_XTS.ACT_Vision">
+      <LineId Id="2" Count="4" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="7" Count="4" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="PRG_XTS.InitializeUtilityLibrary">
+      <LineId Id="2" Count="49" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

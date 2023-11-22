@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="JobState_enum" Id="{9e385f91-6540-0626-3b8f-c0673f2fe017}">
+    <Declaration><![CDATA[{attribute 'strict'}
+{attribute 'to_string'}
+TYPE JobState_enum :
+(
+	Job_Disabled 	:= 0,
+	Job_Running		:= 1,
+	Job_Pausing		:= 2,
+	Job_Paused		:= 3,
+	Job_Done		:= 4,
+	Job_Cleanout	:= 5
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

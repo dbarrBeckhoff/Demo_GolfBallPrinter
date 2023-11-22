@@ -76,7 +76,7 @@ IF Enable THEN
 	// Printing Sequence State Machine
 	CASE State OF
 		STN_WAIT:
-			IF Run AND_THEN THIS^.MoversReadyForCycle() THEN
+			IF rJobIF.Cmd.Run AND_THEN THIS^.MoversReadyForCycle() THEN
 				FOR i := 0 TO GVL.MULTISTN_NUM_STN - 1 DO
 					IF rMultiStn.Station[i].TrackedMoverCount > 0 THEN
 						StationPayload[i]	:= rMultiStn.Station[i].CurrentMover.Payload;

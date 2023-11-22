@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="JobStn_typ" Id="{c0f2438d-d410-0fc4-150f-530c434f1ab9}">
+    <Declaration><![CDATA[TYPE JobStn_typ :
+STRUCT
+	Cmd: JobCmd_typ;
+	Sts: JobSts_typ;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

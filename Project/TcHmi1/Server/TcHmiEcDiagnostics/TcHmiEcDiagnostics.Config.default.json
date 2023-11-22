@@ -1,9 +1,14 @@
 {
     "devices": {
-        "Device1": {
+        "Device3": {
             "enabled": true,
-            "masterNetId": "0.0.0.0.2.1",
-            "targetNetId": "0.0.0.0.1.1"
+            "masterNetId": "169.254.166.5.4.1",
+            "targetNetId": "169.254.166.5.1.1"
+        },
+        "Device4": {
+            "enabled": true,
+            "masterNetId": "169.254.166.5.5.1",
+            "targetNetId": "169.254.166.5.1.1"
         }
     },
     "updateIntervals": {

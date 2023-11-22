@@ -27,6 +27,11 @@ VAR_GLOBAL CONSTANT
 
 END_VAR
 VAR_GLOBAL
+
+	// Main Control Structures
+	XTS		: XTSMainControl_typ;
+	Job		: JobMgr;
+
 	newCallTime: LREAL;
 END_VAR]]></Declaration>
   </GVL>

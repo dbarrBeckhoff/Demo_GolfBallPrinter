@@ -343,7 +343,7 @@
 }
 </script>
 </div>
-<div id="TcHmiToggleButton" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleButton" data-tchmi-height="10" data-tchmi-height-unit="%" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-text="Enable" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-state-symbol="%s%PLC1.MAIN.MainCommands.Enable%/s%" data-tchmi-toggle-state="Normal" data-tchmi-right="0" data-tchmi-creator-locked="True">
+<div id="TcHmiToggleButton" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleButton" data-tchmi-height="10" data-tchmi-height-unit="%" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-text="Enable" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-toggle-state="Normal" data-tchmi-right="0" data-tchmi-creator-locked="True">
 </div>
 <div id="btnToggleStart" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleButton" data-tchmi-height="10" data-tchmi-height-unit="%" data-tchmi-left="-1" data-tchmi-left-unit="px" data-tchmi-text="Start" data-tchmi-top="10" data-tchmi-top-unit="%" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-right="1" data-tchmi-state-symbol="%s%PLC1.MAIN.MainCommands.Start%/s%" data-tchmi-creator-locked="True">
 </div>

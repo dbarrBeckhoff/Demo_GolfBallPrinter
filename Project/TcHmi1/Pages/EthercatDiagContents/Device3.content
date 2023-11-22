@@ -1,0 +1,5 @@
+<div id="Content1" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="800" data-tchmi-height="640">
+
+<div id="TcHmiEcDiagnostics_EtherCATDiagnostics_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEcDiagnostics" data-tchmi-allow-zoom-and-pan="true" data-tchmi-device="Device3" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-toolbox-reset-view="true" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-right="88" data-tchmi-bottom="296">
+</div>
+</div>

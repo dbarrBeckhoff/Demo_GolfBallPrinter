@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <DUT Name="MainState_enum" Id="{62255fa4-5620-44dc-b5d1-8a2be4061452}">
+  <DUT Name="XTSMainState_enum" Id="{9ee55b6c-1c5f-06af-2bfa-dd4834005e9d}">
     <Declaration><![CDATA[{attribute 'strict'}
 {attribute 'to_string'}
-TYPE MainState_enum : (
+TYPE XTSMainState_enum : (
         MS_DISABLED					:= 0,
         MS_INITIALIZING_MOVERS		:= 10,
 		MS_ONESHOT_ENABLE			:= 20,
