@@ -97,15 +97,6 @@
     <Compile Include="DUTs\Job\JobSts_typ.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\XTSMainControl_typ.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\XTSMainCommands_typ.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\XTSMainState_enum.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DUTs\MoverCommandType_enum.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -119,9 +110,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\TrackState.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\XTSMainStatus_typ.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\XTS\XTSMainCommands_typ.TcDUT">

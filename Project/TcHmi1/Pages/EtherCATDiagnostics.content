@@ -25,6 +25,9 @@
   {
     "name": "Device 4",
     "displayName": "Device 4",
+    "targetFile": {
+      "path": "Pages/EthercatDiagContents/Device4.content"
+    },
     "targetFileHostPreload": false,
     "targetFileHostPreAttach": false,
     "targetFileHostKeepAlive": false,
@@ -34,6 +37,9 @@
   {
     "name": "Device 5",
     "displayName": "Device 5",
+    "targetFile": {
+      "path": "Pages/EthercatDiagContents/Device5.content"
+    },
     "targetFileHostPreload": false,
     "targetFileHostPreAttach": false,
     "targetFileHostKeepAlive": false,
