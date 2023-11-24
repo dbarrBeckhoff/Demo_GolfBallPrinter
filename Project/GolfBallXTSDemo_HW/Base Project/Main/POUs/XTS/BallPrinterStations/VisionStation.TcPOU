@@ -29,11 +29,11 @@ IF Enable THEN
 	CASE State OF
 		STN_WAIT:
 			IF rJobIF.Cmd.Run AND rStation.MoverInPosition THEN
+				Payload	:= rStation.CurrentMover.Payload;
 				IF rJobIF.Cmd.IgnoreVision THEN
 					State	:= STN_SEND;
 				ELSE
 					State	:= STN_CHECKMOVER;
-					Payload	:= rStation.CurrentMover.Payload;
 				END_IF
 			END_IF
 
@@ -59,12 +59,11 @@ IF Enable THEN
 					rIO.Outputs.Inspect := FALSE;
 					State 				:= STN_SEND;
 				END_IF;
-					
 
 		STN_SEND:
 			// For Test - Mark Some Balls for Reject
-			IF Test = 7 THEN Payload.Reject	:= TRUE; END_IF	// TEMP - TO TEST PRINT STATION REJECT HANDLING
-			Test := SEL(Test >= 7, Test + 1, 0);	
+			IF Test = 10 AND NOT rJobIF.Cmd.IgnoreVision THEN Payload.Reject := TRUE; END_IF	// TEMP - TO TEST PRINT STATION REJECT HANDLING
+			Test := SEL(Test >= 10, Test + 1, 0);	
 				
 			IF Payload.Reject THEN
 				rStation.CurrentMover.Payload	:= Payload;
@@ -94,9 +93,10 @@ _Enable	:= Enable;]]></ST>
       <LineId Id="9" Count="0" />
       <LineId Id="19" Count="0" />
       <LineId Id="76" Count="7" />
+      <LineId Id="280" Count="0" />
       <LineId Id="258" Count="0" />
       <LineId Id="260" Count="1" />
-      <LineId Id="84" Count="1" />
+      <LineId Id="84" Count="0" />
       <LineId Id="262" Count="0" />
       <LineId Id="86" Count="2" />
       <LineId Id="98" Count="0" />
@@ -116,7 +116,7 @@ _Enable	:= Enable;]]></ST>
       <LineId Id="214" Count="1" />
       <LineId Id="212" Count="0" />
       <LineId Id="210" Count="1" />
-      <LineId Id="120" Count="1" />
+      <LineId Id="121" Count="0" />
       <LineId Id="266" Count="0" />
       <LineId Id="264" Count="1" />
       <LineId Id="178" Count="0" />

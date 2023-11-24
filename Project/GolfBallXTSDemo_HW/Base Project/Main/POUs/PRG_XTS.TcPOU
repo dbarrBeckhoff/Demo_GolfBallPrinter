@@ -83,6 +83,9 @@ For any other questions, please reach out to your local Application Engineer.
 
 ====================================================================================== *)
 _AppInfo.KeepOutputsOnBP := TRUE;
+GVL.Job.rXTS 			REF= GVL.XTS;
+GVL.Job.rRecoveryZone	REF= Zone[0];
+
 CASE GVL.XTS.Sts.State OF
     MS_DISABLED: // --------------------------------------------------------- IDLE STATE
 		(*Wait here until an operator issues a MainCommand to Enable the system. 
@@ -163,8 +166,8 @@ CASE GVL.XTS.Sts.State OF
 		(*Initialize Station positions, Position Trigger positions, Zones etc. *)
 
         // Initialize station positions
-        Station[GVL.STN_ORIENT].Position	:= 800;
-        Station[GVL.STN_BALLSEAT].Position	:= 900;
+        Station[GVL.STN_ORIENT].Position	:= 625;
+        Station[GVL.STN_BALLSEAT].Position	:= 875;
         Station[GVL.STN_VISION].Position	:= 2125;
         Station[GVL.STN_KICKOUT].Position	:= 2375;
 
@@ -222,7 +225,7 @@ CASE GVL.XTS.Sts.State OF
 
 		GVL.XTS.Cmd.Stop	:= FALSE;
 
-        IF GVL.XTS.Cmd.Start THEN
+        IF GVL.XTS.Cmd.Enable (*GVL.XTS.Cmd.Start*) THEN
 
             // ===== RECOVERY LOGIC =====
 
@@ -236,6 +239,14 @@ CASE GVL.XTS.Sts.State OF
 				FOR j := 0 TO GVL.NUM_ZONES - 1 DO
 					Zone[j].RegisterMover( Mover[i] );
 				END_FOR
+            END_FOR
+
+            // Reject all Balls
+            FOR i := 0 TO GVL.NUM_MOVERS - 1 DO
+				Payload	:= Mover[i].Payload;
+				IF Payload.HasBall THEN
+					Payload.Reject := TRUE; Mover[i].Payload := Payload;
+				END_IF
             END_FOR
 
             Zone[0].CurrentMoverList.SetAllVelocity(1500).MoveAllToStation(Station[GVL.STN_ORIENT]);
@@ -267,10 +278,7 @@ CASE GVL.XTS.Sts.State OF
 
 		// =============
 
-        IF GVL.XTS.Cmd.Stop THEN
-            GVL.XTS.Cmd.Start 	:= FALSE;
-            GVL.XTS.Sts.State   := MS_ONESHOT_STOP;
-        ELSIF GVL.XTS.Cmd.Disable THEN
+       	IF GVL.XTS.Cmd.Disable THEN
             GVL.XTS.Cmd.Enable	:= FALSE;
             GVL.XTS.Sts.State   := MS_ONESHOT_STOP;
         END_IF
@@ -367,6 +375,8 @@ CASE GVL.XTS.Sts.State OF
 		for optional use by a developer during programming*)
 
 END_CASE;
+
+GVL.XTS.Sts.Enabled	:= GVL.XTS.Sts.State = MS_RUN;
 
 // Station Actions
 ACT_Orient();
@@ -619,10 +629,19 @@ END_CASE
       </Implementation>
     </Action>
     <LineIds Name="PRG_XTS">
-      <LineId Id="6" Count="137" />
+      <LineId Id="6" Count="19" />
+      <LineId Id="509" Count="0" />
+      <LineId Id="508" Count="0" />
+      <LineId Id="510" Count="0" />
+      <LineId Id="26" Count="117" />
       <LineId Id="444" Count="0" />
-      <LineId Id="145" Count="38" />
-      <LineId Id="185" Count="66" />
+      <LineId Id="145" Count="34" />
+      <LineId Id="512" Count="2" />
+      <LineId Id="517" Count="3" />
+      <LineId Id="511" Count="0" />
+      <LineId Id="180" Count="3" />
+      <LineId Id="185" Count="24" />
+      <LineId Id="213" Count="38" />
       <LineId Id="253" Count="12" />
       <LineId Id="439" Count="4" />
       <LineId Id="289" Count="15" />
@@ -630,7 +649,10 @@ END_CASE
       <LineId Id="314" Count="0" />
       <LineId Id="319" Count="0" />
       <LineId Id="324" Count="0" />
-      <LineId Id="328" Count="49" />
+      <LineId Id="328" Count="20" />
+      <LineId Id="506" Count="0" />
+      <LineId Id="505" Count="0" />
+      <LineId Id="349" Count="28" />
     </LineIds>
     <LineIds Name="PRG_XTS.ACT_BallSeat">
       <LineId Id="2" Count="0" />

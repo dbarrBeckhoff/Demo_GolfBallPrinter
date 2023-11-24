@@ -4,6 +4,8 @@
     <Declaration><![CDATA[FUNCTION_BLOCK JobMgr
 VAR_INPUT
 	Cmd:	JobCmd_typ;
+	rXTS:	REFERENCE TO XTSMainControl_typ;
+	rRecoveryZone: REFERENCE TO Zone;
 END_VAR
 VAR_OUTPUT
 	Sts:		JobSts_typ;
@@ -19,6 +21,7 @@ VAR
 
 	StnCmdRun:	BOOL;
 	StnStsAllNotRunning: BOOL;
+	Payload	: Payload_typ;
 
 	_State:		JobState_enum;
 	i: INT;
@@ -30,10 +33,13 @@ END_VAR]]></Declaration>
 			;//Clear Job Statuses and Counts
 		END_IF
 
-		IF Cmd.Run THEN
+		IF Cmd.Run AND rXTS.Sts.Enabled THEN
 			StnCmdRun	:= TRUE;
 			State		:= Job_Running;
 		END_IF
+
+	Job_Starting:
+		;
 
 	Job_Running:
 		IF Sts.Done THEN
@@ -74,7 +80,7 @@ Orient.Cmd.Run := BallSeat.Cmd.Run := Print.Cmd.Run := StnCmdRun := Vision.Cmd.R
 
 // Stn Specific Commands
 FOR i := 0 TO 3 DO
-	Orient.Cmd.PlayerNumberCount[i]	:= Cmd.PlayerNumberCount[i] + Sts.RejectedPlayerNumberCount[i];
+	Orient.Cmd.PlayerNumberCount[i]	:= (Cmd.PlayerNumberCount[0] * 12) + Sts.RejectedPlayerNumberCount[i];
 END_FOR
 Print.Cmd.NumColor		:= Cmd.NumColor;
 Print.Cmd.NumIndex		:= Cmd.NumIndex;
@@ -85,9 +91,9 @@ Vision.Cmd.IgnoreVision	:= Cmd.IgnoreVision;
 StnStsAllNotRunning := NOT (Orient.Sts.Running OR BallSeat.Sts.Running OR Print.Sts.Running OR Vision.Sts.Running OR Kickout.Sts.Running OR TrayLoad.Sts.Running);
 
 // Outputs
-Sts.Running						:= State = Job_Running;
-Sts.Done						:= State = Job_Done;
-Sts.PlayerNumberCount			:= TrayLoad.Sts.PlayerNumberCount;
+Sts.Running				:= State = Job_Running;
+Sts.Done				:= State = Job_Done;
+Sts.PlayerNumberCount	:= TrayLoad.Sts.PlayerNumberCount;
 FOR i := 0 TO 3 DO
 Sts.RejectedPlayerNumberCount[i]	:= Orient.Sts.RejectedPlayerNumberCount[i] + BallSeat.Sts.RejectedPlayerNumberCount[i] +
 									Print.Sts.RejectedPlayerNumberCount[i] + Vision.Sts.RejectedPlayerNumberCount[i] +
@@ -104,7 +110,11 @@ _State	:= State;]]></ST>
       <LineId Id="48" Count="0" />
       <LineId Id="47" Count="0" />
       <LineId Id="76" Count="0" />
-      <LineId Id="74" Count="1" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="142" Count="0" />
+      <LineId Id="141" Count="0" />
+      <LineId Id="143" Count="0" />
+      <LineId Id="75" Count="0" />
       <LineId Id="28" Count="0" />
       <LineId Id="39" Count="0" />
       <LineId Id="85" Count="0" />

@@ -3,6 +3,7 @@
   <DUT Name="XTSMainStatus_typ" Id="{acd24958-713c-06a0-049c-e092c76fb1c4}">
     <Declaration><![CDATA[TYPE XTSMainStatus_typ :
 STRUCT
+	Enabled	: BOOL;
 	State	: XTSMainState_enum;
 END_STRUCT
 END_TYPE

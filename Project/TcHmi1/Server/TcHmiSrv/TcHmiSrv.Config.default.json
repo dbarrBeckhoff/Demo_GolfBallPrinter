@@ -28,6 +28,14 @@
     "DEFAULTTIMEZONE": "client",
     "DEFAULTUSERGROUP": "__SystemUsers",
     "DEFINITIONS": {
+        "PLC1.ARRAY_0..3_OF-UDINT": {
+            "items": {
+                "$ref": "tchmi:general#/definitions/UDINT"
+            },
+            "maxItems": 4,
+            "minItems": 4,
+            "type": "array"
+        },
         "PLC1.ARRAY_0..9_OF-HMIXTSMoverHelper_typ": {
             "items": {
                 "$ref": "#/definitions/PLC1.HMIXTSMoverHelper_typ"
@@ -89,6 +97,379 @@
                             "$ref": "tchmi:general#/definitions/BOOL"
                         },
                         {
+                            "propertyOrder": 3
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.JobCmd_typ": {
+            "properties": {
+                "Cleanout": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/BOOL"
+                        },
+                        {
+                            "propertyOrder": 2
+                        }
+                    ]
+                },
+                "IgnoreVision": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/BOOL"
+                        },
+                        {
+                            "propertyOrder": 3
+                        }
+                    ]
+                },
+                "NumColor": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/UINT"
+                        },
+                        {
+                            "propertyOrder": 5
+                        }
+                    ]
+                },
+                "NumIndex": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/UINT"
+                        },
+                        {
+                            "propertyOrder": 6
+                        }
+                    ]
+                },
+                "PlayerNumberCount": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.ARRAY_0..3_OF-UDINT"
+                        },
+                        {
+                            "propertyOrder": 4
+                        }
+                    ]
+                },
+                "Run": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/BOOL"
+                        },
+                        {
+                            "propertyOrder": 1
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.JobMgr": {
+            "properties": {
+                "BallSeat": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.JobStn_typ"
+                        },
+                        {
+                            "propertyOrder": 5
+                        }
+                    ]
+                },
+                "Cmd": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.JobCmd_typ"
+                        },
+                        {
+                            "propertyOrder": 1
+                        }
+                    ]
+                },
+                "Kickout": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.JobStn_typ"
+                        },
+                        {
+                            "propertyOrder": 8
+                        }
+                    ]
+                },
+                "Orient": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.JobStn_typ"
+                        },
+                        {
+                            "propertyOrder": 4
+                        }
+                    ]
+                },
+                "Print": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.JobStn_typ"
+                        },
+                        {
+                            "propertyOrder": 6
+                        }
+                    ]
+                },
+                "State": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.JobState_enum"
+                        },
+                        {
+                            "propertyOrder": 3
+                        }
+                    ]
+                },
+                "StnCmdRun": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/BOOL"
+                        },
+                        {
+                            "propertyOrder": 10
+                        }
+                    ]
+                },
+                "StnStsAllNotRunning": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/BOOL"
+                        },
+                        {
+                            "propertyOrder": 11
+                        }
+                    ]
+                },
+                "Sts": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.JobSts_typ"
+                        },
+                        {
+                            "propertyOrder": 2
+                        }
+                    ]
+                },
+                "TrayLoad": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.JobStn_typ"
+                        },
+                        {
+                            "propertyOrder": 9
+                        }
+                    ]
+                },
+                "Vision": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.JobStn_typ"
+                        },
+                        {
+                            "propertyOrder": 7
+                        }
+                    ]
+                },
+                "_State": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.JobState_enum"
+                        },
+                        {
+                            "propertyOrder": 12
+                        }
+                    ]
+                },
+                "i": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/INT"
+                        },
+                        {
+                            "propertyOrder": 13
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.JobState_enum": {
+            "attributes": {
+                "generate_implicit_init_function": "",
+                "strict": "",
+                "to_string": "",
+                "to_string_function": "__TO_STRING__148",
+                "to_wstring_function": "__TO_WSTRING__148"
+            },
+            "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "options": [
+                {
+                    "label": "Job_Disabled",
+                    "value": 0
+                },
+                {
+                    "label": "Job_Running",
+                    "value": 1
+                },
+                {
+                    "label": "Job_Pausing",
+                    "value": 2
+                },
+                {
+                    "label": "Job_Paused",
+                    "value": 3
+                },
+                {
+                    "label": "Job_Done",
+                    "value": 4
+                },
+                {
+                    "label": "Job_Cleanout",
+                    "value": 5
+                }
+            ],
+            "type": "integer"
+        },
+        "PLC1.JobStn_typ": {
+            "properties": {
+                "Cmd": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.JobCmd_typ"
+                        },
+                        {
+                            "propertyOrder": 1
+                        }
+                    ]
+                },
+                "Sts": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.JobSts_typ"
+                        },
+                        {
+                            "propertyOrder": 2
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.JobSts_typ": {
+            "properties": {
+                "CleanoutDone": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/BOOL"
+                        },
+                        {
+                            "propertyOrder": 3
+                        }
+                    ]
+                },
+                "Done": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/BOOL"
+                        },
+                        {
+                            "propertyOrder": 2
+                        }
+                    ]
+                },
+                "PlayerNumberCount": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.ARRAY_0..3_OF-UDINT"
+                        },
+                        {
+                            "propertyOrder": 4
+                        }
+                    ]
+                },
+                "RejectedPlayerNumberCount": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.ARRAY_0..3_OF-UDINT"
+                        },
+                        {
+                            "propertyOrder": 5
+                        }
+                    ]
+                },
+                "Running": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/BOOL"
+                        },
+                        {
+                            "propertyOrder": 1
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.XTSMainCommands_typ": {
+            "properties": {
+                "Disable": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/BOOL"
+                        },
+                        {
+                            "comment": "Disables Movers, Ungroups Movers",
+                            "propertyOrder": 4
+                        }
+                    ]
+                },
+                "Enable": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/BOOL"
+                        },
+                        {
+                            "comment": "Enables Movers & Collision Avoidance, activates M1 Detection",
+                            "propertyOrder": 1
+                        }
+                    ]
+                },
+                "Start": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/BOOL"
+                        },
+                        {
+                            "comment": "Issues initial command, starts motion",
+                            "propertyOrder": 2
+                        }
+                    ]
+                },
+                "Stop": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/BOOL"
+                        },
+                        {
+                            "comment": "Stops movers, deregisters movers from all objectives",
                             "propertyOrder": 3
                         }
                     ]
@@ -2591,73 +2972,45 @@
             },
             "USEMAPPING": true
         },
-        "PLC1.MAIN.MainCommands.Disable": {
+        "PLC1.GVL.Job": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
             "DYNAMIC": true,
-            "MAPPING": "PLC1::MAIN::MainCommands::Disable",
+            "MAPPING": "PLC1::GVL::Job",
             "SCHEMA": {
-                "allOf": [
-                    {
-                        "$ref": "tchmi:general#/definitions/BOOL"
-                    },
-                    {
-                        "comment": "Disables Movers, Ungroups Movers",
-                        "propertyOrder": 4
-                    }
-                ]
+                "$ref": "tchmi:server#/definitions/PLC1.JobMgr"
             },
             "USEMAPPING": true
         },
-        "PLC1.MAIN.MainCommands.Enable": {
+        "PLC1.GVL.Job.Cmd": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
             "DYNAMIC": true,
-            "MAPPING": "PLC1::MAIN::MainCommands::Enable",
+            "MAPPING": "PLC1::GVL::Job::Cmd",
             "SCHEMA": {
                 "allOf": [
                     {
-                        "$ref": "tchmi:general#/definitions/BOOL"
+                        "$ref": "tchmi:server#/definitions/PLC1.JobCmd_typ"
                     },
                     {
-                        "comment": "Enables Movers & Collision Avoidance, activates M1 Detection",
                         "propertyOrder": 1
                     }
                 ]
             },
             "USEMAPPING": true
         },
-        "PLC1.MAIN.MainCommands.Start": {
+        "PLC1.GVL.XTS.Cmd": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
             "DYNAMIC": true,
-            "MAPPING": "PLC1::MAIN::MainCommands::Start",
+            "MAPPING": "PLC1::GVL::XTS::Cmd",
             "SCHEMA": {
                 "allOf": [
                     {
-                        "$ref": "tchmi:general#/definitions/BOOL"
+                        "$ref": "tchmi:server#/definitions/PLC1.XTSMainCommands_typ"
                     },
                     {
-                        "comment": "Issues initial command, starts motion",
-                        "propertyOrder": 2
-                    }
-                ]
-            },
-            "USEMAPPING": true
-        },
-        "PLC1.MAIN.MainCommands.Stop": {
-            "ACCESS": 3,
-            "DOMAIN": "ADS",
-            "DYNAMIC": true,
-            "MAPPING": "PLC1::MAIN::MainCommands::Stop",
-            "SCHEMA": {
-                "allOf": [
-                    {
-                        "$ref": "tchmi:general#/definitions/BOOL"
-                    },
-                    {
-                        "comment": "Stops movers, deregisters movers from all objectives",
-                        "propertyOrder": 3
+                        "propertyOrder": 1
                     }
                 ]
             },
@@ -4882,6 +5235,10 @@
                 "LocalizeText": 3,
                 "Login": 3,
                 "Logout": 3,
+                "PLC1.GVL.Job": 3,
+                "PLC1.GVL.Job.Cmd": 3,
+                "PLC1.GVL.Job.Cmd.PlayerNumberCount.0": 3,
+                "PLC1.GVL.XTS.Cmd": 3,
                 "PLC1.MAIN.HMIXTSHelper": 3,
                 "PLC1.MAIN.HMIXTSHelper.Mover.1.BallImgVisibility": 3,
                 "PLC1.MAIN.MainCommands.Disable": 3,

@@ -3,18 +3,23 @@
   <POU Name="MAIN" Id="{0790caa7-8a3f-4f91-b0f8-9ebb3db3858d}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-
+	Init	: BOOL;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[GVL.XTS;
-GVL.Job;
+      <ST><![CDATA[IF NOT Init THEN
+	GVL.Job.Cmd.NumColor				:= 2;
+	GVL.Job.Cmd.NumIndex				:= 2;
+	GVL.Job.Cmd.IgnoreVision			:= FALSE;
+	GVL.Job.Cmd.PlayerNumberCount[0]	:= 10;
+	Init	:= TRUE;
+END_IF
 
 PRG_XTS();
 GVL.Job();]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="6" Count="0" />
-      <LineId Id="8" Count="0" />
+      <LineId Id="14" Count="5" />
       <LineId Id="7" Count="0" />
       <LineId Id="2" Count="0" />
       <LineId Id="9" Count="0" />

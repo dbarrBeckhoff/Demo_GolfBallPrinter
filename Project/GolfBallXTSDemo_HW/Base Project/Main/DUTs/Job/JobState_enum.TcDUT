@@ -6,11 +6,12 @@
 TYPE JobState_enum :
 (
 	Job_Disabled 	:= 0,
-	Job_Running		:= 1,
-	Job_Pausing		:= 2,
-	Job_Paused		:= 3,
-	Job_Done		:= 4,
-	Job_Cleanout	:= 5
+	Job_Starting	:= 1,
+	Job_Running		:= 2,
+	Job_Pausing		:= 3,
+	Job_Paused		:= 4,
+	Job_Done		:= 5,
+	Job_Cleanout	:= 6
 );
 END_TYPE
 ]]></Declaration>
