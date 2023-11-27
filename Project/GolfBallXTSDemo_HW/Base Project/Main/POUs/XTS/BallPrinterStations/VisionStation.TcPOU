@@ -11,7 +11,6 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
-	test:INT;
 	Payload			: Payload_typ;
 END_VAR
 ]]></Declaration>
@@ -52,6 +51,7 @@ IF Enable THEN
 					ELSIF rIO.Inputs.VisionFail THEN
 						Payload.VisionPass 	:= FALSE;
 						Payload.Reject		:= TRUE;
+						rJobIF.Sts.RejectedPlayerNumberCount[Payload.PlayerNumber-1] := rJobIF.Sts.RejectedPlayerNumberCount[Payload.PlayerNumber-1] + 1;
 						
 					ELSE // Failed to get feedback. TODO: Need alarm.
 					END_IF;
@@ -60,11 +60,7 @@ IF Enable THEN
 					State 				:= STN_SEND;
 				END_IF;
 
-		STN_SEND:
-			// For Test - Mark Some Balls for Reject
-			IF Test = 10 AND NOT rJobIF.Cmd.IgnoreVision THEN Payload.Reject := TRUE; END_IF	// TEMP - TO TEST PRINT STATION REJECT HANDLING
-			Test := SEL(Test >= 10, Test + 1, 0);	
-				
+		STN_SEND:				
 			IF Payload.Reject THEN
 				rStation.CurrentMover.Payload	:= Payload;
 				rStation.CurrentMover.MoveToStation(rKickoutStation);
@@ -110,6 +106,7 @@ _Enable	:= Enable;]]></ST>
       <LineId Id="205" Count="0" />
       <LineId Id="155" Count="1" />
       <LineId Id="228" Count="0" />
+      <LineId Id="294" Count="0" />
       <LineId Id="209" Count="0" />
       <LineId Id="159" Count="0" />
       <LineId Id="144" Count="0" />
@@ -117,9 +114,6 @@ _Enable	:= Enable;]]></ST>
       <LineId Id="212" Count="0" />
       <LineId Id="210" Count="1" />
       <LineId Id="121" Count="0" />
-      <LineId Id="266" Count="0" />
-      <LineId Id="264" Count="1" />
-      <LineId Id="178" Count="0" />
       <LineId Id="242" Count="0" />
       <LineId Id="244" Count="1" />
       <LineId Id="243" Count="0" />

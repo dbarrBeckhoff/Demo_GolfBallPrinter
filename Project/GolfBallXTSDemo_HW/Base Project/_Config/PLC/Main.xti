@@ -1343,415 +1343,487 @@ and will return to Group State Standby when the situation permits.
 		</DataType>
 	</DataTypes>
 	<Project GUID="{DD3A0B29-8E7C-4E32-989D-B0222C998777}" Name="Main" PrjFilePath="..\..\Main\Main.plcproj" TmcFilePath="..\..\Main\Main.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-		<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Main\Main.tmc" TmcHash="{4C9054BD-63C9-8A47-745F-961A15A3C64B}">
+		<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Main\Main.tmc" TmcHash="{AA8C916F-0FAF-7CB7-C0C0-D6ABE232F856}">
 			<Name>Main Instance</Name>
 			<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 			<Vars VarGrpType="1">
 				<Name>PlcTask Inputs</Name>
 				<Var>
-					<Name>MAIN.Mover[0].AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Mover[0].AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[1].AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Mover[1].AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[2].AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Mover[2].AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[3].AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Mover[3].AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[4].AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Mover[4].AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[5].AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Mover[5].AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[6].AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Mover[6].AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[7].AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Mover[7].AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[8].AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Mover[8].AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[9].AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Mover[9].AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.GroupRef.NcToPlc</Name>
+					<Name>PRG_XTS.GroupRef.NcToPlc</Name>
 					<Type GUID="{467F4325-10DF-4BC1-88DD-E8240EB4F8E3}" Namespace="MC">CDT_MCTOPLC_GROUP</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MoverList.ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.MoverList.ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Station[0].ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Station[0].ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Station[1].ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Station[1].ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Station[2].ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Station[2].ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Station[3].ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Station[3].ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Station[4].ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Station[4].ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[0].PositionTrigger.ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.MultiStation[0].PositionTrigger.ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[0].Station[0].ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.MultiStation[0].Station[0].ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[0].Station[1].ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.MultiStation[0].Station[1].ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[0].Station[2].ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.MultiStation[0].Station[2].ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[0].Station[3].ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.MultiStation[0].Station[3].ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[1].PositionTrigger.ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.MultiStation[1].PositionTrigger.ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[1].Station[0].ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.MultiStation[1].Station[0].ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[1].Station[1].ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.MultiStation[1].Station[1].ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[1].Station[2].ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.MultiStation[1].Station[2].ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[1].Station[3].ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.MultiStation[1].Station[3].ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Zone[0].ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Zone[0].ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Zone[0].internalMoverList.ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Zone[0].internalMoverList.ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Track[0].ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Track[0].ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Track[0].internalMoverList.ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Track[0].internalMoverList.ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Track[1].ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Track[1].ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Track[1].internalMoverList.ErrorMover.AxisReference.NcToPlc</Name>
+					<Name>PRG_XTS.Track[1].internalMoverList.ErrorMover.AxisReference.NcToPlc</Name>
 					<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Orient.Inputs.BallClampOpened</Name>
+					<Name>PRG_XTS.IO.Orient.Inputs.BallClampOpened</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Orient.Inputs.BallClampClosed</Name>
+					<Name>PRG_XTS.IO.Orient.Inputs.BallClampClosed</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Orient.Inputs.BallPresent</Name>
+					<Name>PRG_XTS.IO.Orient.Inputs.BallPresent</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Orient.Inputs.BallLoadComplete</Name>
+					<Name>PRG_XTS.IO.Orient.Inputs.BallLoadComplete</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.BallSeat.Inputs.BallClampOpened</Name>
+					<Name>PRG_XTS.IO.BallSeat.Inputs.BallClampOpened</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.BallSeat.Inputs.BallClampClosed</Name>
+					<Name>PRG_XTS.IO.BallSeat.Inputs.BallClampClosed</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.BallSeat.Inputs.BallSeatExtended</Name>
+					<Name>PRG_XTS.IO.BallSeat.Inputs.BallSeatExtended</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.BallSeat.Inputs.BallSeatRetracted</Name>
+					<Name>PRG_XTS.IO.BallSeat.Inputs.BallSeatRetracted</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Print.Inputs.PrintActive</Name>
+					<Name>PRG_XTS.IO.Print.Inputs.PrintActive</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Print.Inputs.PrintComplete</Name>
+					<Name>PRG_XTS.IO.Print.Inputs.PrintComplete</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Vision.Inputs.VisionActive</Name>
+					<Name>PRG_XTS.IO.Vision.Inputs.VisionActive</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Vision.Inputs.VisionPass</Name>
+					<Name>PRG_XTS.IO.Vision.Inputs.VisionPass</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Vision.Inputs.VisionFail</Name>
+					<Name>PRG_XTS.IO.Vision.Inputs.VisionFail</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Kickout.Inputs.BallClampOpened</Name>
+					<Name>PRG_XTS.IO.Kickout.Inputs.BallClampOpened</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Kickout.Inputs.BallClampClosed</Name>
+					<Name>PRG_XTS.IO.Kickout.Inputs.BallClampClosed</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Kickout.Inputs.BallRemoved</Name>
+					<Name>PRG_XTS.IO.Kickout.Inputs.BallRemoved</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.TrayLoad.Inputs.BallClampOpened</Name>
+					<Name>PRG_XTS.IO.TrayLoad.Inputs.BallClampOpened</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.TrayLoad.Inputs.BallClampClosed</Name>
+					<Name>PRG_XTS.IO.TrayLoad.Inputs.BallClampClosed</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.TrayLoad.Inputs.TrayLoadComplete</Name>
+					<Name>PRG_XTS.IO.TrayLoad.Inputs.TrayLoadComplete</Name>
 					<Type>BOOL</Type>
 				</Var>
 			</Vars>
 			<Vars VarGrpType="2" AreaNo="1">
 				<Name>PlcTask Outputs</Name>
 				<Var>
-					<Name>MAIN.Mover[0].AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Mover[0].AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[1].AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Mover[1].AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[2].AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Mover[2].AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[3].AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Mover[3].AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[4].AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Mover[4].AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[5].AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Mover[5].AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[6].AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Mover[6].AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[7].AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Mover[7].AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[8].AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Mover[8].AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Mover[9].AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Mover[9].AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.GroupRef.PlcToNc</Name>
+					<Name>PRG_XTS.GroupRef.PlcToNc</Name>
 					<Type GUID="{0E2E3852-A98C-4AF3-81E2-209EE128940C}" Namespace="MC">CDT_PLCTOMC_GROUP</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MoverList.ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.MoverList.ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Station[0].ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Station[0].ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Station[1].ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Station[1].ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Station[2].ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Station[2].ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Station[3].ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Station[3].ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Station[4].ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Station[4].ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[0].PositionTrigger.ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.MultiStation[0].PositionTrigger.ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[0].Station[0].ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.MultiStation[0].Station[0].ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[0].Station[1].ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.MultiStation[0].Station[1].ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[0].Station[2].ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.MultiStation[0].Station[2].ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[0].Station[3].ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.MultiStation[0].Station[3].ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[1].PositionTrigger.ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.MultiStation[1].PositionTrigger.ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[1].Station[0].ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.MultiStation[1].Station[0].ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[1].Station[1].ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.MultiStation[1].Station[1].ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[1].Station[2].ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.MultiStation[1].Station[2].ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.MultiStation[1].Station[3].ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.MultiStation[1].Station[3].ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Zone[0].ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Zone[0].ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Zone[0].internalMoverList.ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Zone[0].internalMoverList.ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Track[0].ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Track[0].ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Track[0].internalMoverList.ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Track[0].internalMoverList.ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Track[1].ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Track[1].ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.Track[1].internalMoverList.ErrorMover.AxisReference.PlcToNc</Name>
+					<Name>PRG_XTS.Track[1].internalMoverList.ErrorMover.AxisReference.PlcToNc</Name>
 					<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Orient.Outputs.BallClampOpen</Name>
+					<Name>PRG_XTS.IO.Orient.Outputs.BallClampOpen</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Orient.Outputs.BallClampClose</Name>
+					<Name>PRG_XTS.IO.Orient.Outputs.BallClampClose</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Orient.Outputs.LoadBall</Name>
+					<Name>PRG_XTS.IO.Orient.Outputs.LoadBall</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.BallSeat.Outputs.BallClampOpen</Name>
+					<Name>PRG_XTS.IO.BallSeat.Outputs.BallClampOpen</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.BallSeat.Outputs.BallClampClose</Name>
+					<Name>PRG_XTS.IO.BallSeat.Outputs.BallClampClose</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.BallSeat.Outputs.ExtendBallSeater</Name>
+					<Name>PRG_XTS.IO.BallSeat.Outputs.ExtendBallSeater</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.BallSeat.Outputs.RetractBallSeater</Name>
+					<Name>PRG_XTS.IO.BallSeat.Outputs.RetractBallSeater</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Print.Outputs.Print</Name>
+					<Name>PRG_XTS.IO.Print.Outputs.Print</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Vision.Outputs.Inspect</Name>
+					<Name>PRG_XTS.IO.Vision.Outputs.Inspect</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Kickout.Outputs.BallClampOpen</Name>
+					<Name>PRG_XTS.IO.Kickout.Outputs.BallClampOpen</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Kickout.Outputs.BallClampClose</Name>
+					<Name>PRG_XTS.IO.Kickout.Outputs.BallClampClose</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.Kickout.Outputs.RemoveBall</Name>
+					<Name>PRG_XTS.IO.Kickout.Outputs.RemoveBall</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.TrayLoad.Outputs.BallClampOpen</Name>
+					<Name>PRG_XTS.IO.TrayLoad.Outputs.BallClampOpen</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.TrayLoad.Outputs.BallClampClose</Name>
+					<Name>PRG_XTS.IO.TrayLoad.Outputs.BallClampClose</Name>
 					<Type>BOOL</Type>
 				</Var>
 				<Var>
-					<Name>MAIN.IO.TrayLoad.Outputs.LoadTray</Name>
+					<Name>PRG_XTS.IO.TrayLoad.Outputs.LoadTray</Name>
 					<Type>BOOL</Type>
 				</Var>
 			</Vars>
+			<UnrestoredVarLinks ImportTime="2023-11-26T11:53:38">
+				<OwnerA Name="InputDst" Prefix="TIPC^Main^Main Instance" Type="1">
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 1">
+						<Link VarA="MAIN.Mover[0].AxisReference.NcToPlc" TypeA="MC.NCTOPLC_AXIS_REF" InOutA="0" GuidA="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" VarB="Outputs^ToPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 10">
+						<Link VarA="MAIN.Mover[9].AxisReference.NcToPlc" TypeA="MC.NCTOPLC_AXIS_REF" InOutA="0" GuidA="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" VarB="Outputs^ToPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 2">
+						<Link VarA="MAIN.Mover[1].AxisReference.NcToPlc" TypeA="MC.NCTOPLC_AXIS_REF" InOutA="0" GuidA="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" VarB="Outputs^ToPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 3">
+						<Link VarA="MAIN.Mover[2].AxisReference.NcToPlc" TypeA="MC.NCTOPLC_AXIS_REF" InOutA="0" GuidA="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" VarB="Outputs^ToPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 4">
+						<Link VarA="MAIN.Mover[3].AxisReference.NcToPlc" TypeA="MC.NCTOPLC_AXIS_REF" InOutA="0" GuidA="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" VarB="Outputs^ToPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 5">
+						<Link VarA="MAIN.Mover[4].AxisReference.NcToPlc" TypeA="MC.NCTOPLC_AXIS_REF" InOutA="0" GuidA="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" VarB="Outputs^ToPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 6">
+						<Link VarA="MAIN.Mover[5].AxisReference.NcToPlc" TypeA="MC.NCTOPLC_AXIS_REF" InOutA="0" GuidA="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" VarB="Outputs^ToPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 7">
+						<Link VarA="MAIN.Mover[6].AxisReference.NcToPlc" TypeA="MC.NCTOPLC_AXIS_REF" InOutA="0" GuidA="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" VarB="Outputs^ToPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 8">
+						<Link VarA="MAIN.Mover[7].AxisReference.NcToPlc" TypeA="MC.NCTOPLC_AXIS_REF" InOutA="0" GuidA="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" VarB="Outputs^ToPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 9">
+						<Link VarA="MAIN.Mover[8].AxisReference.NcToPlc" TypeA="MC.NCTOPLC_AXIS_REF" InOutA="0" GuidA="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" VarB="Outputs^ToPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Objects^Collision Avoidance">
+						<Link VarA="MAIN.GroupRef.NcToPlc" TypeA="MC.CDT_MCTOPLC_GROUP" InOutA="0" GuidA="{467F4325-10DF-4BC1-88DD-E8240EB4F8E3}" VarB="Group Outputs^ToPLC" RestoreInfo="ANotFound"/>
+					</OwnerB>
+				</OwnerA>
+				<OwnerA Name="OutputSrc" Prefix="TIPC^Main^Main Instance" Type="2">
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 1">
+						<Link VarA="MAIN.Mover[0].AxisReference.PlcToNc" TypeA="MC.PLCTONC_AXIS_REF" InOutA="1" GuidA="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" VarB="Inputs^FromPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 10">
+						<Link VarA="MAIN.Mover[9].AxisReference.PlcToNc" TypeA="MC.PLCTONC_AXIS_REF" InOutA="1" GuidA="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" VarB="Inputs^FromPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 2">
+						<Link VarA="MAIN.Mover[1].AxisReference.PlcToNc" TypeA="MC.PLCTONC_AXIS_REF" InOutA="1" GuidA="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" VarB="Inputs^FromPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 3">
+						<Link VarA="MAIN.Mover[2].AxisReference.PlcToNc" TypeA="MC.PLCTONC_AXIS_REF" InOutA="1" GuidA="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" VarB="Inputs^FromPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 4">
+						<Link VarA="MAIN.Mover[3].AxisReference.PlcToNc" TypeA="MC.PLCTONC_AXIS_REF" InOutA="1" GuidA="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" VarB="Inputs^FromPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 5">
+						<Link VarA="MAIN.Mover[4].AxisReference.PlcToNc" TypeA="MC.PLCTONC_AXIS_REF" InOutA="1" GuidA="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" VarB="Inputs^FromPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 6">
+						<Link VarA="MAIN.Mover[5].AxisReference.PlcToNc" TypeA="MC.PLCTONC_AXIS_REF" InOutA="1" GuidA="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" VarB="Inputs^FromPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 7">
+						<Link VarA="MAIN.Mover[6].AxisReference.PlcToNc" TypeA="MC.PLCTONC_AXIS_REF" InOutA="1" GuidA="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" VarB="Inputs^FromPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 8">
+						<Link VarA="MAIN.Mover[7].AxisReference.PlcToNc" TypeA="MC.PLCTONC_AXIS_REF" InOutA="1" GuidA="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" VarB="Inputs^FromPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 9">
+						<Link VarA="MAIN.Mover[8].AxisReference.PlcToNc" TypeA="MC.PLCTONC_AXIS_REF" InOutA="1" GuidA="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" VarB="Inputs^FromPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+					<OwnerB Name="TINC^NC SAF^Objects^Collision Avoidance">
+						<Link VarA="MAIN.GroupRef.PlcToNc" TypeA="MC.CDT_PLCTOMC_GROUP" InOutA="1" GuidA="{0E2E3852-A98C-4AF3-81E2-209EE128940C}" VarB="Group Inputs^FromPLC" RestoreInfo="ANotFound"/>
+					</OwnerB>
+				</OwnerA>
+			</UnrestoredVarLinks>
 			<Contexts>
 				<Context>
 					<Id>0</Id>
@@ -1784,48 +1856,48 @@ and will return to Group State Standby when the situation permits.
 	<Mappings>
 		<OwnerA Name="Main Instance">
 			<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 1">
-				<Link VarA="PlcTask Inputs^MAIN.Mover[0].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
-				<Link VarA="PlcTask Outputs^MAIN.Mover[0].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
+				<Link VarA="PlcTask Inputs^PRG_XTS.Mover[0].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
+				<Link VarA="PlcTask Outputs^PRG_XTS.Mover[0].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
 			</OwnerB>
 			<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 10">
-				<Link VarA="PlcTask Inputs^MAIN.Mover[9].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
-				<Link VarA="PlcTask Outputs^MAIN.Mover[9].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
+				<Link VarA="PlcTask Inputs^PRG_XTS.Mover[9].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
+				<Link VarA="PlcTask Outputs^PRG_XTS.Mover[9].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
 			</OwnerB>
 			<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 2">
-				<Link VarA="PlcTask Inputs^MAIN.Mover[1].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
-				<Link VarA="PlcTask Outputs^MAIN.Mover[1].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
+				<Link VarA="PlcTask Inputs^PRG_XTS.Mover[1].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
+				<Link VarA="PlcTask Outputs^PRG_XTS.Mover[1].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
 			</OwnerB>
 			<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 3">
-				<Link VarA="PlcTask Inputs^MAIN.Mover[2].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
-				<Link VarA="PlcTask Outputs^MAIN.Mover[2].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
+				<Link VarA="PlcTask Inputs^PRG_XTS.Mover[2].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
+				<Link VarA="PlcTask Outputs^PRG_XTS.Mover[2].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
 			</OwnerB>
 			<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 4">
-				<Link VarA="PlcTask Inputs^MAIN.Mover[3].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
-				<Link VarA="PlcTask Outputs^MAIN.Mover[3].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
+				<Link VarA="PlcTask Inputs^PRG_XTS.Mover[3].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
+				<Link VarA="PlcTask Outputs^PRG_XTS.Mover[3].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
 			</OwnerB>
 			<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 5">
-				<Link VarA="PlcTask Inputs^MAIN.Mover[4].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
-				<Link VarA="PlcTask Outputs^MAIN.Mover[4].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
+				<Link VarA="PlcTask Inputs^PRG_XTS.Mover[4].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
+				<Link VarA="PlcTask Outputs^PRG_XTS.Mover[4].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
 			</OwnerB>
 			<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 6">
-				<Link VarA="PlcTask Inputs^MAIN.Mover[5].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
-				<Link VarA="PlcTask Outputs^MAIN.Mover[5].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
+				<Link VarA="PlcTask Inputs^PRG_XTS.Mover[5].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
+				<Link VarA="PlcTask Outputs^PRG_XTS.Mover[5].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
 			</OwnerB>
 			<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 7">
-				<Link VarA="PlcTask Inputs^MAIN.Mover[6].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
-				<Link VarA="PlcTask Outputs^MAIN.Mover[6].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
+				<Link VarA="PlcTask Inputs^PRG_XTS.Mover[6].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
+				<Link VarA="PlcTask Outputs^PRG_XTS.Mover[6].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
 			</OwnerB>
 			<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 8">
-				<Link VarA="PlcTask Inputs^MAIN.Mover[7].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
-				<Link VarA="PlcTask Outputs^MAIN.Mover[7].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
+				<Link VarA="PlcTask Inputs^PRG_XTS.Mover[7].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
+				<Link VarA="PlcTask Outputs^PRG_XTS.Mover[7].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
 			</OwnerB>
 			<OwnerB Name="TINC^NC SAF^Axes^Mover Axis 9">
-				<Link VarA="PlcTask Inputs^MAIN.Mover[8].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
-				<Link VarA="PlcTask Outputs^MAIN.Mover[8].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
+				<Link VarA="PlcTask Inputs^PRG_XTS.Mover[8].AxisReference.NcToPlc" VarB="Outputs^ToPlc"/>
+				<Link VarA="PlcTask Outputs^PRG_XTS.Mover[8].AxisReference.PlcToNc" VarB="Inputs^FromPlc"/>
 			</OwnerB>
 			<OwnerB Name="TINC^NC SAF^Objects^Collision Avoidance">
-				<Link VarA="PlcTask Inputs^MAIN.GroupRef.NcToPlc" VarB="Group Outputs^ToPLC"/>
-				<Link VarA="PlcTask Outputs^MAIN.GroupRef.PlcToNc" VarB="Group Inputs^FromPLC"/>
+				<Link VarA="PlcTask Inputs^PRG_XTS.GroupRef.NcToPlc" VarB="Group Outputs^ToPLC"/>
+				<Link VarA="PlcTask Outputs^PRG_XTS.GroupRef.PlcToNc" VarB="Group Inputs^FromPLC"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

@@ -5,7 +5,8 @@
     STRUCT
 
         Enable  : BOOL; // Enables Movers & Collision Avoidance, activates M1 Detection
-        Start   : BOOL; // Issues initial command, starts motion
+        Start   : BOOL; // Issues initial command, starts motion\
+		Restart	: BOOL;	// force restart
         Stop    : BOOL; // Stops movers, deregisters movers from all objectives	
         Disable : BOOL; // Disables Movers, Ungroups Movers
 

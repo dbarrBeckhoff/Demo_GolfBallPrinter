@@ -7,6 +7,7 @@ STRUCT
 	Cleanout:			BOOL;
 	IgnoreVision:		BOOL;
 	PlayerNumberCount:	ARRAY[0..3] OF UDINT;
+	RejectedPlayerNumbercount:	ARRAY[0..3] OF UDINT;
 	NumColor:			UINT;
 	NumIndex:			UINT;
 END_STRUCT

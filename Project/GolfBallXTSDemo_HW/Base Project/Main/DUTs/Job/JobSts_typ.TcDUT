@@ -8,6 +8,7 @@ STRUCT
 	CleanoutDone:				BOOL;
 	PlayerNumberCount:			ARRAY[0..3] OF UDINT;
 	RejectedPlayerNumberCount:	ARRAY[0..3] OF UDINT;
+	PrintedPlayerNumberCount:	ARRAY[0..3] OF UDINT;
 END_STRUCT
 END_TYPE
 ]]></Declaration>

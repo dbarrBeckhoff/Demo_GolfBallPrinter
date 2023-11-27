@@ -61,7 +61,7 @@
 </div>
 <div id="TcHmiTextblock_12" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-text="4" data-tchmi-top="78" data-tchmi-top-unit="%" data-tchmi-width="8" data-tchmi-width-unit="%" data-tchmi-word-wrap="false" data-tchmi-text-font-size="140" data-tchmi-height-mode="Value" data-tchmi-text-font-size-unit="%" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-vertical-alignment="Center" data-tchmi-creator-locked="False">
 </div>
-<div id="TcHmiNumericInput_7" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="8" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="12" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
+<div id="TcHmiNumericInput_7" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="8" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="%s%PLC1.GVL.Job::Orient::Cmd::PlayerNumberCount[0]%/s%" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="12" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -72,7 +72,7 @@
 </script>
 
 </div>
-<div id="TcHmiNumericInput_9" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="8" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="78" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
+<div id="TcHmiNumericInput_9" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="8" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="%s%PLC1.GVL.Job::Orient::Cmd::PlayerNumberCount[3]%/s%" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="78" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -83,7 +83,7 @@
 </script>
 
 </div>
-<div id="TcHmiNumericInput_12" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="8" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="34" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
+<div id="TcHmiNumericInput_12" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="8" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="%s%PLC1.GVL.Job::Orient::Cmd::PlayerNumberCount[1]%/s%" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="34" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -94,7 +94,7 @@
 </script>
 
 </div>
-<div id="TcHmiNumericInput_14" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="8" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="56" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
+<div id="TcHmiNumericInput_14" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="8" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="%s%PLC1.GVL.Job::Orient::Cmd::PlayerNumberCount[2]%/s%" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="56" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -105,7 +105,7 @@
 </script>
 
 </div>
-<div id="TcHmiNumericInput_15" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="31.0" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="12.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
+<div id="TcHmiNumericInput_15" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="31.0" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="%s%PLC1.GVL.Job::Sts::PrintedPlayerNumberCount[0]%/s%" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="12.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -116,7 +116,7 @@
 </script>
 
 </div>
-<div id="TcHmiNumericInput_16" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="31.0" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="34.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
+<div id="TcHmiNumericInput_16" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="31.0" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="%s%PLC1.GVL.Job::Sts::PrintedPlayerNumberCount[1]%/s%" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="34.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -127,7 +127,7 @@
 </script>
 
 </div>
-<div id="TcHmiNumericInput_17" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="31.0" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="56.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
+<div id="TcHmiNumericInput_17" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="31.0" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="%s%PLC1.GVL.Job::Sts::PrintedPlayerNumberCount[2]%/s%" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="56.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -138,7 +138,7 @@
 </script>
 
 </div>
-<div id="TcHmiNumericInput_18" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="31.0" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="78.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
+<div id="TcHmiNumericInput_18" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="31.0" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="%s%PLC1.GVL.Job::Sts::PrintedPlayerNumberCount[3]%/s%" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="78.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -149,7 +149,7 @@
 </script>
 
 </div>
-<div id="TcHmiNumericInput_19" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="54.0" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="12.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
+<div id="TcHmiNumericInput_19" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="54.0" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="%s%PLC1.GVL.Job::Sts::PlayerNumberCount[0]%/s%" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="12.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -160,7 +160,7 @@
 </script>
 
 </div>
-<div id="TcHmiNumericInput_20" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="54.0" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="34.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
+<div id="TcHmiNumericInput_20" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="54.0" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="%s%PLC1.GVL.Job::Sts::PlayerNumberCount[1]%/s%" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="34.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -171,7 +171,7 @@
 </script>
 
 </div>
-<div id="TcHmiNumericInput_21" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="54.0" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="56.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
+<div id="TcHmiNumericInput_21" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="54.0" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="%s%PLC1.GVL.Job::Sts::PlayerNumberCount[2]%/s%" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="56.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -182,7 +182,7 @@
 </script>
 
 </div>
-<div id="TcHmiNumericInput_22" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="54.0" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="78.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
+<div id="TcHmiNumericInput_22" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="54.0" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="%s%PLC1.GVL.Job::Sts::PlayerNumberCount[3]%/s%" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="78.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -193,7 +193,7 @@
 </script>
 
 </div>
-<div id="TcHmiNumericInput_23" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="76.9" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="12.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
+<div id="TcHmiNumericInput_23" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="76.9" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="%s%PLC1.GVL.Job::Sts::RejectedPlayerNumberCount[0]%/s%" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="12.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -204,7 +204,7 @@
 </script>
 
 </div>
-<div id="TcHmiNumericInput_24" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="76.9" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="34.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
+<div id="TcHmiNumericInput_24" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="76.9" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="%s%PLC1.GVL.Job::Sts::RejectedPlayerNumberCount[1]%/s%" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="34.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -215,7 +215,7 @@
 </script>
 
 </div>
-<div id="TcHmiNumericInput_25" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="76.9" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="56.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
+<div id="TcHmiNumericInput_25" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="76.9" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="%s%PLC1.GVL.Job::Sts::RejectedPlayerNumberCount[2]%/s%" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="56.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -226,7 +226,7 @@
 </script>
 
 </div>
-<div id="TcHmiNumericInput_26" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="76.9" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="78.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
+<div id="TcHmiNumericInput_26" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="22" data-tchmi-height-unit="%" data-tchmi-left="76.9" data-tchmi-left-unit="%" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top-unit="%" data-tchmi-value="%s%PLC1.GVL.Job::Sts::RejectedPlayerNumberCount[3]%/s%" data-tchmi-width="23" data-tchmi-width-unit="%" data-tchmi-top="78.0" data-tchmi-is-enabled="false" data-tchmi-value-font-size-unit="%" data-tchmi-value-font-size="250" data-tchmi-value-horizontal-alignment="Center">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,

@@ -58,9 +58,12 @@ VAR
 
 	// IO
 	IO: IO_typ;
+	VisTestCnt	: UINT;
 
 	Payload: Payload_typ;
 	HMIXTSHelper : HMIXTSHelper_typ;
+	VisionComplete: BOOL;
+	BallsPresentOnTrack: BOOL;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[(* ======================================================================================
@@ -151,15 +154,15 @@ CASE GVL.XTS.Sts.State OF
         END_FOR
 
         IF allMoversEnabled THEN
-			IF GVL.XTS.Cmd.Disable THEN
-				GVL.XTS.Cmd.Enable		:=FALSE;
-            	GVL.XTS.Sts.State		:= MS_ONESHOT_DISABLE;
-			ELSIF GVL.XTS.Cmd.Stop	 THEN
+			IF GVL.XTS.Cmd.Stop	 THEN
 				GVL.XTS.Cmd.Start		:=FALSE;
 				GVL.XTS.Sts.State		:= MS_ONESHOT_STOP;
 			ELSIF GVL.XTS.Cmd.Enable THEN
 	        	GVL.XTS.Sts.State 		:= MS_INITIALIZING_OBJECTIVES;
 			END_IF
+		ELSIF GVL.XTS.Cmd.Disable THEN
+			GVL.XTS.Cmd.Enable		:=FALSE;
+			GVL.XTS.Sts.State		:= MS_ONESHOT_DISABLE;
         END_IF
 
     MS_INITIALIZING_OBJECTIVES: // --------------------------------------------- WRITING OBJECTIVE PARAMETERS
@@ -241,20 +244,35 @@ CASE GVL.XTS.Sts.State OF
 				END_FOR
             END_FOR
 
-            // Reject all Balls
-            FOR i := 0 TO GVL.NUM_MOVERS - 1 DO
-				Payload	:= Mover[i].Payload;
-				IF Payload.HasBall THEN
-					Payload.Reject := TRUE; Mover[i].Payload := Payload;
-				END_IF
-            END_FOR
-
-            Zone[0].CurrentMoverList.SetAllVelocity(1500).MoveAllToStation(Station[GVL.STN_ORIENT]);
-
             // ===== END =====
-            GVL.XTS.Sts.State	:= MS_RUN;
+            GVL.XTS.Sts.State	:= MS_STARTUP;
+		END_IF
 
-        ELSIF GVL.XTS.Cmd.Disable THEN
+	MS_STARTUP:
+
+		// Reject all Balls
+		BallsPresentOnTrack				:= FALSE;
+		FOR i := 0 TO GVL.NUM_MOVERS - 1 DO
+			Payload						:= Mover[i].Payload;
+			IF Payload.HasBall THEN
+				BallsPresentOnTrack		:= TRUE;
+				IF NOT Payload.Reject THEN
+					Payload.Reject 		:= TRUE;
+					//GVL.Job.System.Sts.RejectedPlayerNumberCount[Payload.PlayerNumber-1]	:= GVL.Job.System.Sts.RejectedPlayerNumberCount[Payload.PlayerNumber-1] + 1;
+					Mover[i].Payload 	:= Payload;
+				END_IF
+			END_IF
+		END_FOR
+
+		// Send Recovery Movement
+		IF BallsPresentOnTrack THEN
+			Zone[0].CurrentMoverList.SetAllVelocity(1500).MoveAllToStation(Station[GVL.STN_KICKOUT]);
+		ELSE
+			Zone[0].CurrentMoverList.SetAllVelocity(1500).MoveAllToStation(Station[GVL.STN_ORIENT]);
+		END_IF
+		GVL.XTS.Sts.State	:= MS_RUN;
+
+        IF GVL.XTS.Cmd.Disable THEN
             GVL.XTS.Cmd.Enable	:= FALSE;
             GVL.XTS.Sts.State 	:= MS_ONESHOT_STOP;
         END_IF
@@ -281,6 +299,8 @@ CASE GVL.XTS.Sts.State OF
        	IF GVL.XTS.Cmd.Disable THEN
             GVL.XTS.Cmd.Enable	:= FALSE;
             GVL.XTS.Sts.State   := MS_ONESHOT_STOP;
+		ELSIF GVL.XTS.Cmd.Restart THEN
+		    GVL.XTS.Sts.State   := MS_STARTUP;
         END_IF
 
 	MS_ONESHOT_STOP:	// --------------------------------------------------- SINGLE-CYCLE ISSUE HALT COMMANDS
@@ -470,8 +490,15 @@ IO.Print.Inputs.PrintComplete	:= SimTimers.TON_Print_PrintComplete.Q;
 // Vision
 SimTimers.TON_Vision_ScanBall(IN := IO.Vision.Outputs.Inspect, PT := T#1000MS);
 IO.Vision.Inputs.VisionActive := IO.Vision.Outputs.Inspect AND NOT(SimTimers.TON_Vision_ScanBall.Q);
-IF SimTimers.TON_Vision_ScanBall.Q THEN	IO.Vision.Inputs.VisionPass	:= TRUE;	IO.Vision.Inputs.VisionFail	:= FALSE;
-ELSE IO.Vision.Inputs.VisionPass	:= FALSE;	IO.Vision.Inputs.VisionFail	:= FALSE;	END_IF;
+IF SimTimers.TON_Vision_ScanBall.Q THEN
+	IF NOT VisionComplete THEN
+		VisionComplete	:= TRUE;
+		IF VisTestCnt >= 9 THEN		IO.Vision.Inputs.VisionPass	:= FALSE;	IO.Vision.Inputs.VisionFail	:= TRUE;	VisTestCnt := 0;
+		ELSE						IO.Vision.Inputs.VisionPass := TRUE;	IO.Vision.Inputs.VisionFail	:= FALSE;	VisTestCnt := VisTestCnt+1;
+		END_IF
+	END_IF
+ELSE IO.Vision.Inputs.VisionPass := FALSE;	IO.Vision.Inputs.VisionFail	:= FALSE;	VisionComplete	:= FALSE;
+END_IF;
 
 // Kickout
 SimTimers.TON_Kickout_OpenBallClamp(IN := IO.Kickout.Outputs.BallClampOpen AND NOT IO.Kickout.Outputs.BallClampClose, PT := T#150MS);
@@ -633,15 +660,41 @@ END_CASE
       <LineId Id="509" Count="0" />
       <LineId Id="508" Count="0" />
       <LineId Id="510" Count="0" />
-      <LineId Id="26" Count="117" />
+      <LineId Id="26" Count="64" />
+      <LineId Id="94" Count="5" />
+      <LineId Id="670" Count="1" />
+      <LineId Id="669" Count="0" />
+      <LineId Id="100" Count="43" />
       <LineId Id="444" Count="0" />
       <LineId Id="145" Count="34" />
-      <LineId Id="512" Count="2" />
-      <LineId Id="517" Count="3" />
+      <LineId Id="584" Count="1" />
+      <LineId Id="583" Count="0" />
+      <LineId Id="586" Count="0" />
+      <LineId Id="589" Count="0" />
+      <LineId Id="588" Count="0" />
+      <LineId Id="512" Count="1" />
+      <LineId Id="593" Count="0" />
+      <LineId Id="514" Count="0" />
+      <LineId Id="517" Count="1" />
+      <LineId Id="595" Count="0" />
+      <LineId Id="604" Count="0" />
+      <LineId Id="519" Count="0" />
+      <LineId Id="603" Count="0" />
+      <LineId Id="602" Count="0" />
+      <LineId Id="605" Count="0" />
+      <LineId Id="520" Count="0" />
       <LineId Id="511" Count="0" />
-      <LineId Id="180" Count="3" />
+      <LineId Id="590" Count="0" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="596" Count="0" />
+      <LineId Id="181" Count="0" />
+      <LineId Id="599" Count="0" />
+      <LineId Id="598" Count="0" />
+      <LineId Id="600" Count="0" />
       <LineId Id="185" Count="24" />
-      <LineId Id="213" Count="38" />
+      <LineId Id="213" Count="3" />
+      <LineId Id="591" Count="1" />
+      <LineId Id="217" Count="34" />
       <LineId Id="253" Count="12" />
       <LineId Id="439" Count="4" />
       <LineId Id="289" Count="15" />
@@ -692,7 +745,13 @@ END_CASE
       <LineId Id="30" Count="1" />
       <LineId Id="48" Count="0" />
       <LineId Id="35" Count="0" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="74" Count="1" />
+      <LineId Id="78" Count="0" />
       <LineId Id="37" Count="0" />
+      <LineId Id="73" Count="0" />
       <LineId Id="49" Count="0" />
       <LineId Id="36" Count="0" />
       <LineId Id="52" Count="1" />

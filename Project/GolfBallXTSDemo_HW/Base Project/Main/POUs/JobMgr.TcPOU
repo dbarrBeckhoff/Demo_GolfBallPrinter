@@ -18,6 +18,7 @@ VAR
 	Vision:		JobStn_typ;
 	Kickout:	JobStn_typ;
 	TrayLoad:	JobStn_typ;
+	System:		JobStn_typ;
 
 	StnCmdRun:	BOOL;
 	StnStsAllNotRunning: BOOL;
@@ -45,7 +46,7 @@ END_VAR]]></Declaration>
 		IF Sts.Done THEN
 			StnCmdRun	:= FALSE;
 			State		:= Job_Done;
-		ELSIF NOT Cmd.Run THEN
+		ELSIF Cmd.Cleanout OR NOT Cmd.Run THEN
 			StnCmdRun	:= FALSE;
 			State		:= Job_Pausing;
 		END_IF
@@ -54,6 +55,8 @@ END_VAR]]></Declaration>
 		IF Cmd.Run THEN
 			StnCmdRun	:= TRUE;
 			State		:= Job_Running;
+		ELSIF Cmd.Cleanout AND StnStsAllNotRunning THEN
+			;//MEMSET(rjo
 		END_IF
 
 	Job_Paused:
@@ -61,7 +64,8 @@ END_VAR]]></Declaration>
 			StnCmdRun	:= TRUE;
 			State		:= Job_Running;
 		ELSIF Cmd.Cleanout THEN
-			;	// rZone.SendAllMovers.whatever
+			StnCmdRun	:= FALSE;
+			//Sts. 
 		END_IF
 
 	Job_Done:
@@ -91,13 +95,15 @@ Vision.Cmd.IgnoreVision	:= Cmd.IgnoreVision;
 StnStsAllNotRunning := NOT (Orient.Sts.Running OR BallSeat.Sts.Running OR Print.Sts.Running OR Vision.Sts.Running OR Kickout.Sts.Running OR TrayLoad.Sts.Running);
 
 // Outputs
-Sts.Running				:= State = Job_Running;
-Sts.Done				:= State = Job_Done;
-Sts.PlayerNumberCount	:= TrayLoad.Sts.PlayerNumberCount;
+Sts.Running						:= State = Job_Running;
+Sts.Done						:= State = Job_Done;
+Sts.PlayerNumberCount			:= TrayLoad.Sts.PlayerNumberCount;
+Sts.PrintedPlayerNumberCount	:= Print.Sts.PlayerNumberCount;
 FOR i := 0 TO 3 DO
 Sts.RejectedPlayerNumberCount[i]	:= Orient.Sts.RejectedPlayerNumberCount[i] + BallSeat.Sts.RejectedPlayerNumberCount[i] +
 									Print.Sts.RejectedPlayerNumberCount[i] + Vision.Sts.RejectedPlayerNumberCount[i] +
-									Kickout.Sts.RejectedPlayerNumberCount[i] + Trayload.Sts.RejectedPlayerNumberCount[i];
+									Kickout.Sts.RejectedPlayerNumberCount[i] + Trayload.Sts.RejectedPlayerNumberCount[i] +
+									System.Sts.RejectedPlayerNumberCount[i];
 END_FOR
 
 // Save Previous Values
@@ -127,12 +133,14 @@ _State	:= State;]]></ST>
       <LineId Id="59" Count="0" />
       <LineId Id="64" Count="0" />
       <LineId Id="63" Count="0" />
+      <LineId Id="169" Count="1" />
       <LineId Id="58" Count="0" />
       <LineId Id="73" Count="0" />
       <LineId Id="29" Count="0" />
       <LineId Id="43" Count="0" />
       <LineId Id="51" Count="1" />
       <LineId Id="56" Count="0" />
+      <LineId Id="168" Count="0" />
       <LineId Id="61" Count="0" />
       <LineId Id="53" Count="0" />
       <LineId Id="44" Count="0" />
@@ -159,8 +167,10 @@ _State	:= State;]]></ST>
       <LineId Id="91" Count="0" />
       <LineId Id="90" Count="0" />
       <LineId Id="21" Count="0" />
+      <LineId Id="172" Count="0" />
       <LineId Id="116" Count="0" />
       <LineId Id="22" Count="2" />
+      <LineId Id="174" Count="0" />
       <LineId Id="102" Count="0" />
       <LineId Id="118" Count="0" />
       <LineId Id="101" Count="0" />

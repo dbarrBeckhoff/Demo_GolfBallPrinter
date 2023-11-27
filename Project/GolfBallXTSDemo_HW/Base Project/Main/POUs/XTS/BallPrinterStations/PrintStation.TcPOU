@@ -92,7 +92,12 @@ IF Enable THEN
 				FOR i := 0 TO GVL.MULTISTN_NUM_STN - 1 DO
 					IF rMultiStn.Station[i].TrackedMoverCount > 0 THEN
 						StationPayload[i].PrintStepComplete[PrintConfig.ProcessIndex[i]]	:= TRUE;
-						IF PrintConfig.FinalPrint[i] THEN StationPayload[i].PrintComplete		:= TRUE; END_IF
+						IF PrintConfig.FinalPrint[i] THEN 
+							StationPayload[i].PrintComplete		:= TRUE;
+							IF StationPayload[i].HasBall THEN
+								rJobIF.Sts.PlayerNumberCount[StationPayload[i].PlayerNumber - 1] := rJobIF.Sts.PlayerNumberCount[StationPayload[i].PlayerNumber - 1] + 1;
+							END_IF
+						END_IF
 					END_IF
 				END_FOR
 			State	:= STN_SEND;
@@ -276,7 +281,12 @@ END_IF]]></ST>
       <LineId Id="143" Count="0" />
       <LineId Id="197" Count="0" />
       <LineId Id="285" Count="0" />
-      <LineId Id="203" Count="2" />
+      <LineId Id="203" Count="0" />
+      <LineId Id="418" Count="0" />
+      <LineId Id="421" Count="1" />
+      <LineId Id="420" Count="0" />
+      <LineId Id="419" Count="0" />
+      <LineId Id="204" Count="1" />
       <LineId Id="209" Count="0" />
       <LineId Id="206" Count="0" />
       <LineId Id="40" Count="0" />

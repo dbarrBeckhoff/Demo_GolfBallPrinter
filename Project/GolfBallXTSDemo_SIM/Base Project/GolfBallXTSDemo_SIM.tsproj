@@ -63419,7 +63419,7 @@ and will return to Group State Standby when the situation permits.
 		</Motion>
 		<Plc>
 			<Project GUID="{DD3A0B29-8E7C-4E32-989D-B0222C998777}" Name="Main" PrjFilePath="..\..\GolfBallXTSDemo_HW\Base Project\Main\Main.plcproj" TmcFilePath="..\..\GolfBallXTSDemo_HW\Base Project\Main\Main.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="..\..\GolfBallXTSDemo_HW\Base Project\Main\Main.tmc" TmcHash="{F6C3E62D-95E6-F22C-8976-BFFA572D6CAB}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="..\..\GolfBallXTSDemo_HW\Base Project\Main\Main.tmc" TmcHash="{D6943A80-0F3F-3F46-AE63-3BBBEE24B33C}">
 					<Name>Main Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">

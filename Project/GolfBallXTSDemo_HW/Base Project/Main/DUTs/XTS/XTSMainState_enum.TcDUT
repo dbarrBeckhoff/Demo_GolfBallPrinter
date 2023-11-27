@@ -12,6 +12,7 @@ TYPE XTSMainState_enum : (
 		MS_ACTIVATE_TRACKS			:= 45,
 		MS_WAIT_FOR_TRACKS			:= 46,
         MS_ENABLED					:= 50,
+		MS_STARTUP					:= 51,
         MS_RUN						:= 60,
 		MS_ONESHOT_STOP				:= 70,
         MS_STOPPING					:= 80,
