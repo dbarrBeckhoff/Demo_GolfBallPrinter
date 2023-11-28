@@ -9,6 +9,7 @@ STRUCT
 	Vision:		Vision_IO_typ;
 	Kickout:	Kickout_IO_typ;
 	TrayLoad:	TrayLoad_IO_typ;
+	Test		AT %I*: BOOL;
 END_STRUCT
 END_TYPE
 ]]></Declaration>

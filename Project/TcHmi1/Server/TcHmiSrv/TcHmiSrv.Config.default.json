@@ -324,20 +324,20 @@
                 "NumColor": {
                     "allOf": [
                         {
-                            "$ref": "tchmi:general#/definitions/UINT"
+                            "$ref": "tchmi:general#/definitions/USINT"
                         },
                         {
-                            "propertyOrder": 5
+                            "propertyOrder": 6
                         }
                     ]
                 },
                 "NumIndex": {
                     "allOf": [
                         {
-                            "$ref": "tchmi:general#/definitions/UINT"
+                            "$ref": "tchmi:general#/definitions/USINT"
                         },
                         {
-                            "propertyOrder": 6
+                            "propertyOrder": 7
                         }
                     ]
                 },
@@ -348,6 +348,16 @@
                         },
                         {
                             "propertyOrder": 4
+                        }
+                    ]
+                },
+                "RejectedPlayerNumbercount": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.ARRAY_0..3_OF-UDINT"
+                        },
+                        {
+                            "propertyOrder": 5
                         }
                     ]
                 },
@@ -412,7 +422,7 @@
                             "$ref": "#/definitions/PLC1.Payload_typ"
                         },
                         {
-                            "propertyOrder": 14
+                            "propertyOrder": 15
                         }
                     ]
                 },
@@ -442,7 +452,7 @@
                             "$ref": "tchmi:general#/definitions/BOOL"
                         },
                         {
-                            "propertyOrder": 12
+                            "propertyOrder": 13
                         }
                     ]
                 },
@@ -452,7 +462,7 @@
                             "$ref": "tchmi:general#/definitions/BOOL"
                         },
                         {
-                            "propertyOrder": 13
+                            "propertyOrder": 14
                         }
                     ]
                 },
@@ -463,6 +473,16 @@
                         },
                         {
                             "propertyOrder": 4
+                        }
+                    ]
+                },
+                "System": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PLC1.JobStn_typ"
+                        },
+                        {
+                            "propertyOrder": 12
                         }
                     ]
                 },
@@ -492,7 +512,7 @@
                             "$ref": "#/definitions/PLC1.JobState_enum"
                         },
                         {
-                            "propertyOrder": 15
+                            "propertyOrder": 16
                         }
                     ]
                 },
@@ -502,7 +522,7 @@
                             "$ref": "tchmi:general#/definitions/INT"
                         },
                         {
-                            "propertyOrder": 16
+                            "propertyOrder": 17
                         }
                     ]
                 },
@@ -5062,8 +5082,8 @@
     "DISCOVERY": 2,
     "ENABLE_SERVER_UPDATE": true,
     "ENDPOINTS": [
-        "http://127.0.0.1:13000",
-        "http://127.0.0.1:3000"
+        "http://127.0.0.1:13001",
+        "http://127.0.0.1:3001"
     ],
     "ETAGENABLED": true,
     "EXTENSIONS": {
@@ -7550,13 +7570,54 @@
             },
             "USEMAPPING": true
         },
-        "PLC1.GVL.Job": {
+        "PLC1.GVL.Job.Cmd": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
             "DYNAMIC": true,
-            "MAPPING": "PLC1::GVL::Job",
+            "MAPPING": "PLC1::GVL::Job::Cmd",
             "SCHEMA": {
-                "$ref": "tchmi:server#/definitions/PLC1.JobMgr"
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/PLC1.JobCmd_typ"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL.Job.Orient.Cmd": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL::Job::Orient::Cmd",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/PLC1.JobCmd_typ"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL.Job.Sts": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL::Job::Sts",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/PLC1.JobSts_typ"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
             },
             "USEMAPPING": true
         },
@@ -9799,6 +9860,8 @@
                 "PLC1.GVL.Job": 3,
                 "PLC1.GVL.Job.Cmd": 3,
                 "PLC1.GVL.Job.Cmd.PlayerNumberCount.0": 3,
+                "PLC1.GVL.Job.Orient.Cmd": 3,
+                "PLC1.GVL.Job.Sts": 3,
                 "PLC1.GVL.XTS.Cmd": 3,
                 "PLC1.MAIN.HMIXTSHelper": 3,
                 "PLC1.MAIN.HMIXTSHelper.Mover.1.BallImgVisibility": 3,
@@ -9865,13 +9928,13 @@
     "VIDEOSEGMENTSIZE": 1048576,
     "VIRTUALDIRECTORIES": {
         "/": "..\\..\\TcHmi1\\",
-        "/Beckhoff.TwinCAT.HMI.BaseTemplate": "..\\..\\GolfBallXTSDemo_SIM\\Packages\\Beckhoff.TwinCAT.HMI.BaseTemplate.12.760.48\\runtimes\\native1.12-tchmi",
-        "/Beckhoff.TwinCAT.HMI.Controls": "..\\..\\GolfBallXTSDemo_SIM\\Packages\\Beckhoff.TwinCAT.HMI.Controls.12.760.48\\runtimes\\native1.12-tchmi",
-        "/Beckhoff.TwinCAT.HMI.EcDiagnosticsControl": "..\\..\\GolfBallXTSDemo_SIM\\Packages\\Beckhoff.TwinCAT.HMI.EcDiagnosticsControl.12.760.48\\runtimes\\native1.12-tchmi",
-        "/Beckhoff.TwinCAT.HMI.Functions": "..\\..\\GolfBallXTSDemo_SIM\\Packages\\Beckhoff.TwinCAT.HMI.Functions.12.760.48\\runtimes\\native1.12-tchmi",
-        "/Beckhoff.TwinCAT.HMI.XTS.Controls": "..\\..\\GolfBallXTSDemo_SIM\\Packages\\Beckhoff.TwinCAT.HMI.XTS.Controls.3.2210.6\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.BaseTemplate": "..\\..\\GolfBallXTSDemo_HW\\Packages\\Beckhoff.TwinCAT.HMI.BaseTemplate.12.760.48\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.Controls": "..\\..\\GolfBallXTSDemo_HW\\Packages\\Beckhoff.TwinCAT.HMI.Controls.12.760.48\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.EcDiagnosticsControl": "..\\..\\GolfBallXTSDemo_HW\\Packages\\Beckhoff.TwinCAT.HMI.EcDiagnosticsControl.12.760.48\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.Functions": "..\\..\\GolfBallXTSDemo_HW\\Packages\\Beckhoff.TwinCAT.HMI.Functions.12.760.48\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.XTS.Controls": "..\\..\\GolfBallXTSDemo_HW\\Packages\\Beckhoff.TwinCAT.HMI.XTS.Controls.3.2210.6\\runtimes\\native1.12-tchmi",
         "/bin": "..\\..\\TcHmi1\\bin\\",
         "/bin/framework": "..\\..\\TcHmi1\\bin\\framework",
-        "/framework": "..\\..\\GolfBallXTSDemo_SIM\\Packages\\Beckhoff.TwinCAT.HMI.Framework.12.760.48\\runtimes\\native1.12-tchmi"
+        "/framework": "..\\..\\GolfBallXTSDemo_HW\\Packages\\Beckhoff.TwinCAT.HMI.Framework.12.760.48\\runtimes\\native1.12-tchmi"
     }
 }

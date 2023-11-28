@@ -9,6 +9,11 @@
             "enabled": true,
             "masterNetId": "169.254.166.5.5.1",
             "targetNetId": "169.254.166.5.1.1"
+        },
+        "Device5": {
+            "enabled": true,
+            "masterNetId": "169.254.166.5.6.1",
+            "targetNetId": "169.254.166.5.1.1"
         }
     },
     "updateIntervals": {

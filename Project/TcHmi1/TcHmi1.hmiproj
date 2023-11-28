@@ -9,10 +9,10 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
     <AvailablePlatforms>TwinCAT HMI</AvailablePlatforms>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <HmiTitle>Please enter your Title...</HmiTitle>
+    <HmiTitle>XTS Golf Ball Printing Demo</HmiTitle>
     <HmiVerboseLevel>2</HmiVerboseLevel>
     <HmiVersion>1.0.0.0</HmiVersion>
-    <HmiCommunicationServerPort>3000</HmiCommunicationServerPort>
+    <HmiCommunicationServerPort>3001</HmiCommunicationServerPort>
     <HmiLogTcHmiServerMessages>false</HmiLogTcHmiServerMessages>
     <HmiLogDesignerModeComMessages>false</HmiLogDesignerModeComMessages>
     <HmiServerVersion>Latest</HmiServerVersion>
@@ -22,8 +22,8 @@
     <TargetFramework>native1.12-tchmi</TargetFramework>
     <AzureFunctionsVersion>v2</AzureFunctionsVersion>
     <Name>TcHmi1</Name>
-    <HmiCommunicationRouterPort>10115</HmiCommunicationRouterPort>
-    <HmiCommunicationServerAuthPort>13000</HmiCommunicationServerAuthPort>
+    <HmiCommunicationRouterPort>10121</HmiCommunicationRouterPort>
+    <HmiCommunicationServerAuthPort>13001</HmiCommunicationServerAuthPort>
     <HmiInitial>1.12.760.48</HmiInitial>
     <HmiRecent>1.12.760.48</HmiRecent>
     <HmiServerNodeAdvancedView>False</HmiServerNodeAdvancedView>

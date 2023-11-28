@@ -1,5 +1,5 @@
 <div id="Content1_2" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="800" data-tchmi-height="640">
 
-<div id="TcHmiEcDiagnostics_EtherCATDiagnostics_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEcDiagnostics" data-tchmi-allow-zoom-and-pan="true" data-tchmi-device="Device5" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-toolbox-reset-view="true" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-right="88" data-tchmi-bottom="296">
+<div id="TcHmiEcDiagnostics_EtherCATDiagnostics_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEcDiagnostics" data-tchmi-allow-zoom-and-pan="true" data-tchmi-device="Device5" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-toolbox-reset-view="true" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width-unit="%" data-tchmi-width="100" data-tchmi-height="100" data-tchmi-height-unit="%">
 </div>
 </div>

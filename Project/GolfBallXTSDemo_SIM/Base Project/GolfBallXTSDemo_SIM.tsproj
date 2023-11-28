@@ -25450,7 +25450,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>2999</Value>
+									<Value>2702.5</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -25852,7 +25852,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>80</Value>
+									<Value>2813.4</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -26254,7 +26254,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>160</Value>
+									<Value>2917</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -26656,7 +26656,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>240</Value>
+									<Value>26.8</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -27058,7 +27058,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>320</Value>
+									<Value>107</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -27460,7 +27460,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>400</Value>
+									<Value>187.3</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -27862,7 +27862,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>480</Value>
+									<Value>269.5</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -28264,7 +28264,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>560</Value>
+									<Value>357.6</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -28666,7 +28666,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>640</Value>
+									<Value>443.7</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -29068,7 +29068,7 @@ and will return to Group State Standby when the situation permits.
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpPosition</Name>
-									<Value>720</Value>
+									<Value>521</Value>
 								</Value>
 								<Value>
 									<Name>SimulatedStartUpId</Name>
@@ -63419,7 +63419,7 @@ and will return to Group State Standby when the situation permits.
 		</Motion>
 		<Plc>
 			<Project GUID="{DD3A0B29-8E7C-4E32-989D-B0222C998777}" Name="Main" PrjFilePath="..\..\GolfBallXTSDemo_HW\Base Project\Main\Main.plcproj" TmcFilePath="..\..\GolfBallXTSDemo_HW\Base Project\Main\Main.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="..\..\GolfBallXTSDemo_HW\Base Project\Main\Main.tmc" TmcHash="{D6943A80-0F3F-3F46-AE63-3BBBEE24B33C}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="..\..\GolfBallXTSDemo_HW\Base Project\Main\Main.tmc" TmcHash="{D5B6FDC0-FA5B-6B99-E04D-44D262CF2C5F}">
 					<Name>Main Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -63630,6 +63630,10 @@ and will return to Group State Standby when the situation permits.
 						</Var>
 						<Var>
 							<Name>PRG_XTS.IO.TrayLoad.Inputs.TrayLoadComplete</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>PRG_XTS.IO.Test</Name>
 							<Type>BOOL</Type>
 						</Var>
 					</Vars>

@@ -1,13 +1,13 @@
 <div id="EtherCATDiagnostics" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="100" data-tchmi-width-unit="%" data-tchmi-height="100" data-tchmi-height-unit="%">
 
-  <div id="TcHmiTextblock_EtherCATDiagnostics_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="48" data-tchmi-height-unit="px" data-tchmi-left="32" data-tchmi-left-unit="px" data-tchmi-text="%l%L_EtherCATDiagnostics%/l%" data-tchmi-top="16" data-tchmi-top-unit="px" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-right="0">
+  <div id="TcHmiTextblock_EtherCATDiagnostics_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="48" data-tchmi-height-unit="px" data-tchmi-left="32" data-tchmi-left-unit="px" data-tchmi-text="%l%L_EtherCATDiagnostics%/l%" data-tchmi-top="16" data-tchmi-top-unit="px" data-tchmi-width-unit="%" data-tchmi-word-wrap="True" data-tchmi-right="0" data-tchmi-width="100">
     <script data-tchmi-target-attribute="data-tchmi-class-names" type="application/json">
       [
       "headline-2"
       ]
     </script>
   </div>
-<div id="TcHmiTabNavigation" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTabNavigation" data-tchmi-height="971" data-tchmi-height-unit="px" data-tchmi-left="31" data-tchmi-left-unit="px" data-tchmi-top="79" data-tchmi-top-unit="px" data-tchmi-width="1860" data-tchmi-width-unit="px">
+<div id="TcHmiTabNavigation" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTabNavigation" data-tchmi-height="95" data-tchmi-height-unit="%" data-tchmi-left="2" data-tchmi-left-unit="%" data-tchmi-top="5.0" data-tchmi-top-unit="%" data-tchmi-width="95" data-tchmi-width-unit="%">
 <script data-tchmi-target-attribute="data-tchmi-tabs" type="application/json">
 [
   {

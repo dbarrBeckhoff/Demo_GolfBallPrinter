@@ -171,7 +171,7 @@ CASE GVL.XTS.Sts.State OF
         // Initialize station positions
         Station[GVL.STN_ORIENT].Position	:= 625;
         Station[GVL.STN_BALLSEAT].Position	:= 875;
-        Station[GVL.STN_VISION].Position	:= 2125;
+        Station[GVL.STN_VISION].Position	:= 2225;
         Station[GVL.STN_KICKOUT].Position	:= 2375;
 
 		MultiStation[GVL.MULTISTN_PRINT].PositionTrigger.Position	:= 1541;
@@ -447,8 +447,8 @@ BallSeatStation();]]></ST>
       <Implementation>
         <ST><![CDATA[FOR i := 0 TO gvl.NUM_MOVERS - 1 DO
 	Payload	:= Mover[i].Payload;
-	HMIXTSHelper.Mover[i].BallImgVisibility			:= Payload.HasBall AND NOT Payload.Reject;
-	HMIXTSHelper.Mover[i].BallRejectImgVisibility	:= Payload.HasBall AND Payload.Reject;
+	HMIXTSHelper.Mover[i].BallImgVisibility			:= FALSE;//Payload.HasBall AND NOT Payload.Reject;
+	HMIXTSHelper.Mover[i].BallRejectImgVisibility	:= FALSE;//Payload.HasBall AND Payload.Reject;
 	HMIXTSHelper.Mover[i].MoverTextVisibility		:= Payload.HasBall;
 	CASE Payload.PlayerNumber OF
 	1:		HMIXTSHelper.Mover[i].MoverText		:= '1';
@@ -562,8 +562,8 @@ PrintStation.rJobIF				REF= GVL.Job.Print;
 
 // Inputs
 PrintStation.Enable		:= GVL.XTS.Cmd.Enable;
-PrintStation.NumColor	:= 2;
-PrintStation.NumIndex	:= 2;
+PrintStation.NumColor	:= GVL.Job.Cmd.NumColor;
+PrintStation.NumIndex	:= GVL.Job.Cmd.NumIndex;
 
 // FB CALLS
 PrintStation();]]></ST>
